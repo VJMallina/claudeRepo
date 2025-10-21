@@ -46,6 +46,19 @@ Detailed 19-week development roadmap:
 - Success criteria
 - Post-MVP roadmap
 
+### 🔄 [USER_FLOWS.md](./USER_FLOWS.md)
+Complete user flows and journey maps:
+- Authentication & authorization flows (registration, login, KYC)
+- UPI payment flows (QR scanning, transactions, history)
+- Automated savings flows (configuration, wallet, goals)
+- Investment flows (browse, purchase, portfolio, auto-invest)
+- Analytics & reporting flows
+- Notification system
+- First-time user journey (Day 1, Week 1, Month 1)
+- Returning user patterns
+- Error handling & edge cases
+- Success metrics & conversion funnels
+
 ## Key Features (MVP)
 
 ### User Authentication
