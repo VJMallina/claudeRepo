@@ -59,6 +59,28 @@ Complete user flows and journey maps:
 - Error handling & edge cases
 - Success metrics & conversion funnels
 
+### 📝 [BDD_USER_STORIES.md](./BDD_USER_STORIES.md)
+Behavior-Driven Development user stories:
+- 6 major epics with 20+ user stories
+- Gherkin-style acceptance criteria
+- API endpoints for each story
+- Story points and priority levels
+- Sprint planning suggestions
+- Definition of Done checklist
+
+### 📄 [PRD.md](./PRD.md)
+Complete Product Requirements Document:
+- Executive summary & product vision
+- Target personas & market analysis
+- Detailed functional requirements
+- Non-functional requirements (performance, security, scalability)
+- Data models & API specifications
+- Third-party integrations
+- Business model & unit economics
+- Go-to-market strategy
+- Risk assessment & mitigation
+- Success criteria & KPIs
+
 ## Key Features (MVP)
 
 ### User Authentication
