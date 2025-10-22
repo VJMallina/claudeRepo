@@ -10,8 +10,18 @@ Every time a user makes a UPI payment, a pre-configured percentage (e.g., 10%) i
 
 ## Project Status
 
-**Current Phase**: Architecture & Feature Definition
+**Current Phase**: Development - Backend API Foundation ✅
 **Target MVP Launch**: 3-4 months
+
+### Progress
+- ✅ Architecture & Feature Definition Complete
+- ✅ Backend API Structure Created
+- ✅ Database Schema Defined (15+ models)
+- ✅ Docker Development Environment
+- 🔄 Authentication Module (In Progress)
+- ⏳ Mobile App (Coming Next)
+- ⏳ Payment Integration
+- ⏳ Investment Integration
 
 ## Documentation
 
@@ -36,6 +46,16 @@ Technical architecture and infrastructure:
 - Development practices
 - Cost estimation
 
+### 🛠️ [DEVELOPMENT_SETUP.md](./DEVELOPMENT_SETUP.md)
+Complete development environment setup guide:
+- Prerequisites and installation
+- Quick start commands
+- Project structure overview
+- Database setup and migrations
+- API development workflow
+- Docker commands
+- Troubleshooting guide
+
 ### 🗺️ [MVP_ROADMAP.md](./MVP_ROADMAP.md)
 Detailed 19-week development roadmap:
 - Phase-by-phase implementation plan
@@ -58,6 +78,28 @@ Complete user flows and journey maps:
 - Returning user patterns
 - Error handling & edge cases
 - Success metrics & conversion funnels
+
+### 📝 [BDD_USER_STORIES.md](./BDD_USER_STORIES.md)
+Behavior-Driven Development user stories:
+- 6 major epics with 20+ user stories
+- Gherkin-style acceptance criteria
+- API endpoints for each story
+- Story points and priority levels
+- Sprint planning suggestions
+- Definition of Done checklist
+
+### 📄 [PRD.md](./PRD.md)
+Complete Product Requirements Document:
+- Executive summary & product vision
+- Target personas & market analysis
+- Detailed functional requirements
+- Non-functional requirements (performance, security, scalability)
+- Data models & API specifications
+- Third-party integrations
+- Business model & unit economics
+- Go-to-market strategy
+- Risk assessment & mitigation
+- Success criteria & KPIs
 
 ## Key Features (MVP)
 
@@ -121,15 +163,61 @@ Complete user flows and journey maps:
 
 ## Getting Started
 
-### Prerequisites
-- Node.js 18+ or Go 1.20+
-- PostgreSQL 14+
-- Redis 7+
-- React Native development environment
-- Payment gateway test account
+### Quick Start
 
-### Development Setup
-(To be added as development progresses)
+```bash
+# 1. Clone and install dependencies
+git clone <your-repo-url>
+cd claudeRepo
+npm install
+
+# 2. Set up environment variables
+cp .env.example .env
+# Edit .env with your credentials
+
+# 3. Start database services
+npm run docker:up
+
+# 4. Set up database
+cd services/api
+npx prisma generate
+npx prisma migrate dev
+npm run seed
+
+# 5. Start API server
+npm run dev
+
+# API will be available at:
+# - http://localhost:3000/api/v1
+# - Swagger Docs: http://localhost:3000/api/docs
+```
+
+### Full Setup Guide
+See [DEVELOPMENT_SETUP.md](./DEVELOPMENT_SETUP.md) for complete instructions.
+
+### What's Built So Far
+
+✅ **Backend API Foundation**
+- NestJS application with TypeScript
+- Complete database schema (Prisma)
+- PostgreSQL + Redis with Docker
+- Health check endpoints
+- Swagger API documentation
+- Module structure for all features
+
+✅ **Database Schema**
+- 15+ models covering all MVP features
+- User authentication & KYC
+- Savings wallet & goals
+- Transactions & payments
+- Investments & portfolio
+- Notifications & sessions
+
+✅ **Development Environment**
+- Docker Compose setup
+- Database migrations
+- Seeding scripts
+- Monorepo structure
 
 ## Team Structure
 
