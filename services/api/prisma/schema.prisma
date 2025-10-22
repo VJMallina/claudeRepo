@@ -1,0 +1,341 @@
+// Prisma Schema for SaveInvest Platform
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// User model
+model User {
+  id                String    @id @default(uuid())
+  mobile            String    @unique
+  email             String    @unique
+  name              String
+  dob               DateTime?
+  profilePhoto      String?
+  pin               String    // Hashed
+  biometricEnabled  Boolean   @default(false)
+  kycStatus         KycStatus @default(PENDING)
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+
+  // Relations
+  kycDocuments      KycDocument[]
+  savingsConfig     SavingsConfig?
+  savingsWallet     SavingsWallet?
+  transactions      Transaction[]
+  investments       Investment[]
+  goals             Goal[]
+  notifications     Notification[]
+  sessions          Session[]
+
+  @@index([mobile])
+  @@index([email])
+  @@map("users")
+}
+
+enum KycStatus {
+  PENDING
+  IN_PROGRESS
+  UNDER_REVIEW
+  APPROVED
+  REJECTED
+}
+
+// KYC Documents
+model KycDocument {
+  id                String   @id @default(uuid())
+  userId            String
+  panNumber         String?
+  panName           String?
+  panVerified       Boolean  @default(false)
+  aadhaarNumber     String?  // Encrypted
+  aadhaarVerified   Boolean  @default(false)
+  bankAccountNumber String?  // Encrypted
+  bankIfsc          String?
+  bankAccountName   String?
+  bankVerified      Boolean  @default(false)
+  selfieUrl         String?
+  faceMatched       Boolean  @default(false)
+  rejectionReason   String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("kyc_documents")
+}
+
+// Savings Configuration
+model SavingsConfig {
+  id                       String   @id @default(uuid())
+  userId                   String   @unique
+  enabled                  Boolean  @default(true)
+  percentage               Float    @default(10.0) // 1-50
+  minTransactionAmount     Float    @default(10.0)
+  maxSavingsPerTransaction Float?
+  frequency                Frequency @default(EVERY_TRANSACTION)
+  createdAt                DateTime @default(now())
+  updatedAt                DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("savings_configs")
+}
+
+enum Frequency {
+  EVERY_TRANSACTION
+  DAILY
+  WEEKLY
+  MONTHLY
+}
+
+// Savings Wallet
+model SavingsWallet {
+  id              String   @id @default(uuid())
+  userId          String   @unique
+  balance         Float    @default(0.0)
+  totalSaved      Float    @default(0.0)
+  totalWithdrawn  Float    @default(0.0)
+  totalInvested   Float    @default(0.0)
+  lastUpdated     DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("savings_wallets")
+}
+
+// Transactions
+model Transaction {
+  id                String            @id @default(uuid())
+  userId            String
+  type              TransactionType
+  amount            Float
+  status            TransactionStatus @default(PENDING)
+  merchantName      String?
+  utr               String?           @unique
+  paymentGatewayId  String?
+  autoSaveAmount    Float             @default(0.0)
+  description       String?
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([utr])
+  @@index([status])
+  @@index([createdAt])
+  @@map("transactions")
+}
+
+enum TransactionType {
+  PAYMENT
+  DEPOSIT
+  WITHDRAWAL
+  INVESTMENT
+  REDEMPTION
+}
+
+enum TransactionStatus {
+  PENDING
+  SUCCESS
+  FAILED
+}
+
+// Investment Products
+model InvestmentProduct {
+  id            String   @id @default(uuid())
+  name          String
+  category      String   // Liquid, Debt, Equity, Gold
+  riskLevel     RiskLevel
+  expectedReturn Float   // Annual percentage
+  minInvestment Float
+  exitLoad      Float    @default(0.0)
+  expenseRatio  Float?
+  fundSize      Float?
+  description   String?
+  isActive      Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  investments Investment[]
+  navHistory  NavHistory[]
+
+  @@map("investment_products")
+}
+
+enum RiskLevel {
+  LOW
+  MEDIUM
+  HIGH
+}
+
+// NAV History
+model NavHistory {
+  id        String   @id @default(uuid())
+  productId String
+  date      DateTime
+  nav       Float
+  createdAt DateTime @default(now())
+
+  product InvestmentProduct @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@unique([productId, date])
+  @@index([productId])
+  @@index([date])
+  @@map("nav_history")
+}
+
+// Investments
+model Investment {
+  id              String          @id @default(uuid())
+  userId          String
+  productId       String
+  amountInvested  Float
+  units           Float
+  nav             Float           // NAV at purchase
+  currentValue    Float           @default(0.0)
+  returns         Float           @default(0.0)
+  status          InvestmentStatus @default(ACTIVE)
+  purchaseDate    DateTime        @default(now())
+  redemptionDate  DateTime?
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+
+  user    User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product InvestmentProduct @relation(fields: [productId], references: [id])
+
+  @@index([userId])
+  @@index([productId])
+  @@index([status])
+  @@map("investments")
+}
+
+enum InvestmentStatus {
+  ACTIVE
+  REDEEMED
+  PARTIAL_REDEEMED
+}
+
+// Auto-Invest Rules
+model AutoInvestRule {
+  id              String   @id @default(uuid())
+  userId          String
+  productId       String
+  enabled         Boolean  @default(true)
+  triggerType     TriggerType
+  triggerValue    Float?   // Amount threshold or null for scheduled
+  investmentAmount Float?  // Fixed amount or null for percentage
+  investmentPercentage Float? // Percentage of savings
+  schedule        String?  // Cron expression for scheduled
+  lastExecuted    DateTime?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([userId])
+  @@map("auto_invest_rules")
+}
+
+enum TriggerType {
+  THRESHOLD    // When savings reach X
+  SCHEDULED    // Monthly/weekly on date
+}
+
+// Goals
+model Goal {
+  id                   String     @id @default(uuid())
+  userId               String
+  name                 String
+  targetAmount         Float
+  currentAmount        Float      @default(0.0)
+  targetDate           DateTime
+  priority             Priority   @default(MEDIUM)
+  imageUrl             String?
+  allocationPercentage Float      @default(0.0)
+  status               GoalStatus @default(ACTIVE)
+  createdAt            DateTime   @default(now())
+  updatedAt            DateTime   @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("goals")
+}
+
+enum Priority {
+  HIGH
+  MEDIUM
+  LOW
+}
+
+enum GoalStatus {
+  ACTIVE
+  ACHIEVED
+  ARCHIVED
+}
+
+// Notifications
+model Notification {
+  id        String             @id @default(uuid())
+  userId    String
+  type      NotificationType
+  title     String
+  message   String
+  isRead    Boolean            @default(false)
+  data      Json?              // Additional data
+  createdAt DateTime           @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([isRead])
+  @@index([createdAt])
+  @@map("notifications")
+}
+
+enum NotificationType {
+  TRANSACTION
+  SAVINGS
+  INVESTMENT
+  SECURITY
+  GOAL
+  SYSTEM
+}
+
+// Sessions (for JWT refresh tokens)
+model Session {
+  id           String   @id @default(uuid())
+  userId       String
+  refreshToken String   @unique
+  deviceInfo   String?
+  ipAddress    String?
+  expiresAt    DateTime
+  createdAt    DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([refreshToken])
+  @@map("sessions")
+}
+
+// OTP for verification
+model Otp {
+  id        String   @id @default(uuid())
+  mobile    String
+  code      String
+  purpose   String   // REGISTRATION, LOGIN, RESET_PIN
+  expiresAt DateTime
+  attempts  Int      @default(0)
+  verified  Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@index([mobile])
+  @@index([code])
+  @@map("otps")
+}
