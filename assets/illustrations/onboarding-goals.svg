@@ -1,0 +1,24 @@
+<!-- Onboarding Illustration: Track Goals -->
+<svg width="240" height="240" viewBox="0 0 240 240" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Target/Goal circles -->
+  <circle cx="120" cy="120" r="80" stroke="#E5E7EB" stroke-width="2" fill="none"/>
+  <circle cx="120" cy="120" r="60" stroke="#E5E7EB" stroke-width="2" fill="none"/>
+  <circle cx="120" cy="120" r="40" stroke="#E5E7EB" stroke-width="2" fill="none"/>
+  <circle cx="120" cy="120" r="20" fill="#10B981"/>
+
+  <!-- Trophy/Achievement icon in center -->
+  <path d="M110 115 L110 105 L130 105 L130 115 L128 120 L112 120 Z" fill="#F59E0B"/>
+  <rect x="117" y="120" width="6" height="8" fill="#F59E0B"/>
+  <rect x="113" y="128" width="14" height="4" rx="2" fill="#F59E0B"/>
+
+  <!-- Progress indicators -->
+  <circle cx="120" cy="40" r="8" fill="#10B981">
+    <animate attributeName="r" from="8" to="12" dur="1s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="200" cy="120" r="8" fill="#10B981">
+    <animate attributeName="r" from="8" to="12" dur="1s" begin="0.33s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="120" cy="200" r="8" fill="#10B981">
+    <animate attributeName="r" from="8" to="12" dur="1s" begin="0.66s" repeatCount="indefinite"/>
+  </circle>
+</svg>

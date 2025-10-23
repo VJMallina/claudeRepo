@@ -1,0 +1,23 @@
+<!-- Onboarding Illustration: Savings Growth -->
+<svg width="240" height="240" viewBox="0 0 240 240" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Graph -->
+  <path d="M40 180 L70 160 L100 140 L130 110 L160 80 L190 50" stroke="#10B981" stroke-width="4" stroke-linecap="round" fill="none"/>
+  <circle cx="40" cy="180" r="6" fill="#10B981"/>
+  <circle cx="70" cy="160" r="6" fill="#10B981"/>
+  <circle cx="100" cy="140" r="6" fill="#10B981"/>
+  <circle cx="130" cy="110" r="6" fill="#10B981"/>
+  <circle cx="160" cy="80" r="6" fill="#10B981"/>
+  <circle cx="190" cy="50" r="6" fill="#10B981"/>
+
+  <!-- Fill under graph -->
+  <path d="M40 180 L70 160 L100 140 L130 110 L160 80 L190 50 L190 200 L40 200 Z" fill="#10B981" opacity="0.1"/>
+
+  <!-- Trend arrow -->
+  <path d="M175 35 L200 35 L200 60" stroke="#10B981" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Money bag at top -->
+  <circle cx="200" cy="40" r="20" fill="#F59E0B" opacity="0.2"/>
+  <path d="M200 30 C190 30 190 40 200 45 C210 40 210 30 200 30Z" fill="#F59E0B"/>
+  <circle cx="200" cy="43" r="12" fill="#F59E0B"/>
+  <text x="200" y="48" fill="white" font-size="12" font-weight="bold" text-anchor="middle">₹</text>
+</svg>

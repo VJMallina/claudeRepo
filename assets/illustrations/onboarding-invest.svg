@@ -1,0 +1,26 @@
+<!-- Onboarding Illustration: One-Tap Invest -->
+<svg width="240" height="240" viewBox="0 0 240 240" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Phone mockup -->
+  <rect x="70" y="40" width="100" height="160" rx="12" fill="white" stroke="#E5E7EB" stroke-width="2"/>
+  <rect x="85" y="55" width="70" height="4" rx="2" fill="#E5E7EB"/>
+
+  <!-- Screen content -->
+  <circle cx="120" cy="100" r="25" fill="#10B981" opacity="0.1"/>
+  <path d="M120 80 L120 100 L140 100" stroke="#10B981" stroke-width="3" stroke-linecap="round"/>
+
+  <text x="120" y="135" fill="#111827" font-size="12" font-weight="bold" text-anchor="middle">Invest Now</text>
+
+  <!-- Button -->
+  <rect x="85" y="150" width="70" height="30" rx="8" fill="#10B981"/>
+  <text x="120" y="170" fill="white" font-size="10" font-weight="bold" text-anchor="middle">TAP TO INVEST</text>
+
+  <!-- Finger tap -->
+  <circle cx="130" cy="165" r="15" fill="#3B82F6" opacity="0.3">
+    <animate attributeName="r" from="15" to="25" dur="1s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" from="0.3" to="0" dur="1s" repeatCount="indefinite"/>
+  </circle>
+
+  <!-- Stars/sparkles -->
+  <path d="M50 80 L52 85 L57 87 L52 89 L50 94 L48 89 L43 87 L48 85 Z" fill="#F59E0B"/>
+  <path d="M180 120 L182 125 L187 127 L182 129 L180 134 L178 129 L173 127 L178 125 Z" fill="#F59E0B"/>
+</svg>
