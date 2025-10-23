@@ -101,6 +101,15 @@ Complete Product Requirements Document:
 - Risk assessment & mitigation
 - Success criteria & KPIs
 
+### 🎨 [WIREFRAMES.md](./WIREFRAMES.md)
+UI wireframes and design specifications:
+- Complete design system (colors, typography, spacing)
+- 24+ screen wireframes (ASCII + detailed specs)
+- All user flows (authentication, payments, savings, investments)
+- Component library specifications
+- Interaction states and animations
+- Bottom navigation and navigation patterns
+
 ## Key Features (MVP)
 
 ### User Authentication
