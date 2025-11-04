@@ -20,11 +20,13 @@ model User {
   pin               String    // Hashed
   biometricEnabled  Boolean   @default(false)
   kycStatus         KycStatus @default(PENDING)
+  kycLevel          Int       @default(0) // 0: No KYC, 1: PAN verified, 2: Full KYC
   createdAt         DateTime  @default(now())
   updatedAt         DateTime  @updatedAt
 
   // Relations
   kycDocuments      KycDocument[]
+  bankAccounts      BankAccount[]
   savingsConfig     SavingsConfig?
   savingsWallet     SavingsWallet?
   transactions      Transaction[]
@@ -36,6 +38,7 @@ model User {
 
   @@index([mobile])
   @@index([email])
+  @@index([kycLevel])
   @@map("users")
 }
 
@@ -56,11 +59,9 @@ model KycDocument {
   panVerified       Boolean  @default(false)
   aadhaarNumber     String?  // Encrypted
   aadhaarVerified   Boolean  @default(false)
-  bankAccountNumber String?  // Encrypted
-  bankIfsc          String?
-  bankAccountName   String?
-  bankVerified      Boolean  @default(false)
   selfieUrl         String?
+  livenessScore     Float?   // 0-100 confidence score
+  livenessVerified  Boolean  @default(false)
   faceMatched       Boolean  @default(false)
   rejectionReason   String?
   createdAt         DateTime @default(now())
@@ -69,6 +70,35 @@ model KycDocument {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("kyc_documents")
+}
+
+// Bank Accounts
+model BankAccount {
+  id                String   @id @default(uuid())
+  userId            String
+  accountNumber     String   // Encrypted
+  ifscCode          String
+  accountHolderName String
+  bankName          String?
+  branchName        String?
+  accountType       BankAccountType @default(SAVINGS)
+  isPrimary         Boolean  @default(false)
+  isVerified        Boolean  @default(false)
+  verificationMethod String? // PENNY_DROP, MANUAL
+  verifiedAt        DateTime?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([isPrimary])
+  @@map("bank_accounts")
+}
+
+enum BankAccountType {
+  SAVINGS
+  CURRENT
 }
 
 // Savings Configuration

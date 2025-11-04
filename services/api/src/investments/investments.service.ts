@@ -184,6 +184,39 @@ export class InvestmentsService {
   ): Promise<PurchaseResponseDto> {
     const { productId, amount, description } = purchaseDto;
 
+    // Check KYC level - Investments require Level 2 (Full KYC)
+    const user = await this.prisma.user.findUnique({
+      where: { id: userId },
+      include: { kycDocuments: true },
+    });
+
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    if (user.kycLevel < 2) {
+      const kycDoc = user.kycDocuments[0];
+      const nextSteps: string[] = [];
+
+      if (!kycDoc?.panVerified) {
+        nextSteps.push('Verify PAN card');
+      }
+      if (!kycDoc?.aadhaarVerified) {
+        nextSteps.push('Verify Aadhaar');
+      }
+      if (!kycDoc?.livenessVerified) {
+        nextSteps.push('Complete liveness verification');
+      }
+
+      throw new BadRequestException({
+        message: 'Full KYC required for investments',
+        kycRequired: true,
+        requiredLevel: 2,
+        currentLevel: user.kycLevel,
+        nextSteps,
+      });
+    }
+
     // Validate product exists and is active
     const product = await this.prisma.investmentProduct.findUnique({
       where: { id: productId },

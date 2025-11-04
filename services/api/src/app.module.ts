@@ -10,6 +10,8 @@ import { InvestmentsModule } from './investments/investments.module';
 import { KycModule } from './kyc/kyc.module';
 import { AnalyticsModule } from './analytics/analytics.module';
 import { NotificationsModule } from './notifications/notifications.module';
+import { BankAccountsModule } from './bank-accounts/bank-accounts.module';
+import { OnboardingModule } from './onboarding/onboarding.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
@@ -37,6 +39,8 @@ import { AppService } from './app.service';
     KycModule,
     AnalyticsModule,
     NotificationsModule,
+    BankAccountsModule,
+    OnboardingModule,
   ],
   controllers: [AppController],
   providers: [AppService],

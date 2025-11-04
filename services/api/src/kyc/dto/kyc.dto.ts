@@ -43,6 +43,23 @@ export class VerifyAadhaarOtpDto {
   referenceId: string;
 }
 
+export class VerifyLivenessDto {
+  @ApiProperty({
+    example: 'https://s3.amazonaws.com/selfies/selfie_123.jpg',
+    description: 'URL of the selfie image for liveness detection'
+  })
+  @IsUrl()
+  selfieUrl: string;
+
+  @ApiPropertyOptional({
+    description: 'Optional: Video URL for advanced liveness detection',
+    example: 'https://s3.amazonaws.com/videos/liveness_123.mp4'
+  })
+  @IsOptional()
+  @IsUrl()
+  videoUrl?: string;
+}
+
 export class UploadDocumentDto {
   @ApiProperty({
     enum: ['PAN', 'AADHAAR_FRONT', 'AADHAAR_BACK', 'SELFIE', 'BANK_STATEMENT', 'CANCELLED_CHEQUE'],

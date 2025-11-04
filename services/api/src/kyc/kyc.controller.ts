@@ -25,6 +25,7 @@ import {
   VerifyAadhaarDto,
   VerifyAadhaarOtpDto,
   VerifyBankAccountDto,
+  VerifyLivenessDto,
   UploadDocumentDto,
   UpdateKycStatusDto,
   GetKycQueryDto,
@@ -35,6 +36,7 @@ import {
   AadhaarVerificationResponseDto,
   AadhaarOtpVerificationResponseDto,
   BankVerificationResponseDto,
+  LivenessVerificationResponseDto,
   DocumentUploadResponseDto,
   KycListResponseDto,
 } from './dto/kyc-response.dto';
@@ -162,6 +164,31 @@ export class KycController {
     @Body() verifyDto: VerifyBankAccountDto,
   ): Promise<BankVerificationResponseDto> {
     return this.kycService.verifyBankAccount(req.user.userId, verifyDto);
+  }
+
+  // ============================================
+  // LIVENESS DETECTION
+  // ============================================
+
+  @Post('verify-liveness')
+  @ApiOperation({
+    summary: 'Verify liveness with selfie/video',
+    description: 'Perform liveness detection and face matching for Level 2 KYC. Aadhaar verification required.',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Liveness verified successfully',
+    type: LivenessVerificationResponseDto,
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'Liveness detection failed or Aadhaar not verified',
+  })
+  async verifyLiveness(
+    @Request() req,
+    @Body() verifyDto: VerifyLivenessDto,
+  ): Promise<LivenessVerificationResponseDto> {
+    return this.kycService.verifyLiveness(req.user.userId, verifyDto);
   }
 
   // ============================================

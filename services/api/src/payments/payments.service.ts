@@ -39,6 +39,24 @@ export class PaymentsService {
     try {
       this.logger.log(`Creating payment order for user: ${userId}`);
 
+      // Check KYC level for payment amount
+      const user = await this.prisma.user.findUnique({ where: { id: userId } });
+      if (!user) {
+        throw new NotFoundException('User not found');
+      }
+
+      // KYC Level 0: Payments up to ₹10,000 allowed
+      // KYC Level 1+: Unlimited payments
+      if (createPaymentDto.amount > 10000 && user.kycLevel < 1) {
+        throw new BadRequestException({
+          message: 'KYC Level 1 required for payments above ₹10,000',
+          kycRequired: true,
+          requiredLevel: 1,
+          currentLevel: user.kycLevel,
+          nextSteps: ['Verify PAN card to unlock higher payment limits'],
+        });
+      }
+
       // Get user's savings configuration
       const savingsConfig = await this.prisma.savingsConfig.findUnique({
         where: { userId },

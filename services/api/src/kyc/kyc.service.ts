@@ -11,6 +11,7 @@ import {
   VerifyAadhaarDto,
   VerifyAadhaarOtpDto,
   VerifyBankAccountDto,
+  VerifyLivenessDto,
   UploadDocumentDto,
   UpdateKycStatusDto,
   GetKycQueryDto,
@@ -21,6 +22,7 @@ import {
   AadhaarVerificationResponseDto,
   AadhaarOtpVerificationResponseDto,
   BankVerificationResponseDto,
+  LivenessVerificationResponseDto,
   DocumentUploadResponseDto,
   KycListResponseDto,
 } from './dto/kyc-response.dto';
@@ -80,8 +82,9 @@ export class KycService {
       },
     });
 
-    // Update user KYC status
+    // Update user KYC status and level
     await this.updateUserKycStatus(userId);
+    await this.updateUserKycLevel(userId);
 
     return {
       success: true,
@@ -181,8 +184,9 @@ export class KycService {
       },
     });
 
-    // Update user KYC status
+    // Update user KYC status and level
     await this.updateUserKycStatus(userId);
+    await this.updateUserKycLevel(userId);
 
     // Clean up OTP data
     this.aadhaarOtpStore.delete(referenceId);
@@ -264,6 +268,86 @@ export class KycService {
       accountHolderName,
       bankName: bankVerificationResult.bankName,
       branchName: bankVerificationResult.branchName,
+    };
+  }
+
+  // ============================================
+  // LIVENESS DETECTION
+  // ============================================
+
+  async verifyLiveness(
+    userId: string,
+    verifyDto: VerifyLivenessDto,
+  ): Promise<LivenessVerificationResponseDto> {
+    const { selfieUrl, videoUrl } = verifyDto;
+
+    // Get user details
+    const user = await this.prisma.user.findUnique({
+      where: { id: userId },
+      include: { kycDocuments: true },
+    });
+
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    // Check if Aadhaar is verified (recommended for face matching)
+    const kycDoc = user.kycDocuments[0];
+    if (!kycDoc || !kycDoc.aadhaarVerified) {
+      throw new BadRequestException(
+        'Aadhaar verification required before liveness detection',
+      );
+    }
+
+    // TODO: Integrate with actual liveness detection API
+    // Options:
+    // 1. AWS Rekognition (DetectFaces + CompareFaces)
+    // 2. Azure Face API (Face Detection + Liveness Detection)
+    // 3. Google Cloud Vision API
+    // 4. FaceIO / Face++ / Kairos
+    // 5. Third-party KYC providers (IDfy, Signzy, etc.)
+
+    const livenessResult = await this.mockLivenessDetection(selfieUrl, videoUrl);
+
+    if (livenessResult.livenessScore < 70) {
+      throw new BadRequestException(
+        'Liveness detection failed. Please ensure good lighting and follow instructions.',
+      );
+    }
+
+    // Perform face matching with Aadhaar photo (if available)
+    // TODO: In production, fetch Aadhaar photo from DigiLocker and compare
+    const faceMatchResult = await this.mockFaceMatching(selfieUrl);
+
+    if (!faceMatchResult.matched) {
+      throw new BadRequestException(
+        'Face does not match with Aadhaar photo. Please try again.',
+      );
+    }
+
+    // Update KYC document with liveness verification
+    await this.prisma.kycDocument.update({
+      where: { userId },
+      data: {
+        selfieUrl,
+        livenessScore: livenessResult.livenessScore,
+        livenessVerified: true,
+        faceMatched: faceMatchResult.matched,
+      },
+    });
+
+    // Update user KYC status and level
+    await this.updateUserKycStatus(userId);
+    await this.updateUserKycLevel(userId);
+
+    return {
+      success: true,
+      message: 'Liveness verified successfully',
+      verified: true,
+      livenessScore: livenessResult.livenessScore,
+      faceMatched: faceMatchResult.matched,
+      selfieUrl,
+      livenessDetails: livenessResult.details,
     };
   }
 
@@ -434,17 +518,40 @@ export class KycService {
 
     if (kycDoc.panVerified && !kycDoc.aadhaarVerified) {
       newStatus = KycStatus.IN_PROGRESS;
-    } else if (kycDoc.panVerified && kycDoc.aadhaarVerified && !kycDoc.bankVerified) {
+    } else if (kycDoc.panVerified && kycDoc.aadhaarVerified && !kycDoc.livenessVerified) {
       newStatus = KycStatus.IN_PROGRESS;
-    } else if (kycDoc.panVerified && kycDoc.aadhaarVerified && kycDoc.bankVerified && !kycDoc.faceMatched) {
-      newStatus = KycStatus.UNDER_REVIEW;
-    } else if (kycDoc.panVerified && kycDoc.aadhaarVerified && kycDoc.bankVerified && kycDoc.faceMatched) {
+    } else if (kycDoc.panVerified && kycDoc.aadhaarVerified && kycDoc.livenessVerified && kycDoc.faceMatched) {
       newStatus = KycStatus.APPROVED;
     }
 
     await this.prisma.user.update({
       where: { id: userId },
       data: { kycStatus: newStatus },
+    });
+  }
+
+  private async updateUserKycLevel(userId: string): Promise<void> {
+    const kycDoc = await this.prisma.kycDocument.findUnique({
+      where: { userId },
+    });
+
+    if (!kycDoc) return;
+
+    let newLevel = 0;
+
+    // Level 1: PAN verified (allows payments up to ₹50,000)
+    if (kycDoc.panVerified) {
+      newLevel = 1;
+    }
+
+    // Level 2: Full KYC (PAN + Aadhaar + Liveness verified, allows investments)
+    if (kycDoc.panVerified && kycDoc.aadhaarVerified && kycDoc.livenessVerified && kycDoc.faceMatched) {
+      newLevel = 2;
+    }
+
+    await this.prisma.user.update({
+      where: { id: userId },
+      data: { kycLevel: newLevel },
     });
   }
 
@@ -587,5 +694,76 @@ export class KycService {
 
     // Mock: Return random quality score between 75-95
     return Math.floor(75 + Math.random() * 20);
+  }
+
+  private async mockLivenessDetection(
+    selfieUrl: string,
+    videoUrl?: string,
+  ): Promise<{
+    livenessScore: number;
+    details: {
+      blinkDetected: boolean;
+      smileDetected: boolean;
+      headTurnDetected: boolean;
+      qualityScore: number;
+    };
+  }> {
+    // TODO: Replace with actual liveness detection API
+    // Options:
+    // 1. AWS Rekognition: DetectFaces with quality/pose analysis
+    // 2. Azure Face API: Liveness Detection
+    // 3. FaceIO / Face++ APIs
+
+    console.log('[MOCK] Liveness Detection:', { selfieUrl, videoUrl });
+
+    // Simulate API delay
+    await new Promise(resolve => setTimeout(resolve, 2000));
+
+    // Mock liveness checks (in production, analyze video frames or selfie quality)
+    const details = {
+      blinkDetected: Math.random() > 0.1, // 90% success rate
+      smileDetected: Math.random() > 0.2, // 80% success rate
+      headTurnDetected: videoUrl ? Math.random() > 0.15 : false, // 85% if video provided
+      qualityScore: 80 + Math.random() * 15, // 80-95
+    };
+
+    // Calculate overall liveness score
+    let livenessScore = details.qualityScore;
+    if (details.blinkDetected) livenessScore += 2;
+    if (details.smileDetected) livenessScore += 1;
+    if (details.headTurnDetected) livenessScore += 2;
+
+    // Cap at 100
+    livenessScore = Math.min(livenessScore, 100);
+
+    return {
+      livenessScore: parseFloat(livenessScore.toFixed(2)),
+      details: {
+        ...details,
+        qualityScore: parseFloat(details.qualityScore.toFixed(2)),
+      },
+    };
+  }
+
+  private async mockFaceMatching(selfieUrl: string): Promise<{ matched: boolean; similarity: number }> {
+    // TODO: Replace with actual face comparison API
+    // Options:
+    // 1. AWS Rekognition: CompareFaces
+    // 2. Azure Face API: Face Verification
+    // 3. FaceIO / Face++ APIs
+
+    console.log('[MOCK] Face Matching with Aadhaar photo:', selfieUrl);
+
+    // Simulate API delay
+    await new Promise(resolve => setTimeout(resolve, 1500));
+
+    // Mock: 95% match success rate
+    const similarity = 75 + Math.random() * 20; // 75-95% similarity
+    const matched = similarity > 70; // Threshold of 70%
+
+    return {
+      matched,
+      similarity: parseFloat(similarity.toFixed(2)),
+    };
   }
 }

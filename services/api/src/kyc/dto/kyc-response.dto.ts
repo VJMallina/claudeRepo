@@ -175,6 +175,42 @@ export class BankVerificationResponseDto {
   branchName?: string;
 }
 
+export class LivenessVerificationResponseDto {
+  @ApiProperty({ example: true })
+  success: boolean;
+
+  @ApiProperty({ example: 'Liveness verified successfully' })
+  message: string;
+
+  @ApiProperty({ example: true })
+  verified: boolean;
+
+  @ApiProperty({ example: 95.5, description: 'Liveness confidence score (0-100)' })
+  livenessScore: number;
+
+  @ApiProperty({ example: true, description: 'Whether face matched with Aadhaar photo' })
+  faceMatched: boolean;
+
+  @ApiPropertyOptional({ example: 'https://s3.amazonaws.com/selfies/selfie_123.jpg' })
+  selfieUrl?: string;
+
+  @ApiPropertyOptional({
+    example: {
+      blinkDetected: true,
+      smileDetected: true,
+      headTurnDetected: true,
+      qualityScore: 92.0,
+    },
+    description: 'Additional liveness check details'
+  })
+  livenessDetails?: {
+    blinkDetected: boolean;
+    smileDetected: boolean;
+    headTurnDetected: boolean;
+    qualityScore: number;
+  };
+}
+
 export class DocumentUploadResponseDto {
   @ApiProperty({ example: true })
   success: boolean;
