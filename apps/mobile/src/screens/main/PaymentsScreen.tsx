@@ -1,9 +1,16 @@
 import React from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
 import { Text, Card, Button } from 'react-native-paper';
+import { useNavigation } from '@react-navigation/native';
 import { spacing, typography } from '@/theme/theme';
 
 export default function PaymentsScreen() {
+  const navigation = useNavigation<any>();
+
+  const handleScanQR = () => {
+    navigation.navigate('QRScanner');
+  };
+
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
       <Card style={styles.card}>
@@ -13,8 +20,8 @@ export default function PaymentsScreen() {
           <Text style={styles.subtitle}>
             Make your first UPI payment and automatically save a percentage
           </Text>
-          <Button mode="contained" onPress={() => {}} style={styles.button}>
-            Make a Payment
+          <Button mode="contained" onPress={handleScanQR} style={styles.button} icon="qrcode-scan">
+            Scan QR Code to Pay
           </Button>
         </Card.Content>
       </Card>

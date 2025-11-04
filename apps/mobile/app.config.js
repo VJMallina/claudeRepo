@@ -35,7 +35,17 @@ export default {
       favicon: './assets/favicon.png',
       bundler: 'metro',
     },
-    plugins: ['expo-router', 'expo-secure-store', 'expo-local-authentication'],
+    plugins: [
+      'expo-router',
+      'expo-secure-store',
+      'expo-local-authentication',
+      [
+        'expo-camera',
+        {
+          cameraPermission: 'Allow SaveInvest to access your camera to scan QR codes for payments.',
+        },
+      ],
+    ],
     experiments: {
       typedRoutes: true,
     },

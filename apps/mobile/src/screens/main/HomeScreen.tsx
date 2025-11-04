@@ -1,11 +1,13 @@
 import React, { useEffect } from 'react';
 import { View, StyleSheet, ScrollView, RefreshControl } from 'react-native';
 import { Text, Card, Button, ProgressBar, Chip } from 'react-native-paper';
+import { useNavigation } from '@react-navigation/native';
 import { useAuthStore } from '@/store/authStore';
 import { useOnboardingStore } from '@/store/onboardingStore';
 import { spacing, typography } from '@/theme/theme';
 
 export default function HomeScreen() {
+  const navigation = useNavigation<any>();
   const { user, loadUser } = useAuthStore();
   const { kycLevel, permissions, fetchStatus } = useOnboardingStore();
   const [refreshing, setRefreshing] = React.useState(false);
@@ -105,10 +107,29 @@ export default function HomeScreen() {
       {/* Quick Actions */}
       <Text style={styles.sectionTitle}>Quick Actions</Text>
       <View style={styles.actionsContainer}>
-        <ActionButton icon="💳" title="Make Payment" disabled={!permissions.canMakePayments} />
-        <ActionButton icon="💰" title="View Savings" />
-        <ActionButton icon="📊" title="Invest" disabled={!permissions.canInvest} />
-        <ActionButton icon="🏦" title="Withdraw" disabled={!permissions.canWithdraw} />
+        <ActionButton
+          icon="💳"
+          title="Make Payment"
+          disabled={!permissions.canMakePayments}
+          onPress={() => navigation.navigate('QRScanner')}
+        />
+        <ActionButton
+          icon="💰"
+          title="View Savings"
+          onPress={() => navigation.navigate('Savings')}
+        />
+        <ActionButton
+          icon="📊"
+          title="Invest"
+          disabled={!permissions.canInvest}
+          onPress={() => navigation.navigate('Investments')}
+        />
+        <ActionButton
+          icon="🏦"
+          title="Withdraw"
+          disabled={!permissions.canWithdraw}
+          onPress={() => {}}
+        />
       </View>
     </ScrollView>
   );
@@ -140,9 +161,22 @@ function FeatureAccess({ enabled, title, description }: { enabled: boolean; titl
   );
 }
 
-function ActionButton({ icon, title, disabled }: { icon: string; title: string; disabled?: boolean }) {
+function ActionButton({
+  icon,
+  title,
+  disabled,
+  onPress,
+}: {
+  icon: string;
+  title: string;
+  disabled?: boolean;
+  onPress?: () => void;
+}) {
   return (
-    <Card style={[styles.actionButton, disabled && styles.actionButtonDisabled]}>
+    <Card
+      style={[styles.actionButton, disabled && styles.actionButtonDisabled]}
+      onPress={!disabled ? onPress : undefined}
+    >
       <Card.Content style={styles.actionContent}>
         <Text style={styles.actionIcon}>{icon}</Text>
         <Text style={[styles.actionTitle, disabled && styles.actionTitleDisabled]}>{title}</Text>

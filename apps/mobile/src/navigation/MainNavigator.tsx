@@ -1,4 +1,5 @@
 import React from 'react';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import HomeScreen from '@/screens/main/HomeScreen';
@@ -6,6 +7,9 @@ import PaymentsScreen from '@/screens/main/PaymentsScreen';
 import SavingsScreen from '@/screens/main/SavingsScreen';
 import InvestmentsScreen from '@/screens/main/InvestmentsScreen';
 import ProfileScreen from '@/screens/main/ProfileScreen';
+import QRScannerScreen from '@/screens/payment/QRScannerScreen';
+import PaymentConfirmationScreen from '@/screens/payment/PaymentConfirmationScreen';
+import PaymentSuccessScreen from '@/screens/payment/PaymentSuccessScreen';
 
 export type MainTabParamList = {
   Home: undefined;
@@ -15,9 +19,24 @@ export type MainTabParamList = {
   Profile: undefined;
 };
 
-const Tab = createBottomTabNavigator<MainTabParamList>();
+export type MainStackParamList = {
+  MainTabs: undefined;
+  QRScanner: undefined;
+  PaymentConfirmation: {
+    merchantUpiId: string;
+    merchantName: string;
+    amount: number | null;
+  };
+  PaymentSuccess: {
+    payment: any;
+    savingsAmount: number;
+  };
+};
 
-export default function MainNavigator() {
+const Tab = createBottomTabNavigator<MainTabParamList>();
+const Stack = createNativeStackNavigator<MainStackParamList>();
+
+function MainTabs() {
   return (
     <Tab.Navigator
       screenOptions={{
@@ -82,5 +101,38 @@ export default function MainNavigator() {
         }}
       />
     </Tab.Navigator>
+  );
+}
+
+export default function MainNavigator() {
+  return (
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="MainTabs" component={MainTabs} />
+      <Stack.Screen
+        name="QRScanner"
+        component={QRScannerScreen}
+        options={{
+          headerShown: true,
+          title: 'Scan QR Code',
+          presentation: 'fullScreenModal',
+        }}
+      />
+      <Stack.Screen
+        name="PaymentConfirmation"
+        component={PaymentConfirmationScreen}
+        options={{
+          headerShown: true,
+          title: 'Confirm Payment',
+        }}
+      />
+      <Stack.Screen
+        name="PaymentSuccess"
+        component={PaymentSuccessScreen}
+        options={{
+          headerShown: false,
+          gestureEnabled: false,
+        }}
+      />
+    </Stack.Navigator>
   );
 }
