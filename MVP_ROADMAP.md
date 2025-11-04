@@ -100,30 +100,105 @@ This roadmap outlines the development phases for building the MVP of the automat
 
 ---
 
-### Phase 2: KYC & Bank Account Linking (Week 5)
+### Phase 2: Progressive KYC & Bank Account Management (Week 5-6)
 
 #### Backend Development
-- [ ] **KYC service**
-  - PAN verification API
-  - Aadhaar verification API (DigiLocker integration)
-  - Document upload API
-  - KYC status tracking
-  - Bank account verification (penny drop)
+- [x] **KYC service (3-tiered progressive system)**
+  - [x] PAN verification API (Level 1 KYC)
+    - NSDL/Income Tax API integration (mock for MVP)
+    - Duplicate PAN check
+    - Name matching validation
+  - [x] Aadhaar verification API (Level 2 KYC - Part 1)
+    - OTP initiation endpoint
+    - OTP verification with DigiLocker integration (mock)
+    - Duplicate Aadhaar check
+  - [x] Liveness detection API (Level 2 KYC - Part 2)
+    - Selfie/video upload
+    - Blink, smile, head turn detection
+    - Face quality analysis
+    - Face matching with Aadhaar photo
+    - Integration with AWS Rekognition/Azure Face API (mock)
+  - [x] KYC level management
+    - Auto-progression: Level 0 → Level 1 → Level 2
+    - KYC status tracking (PENDING → IN_PROGRESS → APPROVED)
+  - [x] Document upload API (optional for edge cases)
+
+- [x] **Bank Accounts Management service**
+  - [x] Add/update/delete bank accounts (multiple accounts support)
+  - [x] Primary account selection
+  - [x] Bank account verification (penny drop)
+    - Razorpay/Cashfree integration (mock for MVP)
+  - [x] Account encryption (AES-256)
+  - [x] Masked account display
+
+- [x] **Onboarding Flow service**
+  - [x] Get onboarding status API
+    - Current KYC level
+    - Completion percentage
+    - Next steps
+    - Feature permissions
+  - [x] Check KYC requirement API (pre-validation)
+
+- [x] **KYC enforcement**
+  - [x] Payments Module: Check KYC level before payments >₹10,000
+  - [x] Investments Module: Require Level 2 KYC for investments
+  - [x] Savings Module: Require verified bank account for withdrawals
 
 #### Mobile Development
-- [ ] **KYC screens**
-  - KYC information screen
-  - PAN card input/upload
-  - Aadhaar verification
-  - Document upload UI
-  - Camera integration
-  - Bank account linking
-  - KYC status screen
+- [ ] **Progressive onboarding screens**
+  - [ ] Registration flow (mobile OTP + profile + PIN + biometric)
+  - [ ] Dashboard with KYC banner (skippable)
+  - [ ] KYC progress indicator (0/3, 1/3, 2/3, 3/3)
+
+- [ ] **Level 1 KYC screens**
+  - [ ] PAN input screen
+    - Format validation (ABCDE1234F)
+    - Name as per PAN input
+  - [ ] Real-time verification feedback
+  - [ ] Success screen with Level 1 features unlocked
+
+- [ ] **Level 2 KYC screens**
+  - [ ] Aadhaar input screen
+  - [ ] OTP verification screen (120s timer)
+  - [ ] Liveness detection screen
+    - Camera permissions
+    - Instructions: "Blink naturally", "Smile", "Turn head"
+    - Selfie/video capture
+    - Quality feedback (lighting, distance)
+  - [ ] Verification progress screen
+  - [ ] Success screen with investment access unlocked
+
+- [ ] **Bank accounts management screens**
+  - [ ] Add bank account screen
+    - Account number input
+    - IFSC code input (with validator)
+    - Account holder name
+    - Account type (Savings/Current)
+  - [ ] Bank accounts list screen
+    - Show all linked accounts
+    - Primary account badge
+    - Verification status indicators
+    - Set as primary option
+  - [ ] Bank verification screen (penny drop instructions)
+  - [ ] Bank selection during withdrawal
+
+- [ ] **KYC enforcement screens**
+  - [ ] Payment blocked screen (>₹10k without Level 1)
+    - Clear message with next steps
+    - "Verify PAN to unlock" CTA
+  - [ ] Investment blocked screen (without Level 2)
+    - Progress indicator showing pending steps
+    - Multi-step CTA (PAN → Aadhaar → Liveness)
 
 #### Testing
-- [ ] KYC flow testing
-- [ ] Document upload testing
-- [ ] Bank verification testing
+- [x] Unit tests for all KYC services
+- [x] Unit tests for bank accounts service
+- [x] Unit tests for onboarding service
+- [x] Integration tests for KYC enforcement
+- [ ] Mobile app KYC flow testing
+- [ ] Progressive KYC user journey testing
+- [ ] Bank verification E2E testing
+- [ ] Edge cases: Failed verifications, network errors
 
 ---
 
