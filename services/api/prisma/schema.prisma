@@ -29,6 +29,7 @@ model User {
   savingsWallet     SavingsWallet?
   transactions      Transaction[]
   investments       Investment[]
+  autoInvestRules   AutoInvestRule[]
   goals             Goal[]
   notifications     Notification[]
   sessions          Session[]
@@ -193,8 +194,9 @@ model InvestmentProduct {
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 
-  investments Investment[]
-  navHistory  NavHistory[]
+  investments     Investment[]
+  autoInvestRules AutoInvestRule[]
+  navHistory      NavHistory[]
 
   @@map("investment_products")
 }
@@ -267,7 +269,11 @@ model AutoInvestRule {
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
 
+  user    User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product InvestmentProduct @relation(fields: [productId], references: [id], onDelete: Restrict)
+
   @@index([userId])
+  @@index([productId])
   @@map("auto_invest_rules")
 }
 

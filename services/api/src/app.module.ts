@@ -6,7 +6,7 @@ import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { PaymentsModule } from './payments/payments.module';
 import { SavingsModule } from './savings/savings.module';
-// import { InvestmentsModule } from './investments/investments.module';
+import { InvestmentsModule } from './investments/investments.module';
 // import { AnalyticsModule } from './analytics/analytics.module';
 // import { NotificationsModule } from './notifications/notifications.module';
 import { AppController } from './app.controller';
@@ -32,8 +32,8 @@ import { AppService } from './app.service';
     UsersModule,
     PaymentsModule,
     SavingsModule,
+    InvestmentsModule,
     // TODO: Uncomment as modules are implemented
-    // InvestmentsModule,
     // AnalyticsModule,
     // NotificationsModule,
   ],
