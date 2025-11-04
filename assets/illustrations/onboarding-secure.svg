@@ -1,0 +1,14 @@
+<!-- Onboarding Illustration: Secure & Safe -->
+<svg width="240" height="240" viewBox="0 0 240 240" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Shield -->
+  <path d="M120 40 L180 60 L180 100 C180 140 150 170 120 190 C90 170 60 140 60 100 L60 60 Z" fill="#10B981" opacity="0.1"/>
+  <path d="M120 40 L180 60 L180 100 C180 140 150 170 120 190 C90 170 60 140 60 100 L60 60 Z" stroke="#10B981" stroke-width="3"/>
+
+  <!-- Checkmark -->
+  <path d="M95 110 L110 125 L145 90" stroke="#10B981" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Lock icon -->
+  <rect x="105" y="140" width="30" height="25" rx="4" fill="#3B82F6"/>
+  <path d="M110 140 L110 130 C110 125 115 120 120 120 C125 120 130 125 130 130 L130 140" stroke="#3B82F6" stroke-width="3" fill="none"/>
+  <circle cx="120" cy="153" r="3" fill="white"/>
+</svg>

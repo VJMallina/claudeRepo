@@ -1,0 +1,11 @@
+<!-- Empty State: No Goals -->
+<svg width="160" height="160" viewBox="0 0 160 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Flag on mountain -->
+  <path d="M30 130 L50 90 L70 100 L90 70 L110 85 L130 130 Z" fill="#E5E7EB"/>
+  <rect x="78" y="40" width="4" height="60" fill="#6B7280"/>
+  <path d="M82 40 L82 45 L100 50 L82 55 L82 40 Z" fill="#F59E0B"/>
+
+  <!-- Plus sign to add goal -->
+  <circle cx="110" cy="100" r="15" fill="#10B981" opacity="0.2"/>
+  <path d="M110 93 L110 107 M103 100 L117 100" stroke="#10B981" stroke-width="2" stroke-linecap="round"/>
+</svg>
