@@ -249,6 +249,42 @@ export interface Notification {
   createdAt: string;
 }
 
+// Transaction History Types (Unified view of all transactions)
+export type TransactionType = 'PAYMENT' | 'SAVINGS_CREDIT' | 'SAVINGS_DEBIT' | 'INVESTMENT_PURCHASE' | 'INVESTMENT_REDEMPTION';
+export type TransactionStatus = 'SUCCESS' | 'FAILED' | 'PENDING';
+
+export interface Transaction {
+  id: string;
+  type: TransactionType;
+  amount: number;
+  description: string;
+  status: TransactionStatus;
+  createdAt: string;
+  // Type-specific fields (optional based on type)
+  merchantName?: string;
+  upiTransactionId?: string;
+  fundName?: string;
+  units?: number;
+  savingsAmount?: number;
+  balanceAfter?: number;
+}
+
+export interface TransactionListResponse {
+  transactions: Transaction[];
+  total: number;
+  page: number;
+  limit: number;
+  hasMore: boolean;
+}
+
+export interface TransactionFilters {
+  type?: TransactionType | 'ALL';
+  status?: TransactionStatus | 'ALL';
+  startDate?: string;
+  endDate?: string;
+  search?: string;
+}
+
 // Error Types
 export interface ApiError {
   statusCode: number;
