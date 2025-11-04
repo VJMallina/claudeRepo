@@ -111,26 +111,56 @@ model SavingsWallet {
 
 // Transactions
 model Transaction {
-  id                String            @id @default(uuid())
-  userId            String
-  type              TransactionType
-  amount            Float
-  status            TransactionStatus @default(PENDING)
-  merchantName      String?
-  utr               String?           @unique
-  paymentGatewayId  String?
-  autoSaveAmount    Float             @default(0.0)
-  description       String?
-  createdAt         DateTime          @default(now())
-  updatedAt         DateTime          @updatedAt
+  id                  String            @id @default(uuid())
+  userId              String
+  type                TransactionType
+  amount              Float
+  status              TransactionStatus @default(PENDING)
+
+  // Payment details
+  merchantName        String?
+  merchantUpiId       String?
+  utr                 String?           @unique
+
+  // Razorpay integration
+  razorpayOrderId     String?           @unique
+  razorpayPaymentId   String?           @unique
+  razorpaySignature   String?
+  paymentMethod       PaymentMethod?
+
+  // UPI specific
+  vpa                 String?           // Virtual Payment Address
+  upiTransactionId    String?
+
+  // Auto-save
+  autoSaveAmount      Float             @default(0.0)
+  autoSaveApplied     Boolean           @default(false)
+
+  // Metadata
+  description         String?
+  failureReason       String?
+  metadata            Json?             // Additional payment metadata
+
+  createdAt           DateTime          @default(now())
+  updatedAt           DateTime          @updatedAt
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
   @@index([utr])
+  @@index([razorpayOrderId])
+  @@index([razorpayPaymentId])
   @@index([status])
   @@index([createdAt])
   @@map("transactions")
+}
+
+enum PaymentMethod {
+  UPI
+  CARD
+  NETBANKING
+  WALLET
+  EMI
 }
 
 enum TransactionType {

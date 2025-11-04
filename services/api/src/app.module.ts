@@ -4,7 +4,7 @@ import { ThrottlerModule } from '@nestjs/throttler';
 import { PrismaModule } from './prisma/prisma.module';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
-// import { PaymentsModule } from './payments/payments.module';
+import { PaymentsModule } from './payments/payments.module';
 // import { SavingsModule } from './savings/savings.module';
 // import { InvestmentsModule } from './investments/investments.module';
 // import { AnalyticsModule } from './analytics/analytics.module';
@@ -30,8 +30,8 @@ import { AppService } from './app.service';
     PrismaModule,
     AuthModule,
     UsersModule,
+    PaymentsModule,
     // TODO: Uncomment as modules are implemented
-    // PaymentsModule,
     // SavingsModule,
     // InvestmentsModule,
     // AnalyticsModule,
