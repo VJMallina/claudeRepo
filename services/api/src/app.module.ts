@@ -7,8 +7,9 @@ import { UsersModule } from './users/users.module';
 import { PaymentsModule } from './payments/payments.module';
 import { SavingsModule } from './savings/savings.module';
 import { InvestmentsModule } from './investments/investments.module';
-// import { AnalyticsModule } from './analytics/analytics.module';
-// import { NotificationsModule } from './notifications/notifications.module';
+import { KycModule } from './kyc/kyc.module';
+import { AnalyticsModule } from './analytics/analytics.module';
+import { NotificationsModule } from './notifications/notifications.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
@@ -33,9 +34,9 @@ import { AppService } from './app.service';
     PaymentsModule,
     SavingsModule,
     InvestmentsModule,
-    // TODO: Uncomment as modules are implemented
-    // AnalyticsModule,
-    // NotificationsModule,
+    KycModule,
+    AnalyticsModule,
+    NotificationsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
