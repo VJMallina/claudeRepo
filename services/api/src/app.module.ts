@@ -6,9 +6,12 @@ import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { PaymentsModule } from './payments/payments.module';
 import { SavingsModule } from './savings/savings.module';
-// import { InvestmentsModule } from './investments/investments.module';
-// import { AnalyticsModule } from './analytics/analytics.module';
-// import { NotificationsModule } from './notifications/notifications.module';
+import { InvestmentsModule } from './investments/investments.module';
+import { KycModule } from './kyc/kyc.module';
+import { AnalyticsModule } from './analytics/analytics.module';
+import { NotificationsModule } from './notifications/notifications.module';
+import { BankAccountsModule } from './bank-accounts/bank-accounts.module';
+import { OnboardingModule } from './onboarding/onboarding.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
@@ -32,10 +35,12 @@ import { AppService } from './app.service';
     UsersModule,
     PaymentsModule,
     SavingsModule,
-    // TODO: Uncomment as modules are implemented
-    // InvestmentsModule,
-    // AnalyticsModule,
-    // NotificationsModule,
+    InvestmentsModule,
+    KycModule,
+    AnalyticsModule,
+    NotificationsModule,
+    BankAccountsModule,
+    OnboardingModule,
   ],
   controllers: [AppController],
   providers: [AppService],

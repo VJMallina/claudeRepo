@@ -152,7 +152,7 @@ export class SavingsService {
   async withdrawSavings(
     userId: string,
     withdrawDto: WithdrawSavingsDto,
-  ): Promise<{ success: boolean; message: string; newBalance: number }> {
+  ): Promise<{ success: boolean; message: string; newBalance: number; bankAccountId?: string }> {
     try {
       this.logger.log(`Processing withdrawal for user: ${userId}, amount: ${withdrawDto.amount}`);
 
@@ -171,6 +171,36 @@ export class SavingsService {
           throw new BadRequestException('Insufficient balance in savings wallet');
         }
 
+        // Validate bank account for withdrawal
+        let selectedBankAccount;
+        if (withdrawDto.bankAccountId) {
+          // Use specified bank account
+          selectedBankAccount = await prisma.bankAccount.findFirst({
+            where: { id: withdrawDto.bankAccountId, userId },
+          });
+
+          if (!selectedBankAccount) {
+            throw new BadRequestException('Bank account not found');
+          }
+        } else {
+          // Use primary bank account
+          selectedBankAccount = await prisma.bankAccount.findFirst({
+            where: { userId, isPrimary: true },
+          });
+
+          if (!selectedBankAccount) {
+            throw new BadRequestException(
+              'No bank account found. Please add a bank account first.',
+            );
+          }
+        }
+
+        if (!selectedBankAccount.isVerified) {
+          throw new BadRequestException(
+            'Bank account is not verified. Please verify your bank account before withdrawing.',
+          );
+        }
+
         // Update wallet
         const updatedWallet = await prisma.savingsWallet.update({
           where: { userId },
@@ -187,16 +217,19 @@ export class SavingsService {
             type: 'WITHDRAWAL',
             amount: withdrawDto.amount,
             status: 'SUCCESS',
-            description: withdrawDto.reason || 'Withdrawal from savings',
+            description: withdrawDto.reason || `Withdrawal to ${selectedBankAccount.accountHolderName} (${selectedBankAccount.ifscCode})`,
           },
         });
 
-        this.logger.log(`Withdrawal successful: ${withdrawDto.amount}, New balance: ${updatedWallet.balance}`);
+        this.logger.log(
+          `Withdrawal successful: ${withdrawDto.amount}, New balance: ${updatedWallet.balance}, Bank: ${selectedBankAccount.ifscCode}`
+        );
 
         return {
           success: true,
-          message: 'Withdrawal successful',
+          message: `Withdrawal of ₹${withdrawDto.amount} initiated to ${selectedBankAccount.accountHolderName} (${selectedBankAccount.ifscCode})`,
           newBalance: updatedWallet.balance,
+          bankAccountId: selectedBankAccount.id,
         };
       });
     } catch (error) {

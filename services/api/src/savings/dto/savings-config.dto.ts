@@ -57,6 +57,14 @@ export class WithdrawSavingsDto {
   amount: number;
 
   @ApiPropertyOptional({
+    example: 'bank-account-uuid',
+    description: 'Bank account ID to withdraw to. If not provided, primary bank account will be used.',
+  })
+  @IsString()
+  @IsOptional()
+  bankAccountId?: string;
+
+  @ApiPropertyOptional({
     example: 'Emergency expense',
     description: 'Reason for withdrawal',
   })
