@@ -215,16 +215,107 @@ An intelligent mobile app that:
 - **Fallback:** PIN if biometric fails
 - **Storage:** Biometric template never leaves device
 
-#### 1.5 KYC Process
-- **Level 1 (Basic):** PAN verification
-  - Validate with NSDL/Income Tax API
-  - Required for transactions up to ₹50,000/month
-- **Level 2 (Full):** PAN + Aadhaar + Bank
-  - Aadhaar eKYC via DigiLocker (preferred) or manual
-  - Live photo verification with face matching
-  - Bank account penny drop verification
-  - Required for investments
-- **SLA:** KYC approval within 24-48 hours
+#### 1.5 Progressive KYC Process
+
+**Progressive KYC** allows users to access features incrementally as they complete verification steps. This reduces onboarding friction while ensuring compliance.
+
+##### KYC Levels & Feature Access:
+
+| Level | Verification Required | Features Unlocked | Transaction Limits |
+|-------|----------------------|-------------------|-------------------|
+| **Level 0** | None (Basic registration) | • Payments up to ₹10,000<br>• Savings wallet<br>• View investment products | Max ₹10,000/transaction |
+| **Level 1** | PAN card verification | • Unlimited payments<br>• Higher transaction limits<br>• Premium features | Unlimited |
+| **Level 2** | PAN + Aadhaar + Liveness + Bank | • Investment purchases<br>• Withdrawals<br>• Full platform access | Unlimited |
+
+##### Onboarding Flow:
+
+1. **Initial Registration** (Level 0)
+   - Mobile OTP verification
+   - Profile creation (Name, Email, DOB)
+   - PIN setup (4-6 digits)
+   - Biometric enrollment (optional)
+   - → **User lands on Dashboard**
+
+2. **KYC Prompt Banner** (Skippable)
+   - "Complete KYC to unlock all features"
+   - Shows completion progress: 0/3 steps
+   - Can skip and do later
+
+3. **Triggered KYC Enforcement**
+   - **Payment > ₹10,000**: Force Level 1 KYC (PAN verification)
+   - **Investment attempt**: Force Level 2 KYC (Full verification)
+   - **Withdrawal attempt**: Requires verified bank account
+
+##### Level 1 KYC: PAN Verification
+- **Input**: PAN number (ABCDE1234F format), Name as per PAN
+- **Process**:
+  - Real-time validation with NSDL/Income Tax API
+  - Duplicate PAN check across platform
+  - Name matching
+- **Duration**: Instant (< 5 seconds)
+- **Outcome**: KYC Level upgraded to 1
+
+##### Level 2 KYC: Full Verification
+- **Step 1: Aadhaar Verification**
+  - Aadhaar number input (12 digits)
+  - OTP sent to Aadhaar-linked mobile
+  - OTP verification (120 seconds validity)
+  - Integration: DigiLocker API
+  - Duplicate Aadhaar check
+
+- **Step 2: Liveness Detection**
+  - Selfie capture or short video (3-5 seconds)
+  - Liveness checks:
+    - ✓ Blink detection
+    - ✓ Smile detection
+    - ✓ Head turn detection (if video)
+    - ✓ Quality score (lighting, blur, face visibility)
+  - Face matching with Aadhaar photo
+  - Confidence score: Must be > 70%
+  - Integration: AWS Rekognition / Azure Face API / FaceIO
+
+- **Step 3: Bank Account Verification**
+  - Bank account details input
+  - IFSC code validation
+  - Account holder name (must match PAN name)
+  - Penny drop verification (₹1 test deposit)
+  - Integration: Razorpay/Cashfree Bank Verification API
+
+- **Duration**: 5-10 minutes for user input, instant API verification
+- **Outcome**: KYC Level upgraded to 2, investments unlocked
+
+##### Bank Account Management:
+- Users can add multiple bank accounts
+- First verified account becomes primary
+- Can set any verified account as primary for withdrawals
+- Bank selection during withdrawal (defaults to primary)
+- All accounts must pass penny drop verification
+
+##### Security & Compliance:
+- PAN number stored in plain text (required for tax reporting)
+- Aadhaar number encrypted (AES-256)
+- Bank account number encrypted (AES-256)
+- Masked display in UI (e.g., ****1234)
+- Liveness photos stored securely (S3 with encryption)
+- Auto-KYC status progression: PENDING → IN_PROGRESS → APPROVED
+- Manual admin review for edge cases
+
+##### Error Handling:
+- Clear error messages with next steps
+- Example: "KYC Level 1 required for payments above ₹10,000. Verify your PAN card to unlock."
+- Progressive disclosure: Don't overwhelm users with all steps upfront
+- Allow partial completion and resume later
+
+##### API Integrations Required:
+- **PAN**: NSDL PAN Verification API / Income Tax Department API
+- **Aadhaar**: DigiLocker eKYC API (Government of India)
+- **Liveness**: AWS Rekognition / Azure Face API / FaceIO
+- **Bank Verification**: Razorpay Fund Account Validation / Cashfree Penny Drop
+
+##### SLA:
+- Real-time verification for PAN and Aadhaar (< 10 seconds)
+- Bank verification: 24-48 hours (penny drop settlement time)
+- Liveness detection: Instant (< 5 seconds)
 
 ---
 
@@ -259,12 +350,22 @@ An intelligent mobile app that:
   5. Send notification
 - **Execution Time:** < 5 seconds from payment success
 
-#### 2.4 Transaction Limits
-- **Per Transaction:** ₹1 - ₹100,000
-- **Daily Limit:** ₹200,000 (adjustable in settings)
-- **Monthly Limit:** Based on KYC level
-  - Basic KYC: ₹50,000
-  - Full KYC: No limit
+#### 2.4 Transaction Limits (Based on KYC Level)
+- **KYC Level 0 (No KYC):**
+  - Per Transaction: ₹1 - ₹10,000
+  - Daily Limit: ₹50,000
+  - Monthly Limit: ₹200,000
+
+- **KYC Level 1 (PAN Verified):**
+  - Per Transaction: ₹1 - ₹100,000
+  - Daily Limit: ₹500,000
+  - Monthly Limit: Unlimited
+
+- **KYC Level 2 (Full KYC):**
+  - Per Transaction: Unlimited
+  - Daily Limit: Unlimited
+  - Monthly Limit: Unlimited
+  - Additional: Investment access enabled
 
 ---
 
@@ -276,7 +377,7 @@ An intelligent mobile app that:
   - Manual deposits (UPI/Net banking)
   - Investment redemptions
 - **Debit Sources:**
-  - Withdrawals to bank account
+  - Withdrawals to bank account (user selectable from linked accounts)
   - Investment purchases
 - **Balance Calculation:** Real-time, atomic updates
 
@@ -291,11 +392,20 @@ An intelligent mobile app that:
   - Frequency: Every transaction / Weekly / Monthly
 
 #### 3.3 Withdrawals
+- **Requirements:**
+  - At least one verified bank account (Level 2 KYC required)
+  - Sufficient wallet balance
 - **Process:**
-  - Select bank account
-  - Enter amount (₹1 - wallet balance)
-  - Authenticate with PIN
-  - NEFT/IMPS transfer initiated
+  1. Select bank account (defaults to primary account)
+  2. Enter amount (₹1 - wallet balance)
+  3. Add withdrawal reason (optional)
+  4. Authenticate with PIN
+  5. NEFT/IMPS transfer initiated
+- **Bank Account Selection:**
+  - User can have multiple verified bank accounts
+  - Primary account is default selection
+  - Can choose any verified account for withdrawal
+  - Cannot withdraw to unverified accounts
 - **Processing Time:** 1-2 business days
 - **Charges:** Free for first 3/month, ₹5 thereafter
 
