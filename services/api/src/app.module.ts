@@ -4,11 +4,11 @@ import { ThrottlerModule } from '@nestjs/throttler';
 import { PrismaModule } from './prisma/prisma.module';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
-import { PaymentsModule } from './payments/payments.module';
-import { SavingsModule } from './savings/savings.module';
-import { InvestmentsModule } from './investments/investments.module';
-import { AnalyticsModule } from './analytics/analytics.module';
-import { NotificationsModule } from './notifications/notifications.module';
+// import { PaymentsModule } from './payments/payments.module';
+// import { SavingsModule } from './savings/savings.module';
+// import { InvestmentsModule } from './investments/investments.module';
+// import { AnalyticsModule } from './analytics/analytics.module';
+// import { NotificationsModule } from './notifications/notifications.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
@@ -30,11 +30,12 @@ import { AppService } from './app.service';
     PrismaModule,
     AuthModule,
     UsersModule,
-    PaymentsModule,
-    SavingsModule,
-    InvestmentsModule,
-    AnalyticsModule,
-    NotificationsModule,
+    // TODO: Uncomment as modules are implemented
+    // PaymentsModule,
+    // SavingsModule,
+    // InvestmentsModule,
+    // AnalyticsModule,
+    // NotificationsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
