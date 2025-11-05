@@ -1,0 +1,381 @@
+/* Modern App Carousel Styles */
+.app-carousel-wrapper {
+    width: 100%;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 60px 20px;
+    position: relative;
+}
+
+.app-carousel {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 30px;
+    padding: 40px 0;
+    position: relative;
+    perspective: 1000px;
+}
+
+/* Carousel Card */
+.carousel-card {
+    position: absolute;
+    width: 320px;
+    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    opacity: 0;
+    transform: translateX(0) scale(0.85);
+    pointer-events: none;
+}
+
+/* Active (Center) Card */
+.carousel-card.active {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+    z-index: 3;
+    pointer-events: all;
+}
+
+/* Left Card */
+.carousel-card.left {
+    opacity: 0.6;
+    transform: translateX(-380px) scale(0.85);
+    z-index: 1;
+    pointer-events: all;
+}
+
+/* Right Card */
+.carousel-card.right {
+    opacity: 0.6;
+    transform: translateX(380px) scale(0.85);
+    z-index: 1;
+    pointer-events: all;
+}
+
+/* Hidden Cards */
+.carousel-card.hidden {
+    opacity: 0;
+    transform: translateX(0) scale(0.7);
+    z-index: 0;
+    pointer-events: none;
+}
+
+.carousel-card:hover {
+    transform: translateX(0) scale(1.02);
+}
+
+.carousel-card.active:hover {
+    transform: translateX(0) scale(1.05);
+}
+
+/* Card Background */
+.card-background {
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    transition: all 0.4s ease;
+    position: relative;
+    aspect-ratio: 9/16;
+}
+
+.carousel-card.active .card-background {
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.4);
+}
+
+/* Screen Mockup */
+.screen-mockup {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    color: white;
+}
+
+.mockup-header {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    font-weight: 500;
+    opacity: 0.9;
+    margin-bottom: 40px;
+}
+
+.mockup-content-preview {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.preview-text {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    opacity: 0.95;
+}
+
+.preview-stat {
+    font-size: 48px;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.preview-label {
+    font-size: 14px;
+    opacity: 0.8;
+}
+
+.preview-icon {
+    font-size: 64px;
+    margin-bottom: 20px;
+}
+
+.preview-chart {
+    font-size: 80px;
+}
+
+.preview-badge {
+    display: inline-block;
+    background: rgba(255, 255, 255, 0.25);
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 14px;
+    margin-top: 10px;
+}
+
+.preview-buttons {
+    display: flex;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.mini-btn {
+    background: rgba(255, 255, 255, 0.25);
+    padding: 10px 20px;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.preview-progress {
+    width: 80%;
+    height: 8px;
+    background: rgba(255, 255, 255, 0.25);
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 20px 0 10px;
+}
+
+.progress-line {
+    height: 100%;
+    background: white;
+    border-radius: 10px;
+    transition: width 0.3s ease;
+}
+
+/* Card Info */
+.card-info {
+    text-align: center;
+    padding: 24px 20px;
+}
+
+.card-category {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: white;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 12px;
+}
+
+.card-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--dark);
+    margin-bottom: 8px;
+}
+
+.card-description {
+    font-size: 14px;
+    color: var(--gray);
+    line-height: 1.5;
+}
+
+/* Carousel Controls */
+.carousel-controls {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    transform: translateY(-50%);
+    display: flex;
+    justify-content: space-between;
+    pointer-events: none;
+    z-index: 10;
+    padding: 0 20px;
+}
+
+.carousel-arrow {
+    pointer-events: all;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: white;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    transition: all 0.3s ease;
+    color: var(--primary-color);
+}
+
+.carousel-arrow:hover {
+    background: var(--primary-color);
+    color: white;
+    transform: scale(1.1);
+    box-shadow: 0 6px 30px rgba(99, 102, 241, 0.4);
+}
+
+.carousel-arrow:active {
+    transform: scale(0.95);
+}
+
+/* Pagination Dots */
+.carousel-pagination {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 40px;
+}
+
+.pagination-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #d1d5db;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.pagination-dot:hover {
+    background: #9ca3af;
+    transform: scale(1.2);
+}
+
+.pagination-dot.active {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    width: 32px;
+    border-radius: 5px;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .carousel-card {
+        width: 280px;
+    }
+
+    .carousel-card.left {
+        transform: translateX(-330px) scale(0.85);
+    }
+
+    .carousel-card.right {
+        transform: translateX(330px) scale(0.85);
+    }
+
+    .preview-stat {
+        font-size: 40px;
+    }
+
+    .card-title {
+        font-size: 20px;
+    }
+}
+
+@media (max-width: 768px) {
+    .app-carousel-wrapper {
+        padding: 40px 10px;
+    }
+
+    .carousel-card {
+        width: 260px;
+    }
+
+    /* Hide side cards on mobile, show only center */
+    .carousel-card.left,
+    .carousel-card.right {
+        opacity: 0;
+        transform: translateX(0) scale(0.7);
+    }
+
+    .carousel-card.active {
+        transform: translateX(0) scale(1);
+    }
+
+    .carousel-controls {
+        padding: 0 10px;
+    }
+
+    .carousel-arrow {
+        width: 40px;
+        height: 40px;
+    }
+
+    .preview-stat {
+        font-size: 36px;
+    }
+
+    .card-title {
+        font-size: 18px;
+    }
+
+    .card-description {
+        font-size: 13px;
+    }
+}
+
+@media (max-width: 480px) {
+    .carousel-card {
+        width: 240px;
+    }
+
+    .card-background {
+        border-radius: 20px;
+    }
+
+    .screen-mockup {
+        padding: 16px;
+    }
+
+    .preview-stat {
+        font-size: 32px;
+    }
+
+    .preview-icon {
+        font-size: 48px;
+    }
+
+    .preview-chart {
+        font-size: 60px;
+    }
+
+    .card-title {
+        font-size: 16px;
+    }
+
+    .card-info {
+        padding: 16px;
+    }
+}
+
+/* Remove old phone mockup styles if they conflict */
+.phone-mockup {
+    display: none;
+}

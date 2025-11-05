@@ -6,6 +6,7 @@
     <meta name="description" content="PiggySave - Smart savings and investment platform that helps you save automatically and invest intelligently">
     <title>PiggySave - Save Smart, Invest Smarter</title>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/carousel.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -89,196 +90,169 @@
                     </div>
                 </div>
                 <div class="hero-image">
-                    <div class="phone-mockup">
-                        <div class="phone-screen">
-                            <div class="carousel-container">
-                                <!-- Carousel Slides -->
-                                <div class="carousel-track">
-                                    <!-- Slide 1: Home Dashboard -->
-                                    <div class="carousel-slide active">
-                                        <div class="screen-header">
-                                            <span class="screen-time">9:41</span>
-                                            <div class="status-icons">
-                                                <span>📶</span><span>📡</span><span>🔋</span>
-                                            </div>
+                    <!-- Modern Carousel Container -->
+                    <div class="app-carousel-wrapper">
+                        <div class="app-carousel">
+                            <!-- Card 1: Home Dashboard -->
+                            <div class="carousel-card" data-index="0">
+                                <div class="card-background" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                                    <div class="screen-mockup">
+                                        <div class="mockup-header">
+                                            <span>9:41</span>
+                                            <span>📶 🔋</span>
                                         </div>
-                                        <div class="screen-content">
-                                            <h4 class="screen-greeting">Hello, User!</h4>
-                                            <p class="screen-subtitle">Let's grow your wealth today</p>
-                                            <div class="kyc-badge">
-                                                <span class="badge-icon">✓</span>
-                                                <span>Level 2 - Complete</span>
-                                            </div>
-                                            <div class="stats-cards">
-                                                <div class="stat-card">
-                                                    <div class="stat-icon">💰</div>
-                                                    <p>Total Saved</p>
-                                                    <h3>₹1,24,560</h3>
-                                                    <span class="change positive">+15.2%</span>
-                                                </div>
-                                                <div class="stat-card">
-                                                    <div class="stat-icon">📈</div>
-                                                    <p>Total Invested</p>
-                                                    <h3>₹2,45,880</h3>
-                                                    <span class="change positive">+22.4%</span>
-                                                </div>
-                                            </div>
+                                        <div class="mockup-content-preview">
+                                            <div class="preview-text">Hello, User!</div>
+                                            <div class="preview-stat">₹1,24,560</div>
+                                            <div class="preview-label">Total Savings</div>
                                         </div>
-                                        <div class="screen-label">Home Dashboard</div>
-                                    </div>
-
-                                    <!-- Slide 2: Savings Wallet -->
-                                    <div class="carousel-slide">
-                                        <div class="screen-header">
-                                            <span class="screen-time">9:41</span>
-                                            <div class="status-icons">
-                                                <span>📶</span><span>📡</span><span>🔋</span>
-                                            </div>
-                                        </div>
-                                        <div class="screen-content">
-                                            <h4 class="screen-greeting">Savings Wallet</h4>
-                                            <div class="wallet-balance-card">
-                                                <p>Available Balance</p>
-                                                <h2>₹1,24,560</h2>
-                                                <div class="wallet-actions">
-                                                    <button class="action-btn">➕ Add</button>
-                                                    <button class="action-btn">💸 Withdraw</button>
-                                                </div>
-                                            </div>
-                                            <div class="quick-stats">
-                                                <div class="quick-stat">
-                                                    <span>This Month</span>
-                                                    <strong>₹12,450</strong>
-                                                </div>
-                                                <div class="quick-stat">
-                                                    <span>Auto-Saved</span>
-                                                    <strong>₹8,230</strong>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="screen-label">Savings Wallet</div>
-                                    </div>
-
-                                    <!-- Slide 3: Investment Portfolio -->
-                                    <div class="carousel-slide">
-                                        <div class="screen-header">
-                                            <span class="screen-time">9:41</span>
-                                            <div class="status-icons">
-                                                <span>📶</span><span>📡</span><span>🔋</span>
-                                            </div>
-                                        </div>
-                                        <div class="screen-content">
-                                            <h4 class="screen-greeting">Investment Portfolio</h4>
-                                            <div class="portfolio-card">
-                                                <p>Total Portfolio Value</p>
-                                                <h2>₹2,45,880</h2>
-                                                <div class="returns-badge positive">
-                                                    <span>↗</span> +₹45,880 (22.4%)
-                                                </div>
-                                            </div>
-                                            <div class="investment-list">
-                                                <div class="investment-item">
-                                                    <span class="fund-name">Equity Fund A</span>
-                                                    <span class="fund-value">₹1,24,560</span>
-                                                </div>
-                                                <div class="investment-item">
-                                                    <span class="fund-name">Debt Fund B</span>
-                                                    <span class="fund-value">₹78,320</span>
-                                                </div>
-                                                <div class="investment-item">
-                                                    <span class="fund-name">Hybrid Fund C</span>
-                                                    <span class="fund-value">₹43,000</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="screen-label">Portfolio</div>
-                                    </div>
-
-                                    <!-- Slide 4: UPI Payment -->
-                                    <div class="carousel-slide">
-                                        <div class="screen-header">
-                                            <span class="screen-time">9:41</span>
-                                            <div class="status-icons">
-                                                <span>📶</span><span>📡</span><span>🔋</span>
-                                            </div>
-                                        </div>
-                                        <div class="screen-content">
-                                            <h4 class="screen-greeting">UPI Payment</h4>
-                                            <div class="payment-card">
-                                                <div class="qr-placeholder">📷</div>
-                                                <p>Scan QR Code</p>
-                                            </div>
-                                            <div class="payment-options">
-                                                <button class="payment-option-btn">
-                                                    <span>💳</span> Pay via UPI ID
-                                                </button>
-                                                <button class="payment-option-btn">
-                                                    <span>📱</span> Pay Contact
-                                                </button>
-                                            </div>
-                                            <div class="auto-save-indicator">
-                                                <span>⚡</span> Auto-save 10% on payment
-                                            </div>
-                                        </div>
-                                        <div class="screen-label">UPI Payment</div>
-                                    </div>
-
-                                    <!-- Slide 5: Savings Goals -->
-                                    <div class="carousel-slide">
-                                        <div class="screen-header">
-                                            <span class="screen-time">9:41</span>
-                                            <div class="status-icons">
-                                                <span>📶</span><span>📡</span><span>🔋</span>
-                                            </div>
-                                        </div>
-                                        <div class="screen-content">
-                                            <h4 class="screen-greeting">Savings Goals</h4>
-                                            <div class="goal-card">
-                                                <div class="goal-header">
-                                                    <span>🏠 Dream Home</span>
-                                                    <span class="goal-amount">₹50,00,000</span>
-                                                </div>
-                                                <div class="progress-container">
-                                                    <div class="progress-bar">
-                                                        <div class="progress-fill" style="width: 45%"></div>
-                                                    </div>
-                                                    <span class="progress-text">45% Complete</span>
-                                                </div>
-                                                <div class="goal-stats">
-                                                    <div><span>Saved:</span> <strong>₹22,50,000</strong></div>
-                                                    <div><span>Remaining:</span> <strong>₹27,50,000</strong></div>
-                                                </div>
-                                            </div>
-                                            <div class="other-goals">
-                                                <div class="mini-goal">
-                                                    <span>🚗 Car</span>
-                                                    <span>65%</span>
-                                                </div>
-                                                <div class="mini-goal">
-                                                    <span>✈️ Vacation</span>
-                                                    <span>80%</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="screen-label">Savings Goals</div>
                                     </div>
                                 </div>
-
-                                <!-- Carousel Navigation -->
-                                <div class="carousel-nav">
-                                    <button class="carousel-btn prev" onclick="moveCarousel(-1)">‹</button>
-                                    <button class="carousel-btn next" onclick="moveCarousel(1)">›</button>
-                                </div>
-
-                                <!-- Carousel Indicators -->
-                                <div class="carousel-indicators">
-                                    <span class="indicator active" onclick="goToSlide(0)"></span>
-                                    <span class="indicator" onclick="goToSlide(1)"></span>
-                                    <span class="indicator" onclick="goToSlide(2)"></span>
-                                    <span class="indicator" onclick="goToSlide(3)"></span>
-                                    <span class="indicator" onclick="goToSlide(4)"></span>
+                                <div class="card-info">
+                                    <span class="card-category">Dashboard</span>
+                                    <h3 class="card-title">Home Overview</h3>
+                                    <p class="card-description">Track your savings and investments at a glance</p>
                                 </div>
                             </div>
+
+                            <!-- Card 2: Savings Wallet -->
+                            <div class="carousel-card active" data-index="1">
+                                <div class="card-background" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">
+                                    <div class="screen-mockup">
+                                        <div class="mockup-header">
+                                            <span>9:41</span>
+                                            <span>📶 🔋</span>
+                                        </div>
+                                        <div class="mockup-content-preview">
+                                            <div class="preview-text">Savings Wallet</div>
+                                            <div class="preview-stat">₹1,24,560</div>
+                                            <div class="preview-buttons">
+                                                <span class="mini-btn">➕ Add</span>
+                                                <span class="mini-btn">💸 Withdraw</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-info">
+                                    <span class="card-category">Savings</span>
+                                    <h3 class="card-title">Savings Wallet</h3>
+                                    <p class="card-description">Manage your savings balance and transactions</p>
+                                </div>
+                            </div>
+
+                            <!-- Card 3: Investment Portfolio -->
+                            <div class="carousel-card" data-index="2">
+                                <div class="card-background" style="background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);">
+                                    <div class="screen-mockup">
+                                        <div class="mockup-header">
+                                            <span>9:41</span>
+                                            <span>📶 🔋</span>
+                                        </div>
+                                        <div class="mockup-content-preview">
+                                            <div class="preview-text">Portfolio Value</div>
+                                            <div class="preview-stat">₹2,45,880</div>
+                                            <div class="preview-badge">↗ +22.4%</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-info">
+                                    <span class="card-category">Investments</span>
+                                    <h3 class="card-title">Investment Portfolio</h3>
+                                    <p class="card-description">Track your investment performance and returns</p>
+                                </div>
+                            </div>
+
+                            <!-- Card 4: UPI Payment -->
+                            <div class="carousel-card" data-index="3">
+                                <div class="card-background" style="background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);">
+                                    <div class="screen-mockup">
+                                        <div class="mockup-header">
+                                            <span>9:41</span>
+                                            <span>📶 🔋</span>
+                                        </div>
+                                        <div class="mockup-content-preview">
+                                            <div class="preview-icon">📷</div>
+                                            <div class="preview-text">UPI Payment</div>
+                                            <div class="preview-label">Scan QR or Pay via UPI ID</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-info">
+                                    <span class="card-category">Payments</span>
+                                    <h3 class="card-title">UPI Transactions</h3>
+                                    <p class="card-description">Make instant UPI payments with auto-save</p>
+                                </div>
+                            </div>
+
+                            <!-- Card 5: Savings Goals -->
+                            <div class="carousel-card" data-index="4">
+                                <div class="card-background" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);">
+                                    <div class="screen-mockup">
+                                        <div class="mockup-header">
+                                            <span>9:41</span>
+                                            <span>📶 🔋</span>
+                                        </div>
+                                        <div class="mockup-content-preview">
+                                            <div class="preview-text">🏠 Dream Home</div>
+                                            <div class="preview-progress">
+                                                <div class="progress-line" style="width: 45%"></div>
+                                            </div>
+                                            <div class="preview-label">45% Complete</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-info">
+                                    <span class="card-category">Goals</span>
+                                    <h3 class="card-title">Savings Goals</h3>
+                                    <p class="card-description">Set and track your financial milestones</p>
+                                </div>
+                            </div>
+
+                            <!-- Card 6: Analytics -->
+                            <div class="carousel-card" data-index="5">
+                                <div class="card-background" style="background: linear-gradient(135deg, #ec4899 0%, #be185d 100%);">
+                                    <div class="screen-mockup">
+                                        <div class="mockup-header">
+                                            <span>9:41</span>
+                                            <span>📶 🔋</span>
+                                        </div>
+                                        <div class="mockup-content-preview">
+                                            <div class="preview-text">Analytics</div>
+                                            <div class="preview-chart">📊</div>
+                                            <div class="preview-label">Savings Trends & Insights</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-info">
+                                    <span class="card-category">Analytics</span>
+                                    <h3 class="card-title">Financial Insights</h3>
+                                    <p class="card-description">Detailed analytics of your financial journey</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Carousel Controls -->
+                        <div class="carousel-controls">
+                            <button class="carousel-arrow prev-arrow" onclick="moveAppCarousel(-1)" aria-label="Previous">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M15 18l-6-6 6-6"/>
+                                </svg>
+                            </button>
+                            <button class="carousel-arrow next-arrow" onclick="moveAppCarousel(1)" aria-label="Next">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M9 18l6-6-6-6"/>
+                                </svg>
+                            </button>
+                        </div>
+
+                        <!-- Pagination Dots -->
+                        <div class="carousel-pagination">
+                            <span class="pagination-dot" onclick="goToAppSlide(0)"></span>
+                            <span class="pagination-dot active" onclick="goToAppSlide(1)"></span>
+                            <span class="pagination-dot" onclick="goToAppSlide(2)"></span>
+                            <span class="pagination-dot" onclick="goToAppSlide(3)"></span>
+                            <span class="pagination-dot" onclick="goToAppSlide(4)"></span>
+                            <span class="pagination-dot" onclick="goToAppSlide(5)"></span>
                         </div>
                     </div>
                 </div>
@@ -1103,5 +1077,6 @@
     </footer>
 
     <script src="js/script.js"></script>
+    <script src="js/carousel.js"></script>
 </body>
 </html>
