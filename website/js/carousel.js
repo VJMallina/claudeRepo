@@ -1,197 +1,158 @@
-// App Carousel Functionality
-let currentAppSlide = 1; // Start with index 1 (Savings Wallet as center)
-let appAutoPlayInterval;
-const totalAppSlides = 6;
+// Simple Carousel - Guaranteed to Work
+let currentSlide = 1; // Start with card 1 (index 1) as active
+let autoplayInterval;
+const TOTAL_SLIDES = 6;
+const AUTOPLAY_DELAY = 4000; // 4 seconds
 
-// Initialize carousel on page load
-document.addEventListener('DOMContentLoaded', function() {
-    initializeAppCarousel();
-    startAppAutoPlay();
-
-    // Pause autoplay when user hovers over carousel
-    const carouselWrapper = document.querySelector('.app-carousel-wrapper');
-    if (carouselWrapper) {
-        carouselWrapper.addEventListener('mouseenter', () => {
-            clearInterval(appAutoPlayInterval);
-        });
-
-        carouselWrapper.addEventListener('mouseleave', () => {
-            startAppAutoPlay();
-        });
-    }
-
-    // Add keyboard navigation
-    document.addEventListener('keydown', (e) => {
-        const carouselInView = isElementInViewport(document.querySelector('.app-carousel-wrapper'));
-        if (carouselInView) {
-            if (e.key === 'ArrowLeft') {
-                moveAppCarousel(-1);
-            } else if (e.key === 'ArrowRight') {
-                moveAppCarousel(1);
-            }
-        }
-    });
-
-    // Add touch swipe support
-    addTouchSupport();
-});
-
-// Initialize carousel with proper classes
-function initializeAppCarousel() {
+// Main function to update carousel
+function updateCarousel() {
     const cards = document.querySelectorAll('.carousel-card');
     const dots = document.querySelectorAll('.pagination-dot');
 
-    cards.forEach((card, index) => {
+    if (!cards.length) return;
+
+    // Update cards
+    cards.forEach((card, idx) => {
+        const cardIndex = parseInt(card.getAttribute('data-index'));
         card.classList.remove('active', 'left', 'right', 'hidden');
 
-        const dataIndex = parseInt(card.getAttribute('data-index'));
-        if (dataIndex === currentAppSlide) {
+        if (cardIndex === currentSlide) {
             card.classList.add('active');
-        } else if (dataIndex === (currentAppSlide - 1 + totalAppSlides) % totalAppSlides) {
+        } else if (cardIndex === (currentSlide - 1 + TOTAL_SLIDES) % TOTAL_SLIDES) {
             card.classList.add('left');
-        } else if (dataIndex === (currentAppSlide + 1) % totalAppSlides) {
+        } else if (cardIndex === (currentSlide + 1) % TOTAL_SLIDES) {
             card.classList.add('right');
         } else {
             card.classList.add('hidden');
         }
     });
 
-    // Update pagination dots
-    dots.forEach((dot, index) => {
-        dot.classList.remove('active');
-        if (index === currentAppSlide) {
+    // Update dots
+    dots.forEach((dot, idx) => {
+        if (idx === currentSlide) {
             dot.classList.add('active');
+        } else {
+            dot.classList.remove('active');
         }
     });
 }
 
-// Move carousel in a direction (-1 for previous, 1 for next)
+// Move to next slide
+function nextSlide() {
+    currentSlide = (currentSlide + 1) % TOTAL_SLIDES;
+    updateCarousel();
+}
+
+// Move to previous slide
+function prevSlide() {
+    currentSlide = (currentSlide - 1 + TOTAL_SLIDES) % TOTAL_SLIDES;
+    updateCarousel();
+}
+
+// Go to specific slide
+function goToSlide(index) {
+    if (index >= 0 && index < TOTAL_SLIDES) {
+        currentSlide = index;
+        updateCarousel();
+        resetAutoplay();
+    }
+}
+
+// Navigation functions for onclick handlers
 function moveAppCarousel(direction) {
-    currentAppSlide = (currentAppSlide + direction + totalAppSlides) % totalAppSlides;
-    updateCarouselPositions();
-    resetAppAutoPlay();
+    if (direction > 0) {
+        nextSlide();
+    } else {
+        prevSlide();
+    }
+    resetAutoplay();
 }
 
-// Go to specific slide by index
 function goToAppSlide(index) {
-    if (index >= 0 && index < totalAppSlides) {
-        currentAppSlide = index;
-        updateCarouselPositions();
-        resetAppAutoPlay();
+    goToSlide(index);
+}
+
+// Autoplay functions
+function startAutoplay() {
+    stopAutoplay();
+    autoplayInterval = setInterval(nextSlide, AUTOPLAY_DELAY);
+}
+
+function stopAutoplay() {
+    if (autoplayInterval) {
+        clearInterval(autoplayInterval);
+        autoplayInterval = null;
     }
 }
 
-// Update all card positions and pagination
-function updateCarouselPositions() {
-    const cards = document.querySelectorAll('.carousel-card');
-    const dots = document.querySelectorAll('.pagination-dot');
-
-    cards.forEach((card) => {
-        const dataIndex = parseInt(card.getAttribute('data-index'));
-
-        // Remove all position classes
-        card.classList.remove('active', 'left', 'right', 'hidden');
-
-        // Calculate relative position
-        const relativePosition = (dataIndex - currentAppSlide + totalAppSlides) % totalAppSlides;
-
-        if (relativePosition === 0) {
-            // Current slide
-            card.classList.add('active');
-        } else if (relativePosition === totalAppSlides - 1) {
-            // Previous slide (to the left)
-            card.classList.add('left');
-        } else if (relativePosition === 1) {
-            // Next slide (to the right)
-            card.classList.add('right');
-        } else {
-            // Hidden slides
-            card.classList.add('hidden');
-        }
-    });
-
-    // Update pagination dots
-    dots.forEach((dot, index) => {
-        dot.classList.remove('active');
-        if (index === currentAppSlide) {
-            dot.classList.add('active');
-        }
-    });
+function resetAutoplay() {
+    startAutoplay();
 }
 
-// Auto-play functionality
-function startAppAutoPlay() {
-    appAutoPlayInterval = setInterval(() => {
-        moveAppCarousel(1);
-    }, 5000); // Change slide every 5 seconds
-}
-
-function resetAppAutoPlay() {
-    clearInterval(appAutoPlayInterval);
-    startAppAutoPlay();
-}
-
-// Touch swipe support for mobile
+// Touch support
 let touchStartX = 0;
 let touchEndX = 0;
 
-function addTouchSupport() {
-    const carouselWrapper = document.querySelector('.app-carousel-wrapper');
+function handleSwipe() {
+    const diff = touchStartX - touchEndX;
+    if (Math.abs(diff) > 50) {
+        if (diff > 0) {
+            nextSlide();
+        } else {
+            prevSlide();
+        }
+        resetAutoplay();
+    }
+}
 
-    if (carouselWrapper) {
-        carouselWrapper.addEventListener('touchstart', (e) => {
+// Initialize on page load
+window.addEventListener('DOMContentLoaded', function() {
+    console.log('Carousel initializing...');
+
+    // Initial setup
+    updateCarousel();
+    startAutoplay();
+
+    // Hover pause
+    const wrapper = document.querySelector('.app-carousel-wrapper');
+    if (wrapper) {
+        wrapper.addEventListener('mouseenter', stopAutoplay);
+        wrapper.addEventListener('mouseleave', startAutoplay);
+
+        // Touch events
+        wrapper.addEventListener('touchstart', (e) => {
             touchStartX = e.changedTouches[0].screenX;
         }, { passive: true });
 
-        carouselWrapper.addEventListener('touchend', (e) => {
+        wrapper.addEventListener('touchend', (e) => {
             touchEndX = e.changedTouches[0].screenX;
             handleSwipe();
         }, { passive: true });
     }
-}
 
-function handleSwipe() {
-    const swipeThreshold = 50;
-    const diff = touchStartX - touchEndX;
-
-    if (Math.abs(diff) > swipeThreshold) {
-        if (diff > 0) {
-            // Swipe left - next slide
-            moveAppCarousel(1);
-        } else {
-            // Swipe right - previous slide
-            moveAppCarousel(-1);
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowLeft') {
+            prevSlide();
+            resetAutoplay();
+        } else if (e.key === 'ArrowRight') {
+            nextSlide();
+            resetAutoplay();
         }
-    }
-}
+    });
 
-// Helper function to check if element is in viewport
-function isElementInViewport(el) {
-    if (!el) return false;
-    const rect = el.getBoundingClientRect();
-    return (
-        rect.top >= 0 &&
-        rect.left >= 0 &&
-        rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
-        rect.right <= (window.innerWidth || document.documentElement.clientWidth)
-    );
-}
-
-// Add click handlers to carousel cards
-document.addEventListener('DOMContentLoaded', function() {
-    const cards = document.querySelectorAll('.carousel-card');
-
-    cards.forEach((card) => {
+    // Card click handlers
+    document.querySelectorAll('.carousel-card').forEach(card => {
         card.addEventListener('click', function() {
-            const dataIndex = parseInt(this.getAttribute('data-index'));
-
-            // If clicking a left or right card, navigate to it
             if (this.classList.contains('left')) {
-                moveAppCarousel(-1);
+                prevSlide();
+                resetAutoplay();
             } else if (this.classList.contains('right')) {
-                moveAppCarousel(1);
+                nextSlide();
+                resetAutoplay();
             }
-            // Active card click could trigger some action in the future
         });
     });
+
+    console.log('Carousel initialized successfully!');
 });
