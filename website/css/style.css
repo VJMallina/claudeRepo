@@ -150,10 +150,14 @@ body {
 }
 
 .hero-content {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 4rem;
+    display: flex;
+    justify-content: center;
     align-items: center;
+    text-align: center;
+}
+
+.hero-text {
+    max-width: 800px;
 }
 
 .hero-title {
@@ -180,11 +184,14 @@ body {
     display: flex;
     gap: 1rem;
     margin-bottom: 3rem;
+    justify-content: center;
+    flex-wrap: wrap;
 }
 
 .hero-stats {
     display: flex;
     gap: 3rem;
+    justify-content: center;
 }
 
 .stat {
@@ -738,12 +745,13 @@ section {
 
     .hero-cta {
         flex-direction: column;
-        align-items: stretch;
+        align-items: center;
     }
 
     .hero-stats {
         flex-direction: column;
         gap: 1.5rem;
+        align-items: center;
     }
 
     .phone-mockup {
