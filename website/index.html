@@ -1086,6 +1086,181 @@
     </footer>
 
     <script src="js/script.js"></script>
-    <script src="js/carousel.js"></script>
+
+    <!-- Inline Carousel Script - Guaranteed to Work -->
+    <script>
+        console.log('🎠 Carousel script loading...');
+
+        // Carousel state
+        let currentSlide = 1;
+        let autoplayInterval = null;
+        const TOTAL_SLIDES = 6;
+        const AUTOPLAY_DELAY = 4000;
+
+        // Update carousel display
+        function updateCarousel() {
+            console.log('Updating carousel, current slide:', currentSlide);
+
+            const cards = document.querySelectorAll('.carousel-card');
+            const dots = document.querySelectorAll('.pagination-dot');
+
+            if (cards.length === 0) {
+                console.error('❌ No carousel cards found!');
+                return;
+            }
+
+            // Update each card
+            cards.forEach((card) => {
+                const cardIndex = parseInt(card.getAttribute('data-index'));
+                card.classList.remove('active', 'left', 'right', 'hidden');
+
+                if (cardIndex === currentSlide) {
+                    card.classList.add('active');
+                    console.log('✅ Active card:', cardIndex);
+                } else if (cardIndex === (currentSlide - 1 + TOTAL_SLIDES) % TOTAL_SLIDES) {
+                    card.classList.add('left');
+                } else if (cardIndex === (currentSlide + 1) % TOTAL_SLIDES) {
+                    card.classList.add('right');
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
+
+            // Update dots
+            dots.forEach((dot, idx) => {
+                if (idx === currentSlide) {
+                    dot.classList.add('active');
+                } else {
+                    dot.classList.remove('active');
+                }
+            });
+        }
+
+        // Navigation functions
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % TOTAL_SLIDES;
+            console.log('➡️ Next slide:', currentSlide);
+            updateCarousel();
+        }
+
+        function prevSlide() {
+            currentSlide = (currentSlide - 1 + TOTAL_SLIDES) % TOTAL_SLIDES;
+            console.log('⬅️ Previous slide:', currentSlide);
+            updateCarousel();
+        }
+
+        function moveAppCarousel(direction) {
+            if (direction > 0) {
+                nextSlide();
+            } else {
+                prevSlide();
+            }
+            resetAutoplay();
+        }
+
+        function goToAppSlide(index) {
+            if (index >= 0 && index < TOTAL_SLIDES) {
+                currentSlide = index;
+                console.log('🎯 Jump to slide:', index);
+                updateCarousel();
+                resetAutoplay();
+            }
+        }
+
+        // Autoplay functions
+        function startAutoplay() {
+            if (autoplayInterval) {
+                clearInterval(autoplayInterval);
+            }
+            autoplayInterval = setInterval(() => {
+                console.log('⏰ Auto-advancing carousel...');
+                nextSlide();
+            }, AUTOPLAY_DELAY);
+            console.log('▶️ Autoplay started (4s interval)');
+        }
+
+        function stopAutoplay() {
+            if (autoplayInterval) {
+                clearInterval(autoplayInterval);
+                autoplayInterval = null;
+                console.log('⏸️ Autoplay stopped');
+            }
+        }
+
+        function resetAutoplay() {
+            startAutoplay();
+        }
+
+        // Touch support
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        function handleSwipe() {
+            const diff = touchStartX - touchEndX;
+            if (Math.abs(diff) > 50) {
+                if (diff > 0) {
+                    nextSlide();
+                } else {
+                    prevSlide();
+                }
+                resetAutoplay();
+            }
+        }
+
+        // Initialize when page loads
+        window.addEventListener('DOMContentLoaded', function() {
+            console.log('📄 DOM loaded, initializing carousel...');
+
+            // Initial setup
+            setTimeout(() => {
+                updateCarousel();
+                startAutoplay();
+                console.log('✅ Carousel initialized successfully!');
+            }, 100);
+
+            // Hover pause
+            const wrapper = document.querySelector('.app-carousel-wrapper');
+            if (wrapper) {
+                wrapper.addEventListener('mouseenter', stopAutoplay);
+                wrapper.addEventListener('mouseleave', startAutoplay);
+
+                // Touch events
+                wrapper.addEventListener('touchstart', (e) => {
+                    touchStartX = e.changedTouches[0].screenX;
+                }, { passive: true });
+
+                wrapper.addEventListener('touchend', (e) => {
+                    touchEndX = e.changedTouches[0].screenX;
+                    handleSwipe();
+                }, { passive: true });
+            }
+
+            // Keyboard navigation
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowLeft') {
+                    prevSlide();
+                    resetAutoplay();
+                } else if (e.key === 'ArrowRight') {
+                    nextSlide();
+                    resetAutoplay();
+                }
+            });
+
+            // Card clicks
+            document.querySelectorAll('.carousel-card').forEach(card => {
+                card.addEventListener('click', function() {
+                    if (this.classList.contains('left')) {
+                        prevSlide();
+                        resetAutoplay();
+                    } else if (this.classList.contains('right')) {
+                        nextSlide();
+                        resetAutoplay();
+                    }
+                });
+            });
+        });
+
+        console.log('✅ Carousel script loaded!');
+    </script>
 </body>
 </html>
