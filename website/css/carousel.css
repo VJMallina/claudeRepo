@@ -1,12 +1,12 @@
 /* App Showcase Section */
 .app-showcase {
-    padding: 80px 0;
+    padding: 60px 0;
     background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
 }
 
 .app-showcase .section-header {
     text-align: center;
-    margin-bottom: 60px;
+    margin-bottom: 40px;
 }
 
 .app-showcase .section-header h2 {
@@ -26,9 +26,9 @@
 /* Modern App Carousel Styles */
 .app-carousel-wrapper {
     width: 100%;
-    max-width: 1000px;
+    max-width: 1100px;
     margin: 0 auto;
-    padding: 60px 20px;
+    padding: 40px 20px;
     position: relative;
 }
 
@@ -36,11 +36,11 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 30px;
-    padding: 40px 0;
+    gap: 20px;
+    padding: 20px 0;
     position: relative;
     perspective: 1000px;
-    min-height: 700px;
+    min-height: 650px;
 }
 
 /* Carousel Card */
@@ -65,7 +65,7 @@
 /* Left Card */
 .carousel-card.left {
     opacity: 0.6;
-    transform: translateX(-380px) scale(0.85);
+    transform: translateX(-350px) scale(0.85);
     z-index: 1;
     pointer-events: all;
 }
@@ -73,7 +73,7 @@
 /* Right Card */
 .carousel-card.right {
     opacity: 0.6;
-    transform: translateX(380px) scale(0.85);
+    transform: translateX(350px) scale(0.85);
     z-index: 1;
     pointer-events: all;
 }
@@ -305,7 +305,7 @@
 /* Responsive Design */
 @media (max-width: 1024px) {
     .app-carousel {
-        min-height: 620px;
+        min-height: 600px;
     }
 
     .carousel-card {
@@ -313,11 +313,11 @@
     }
 
     .carousel-card.left {
-        transform: translateX(-330px) scale(0.85);
+        transform: translateX(-320px) scale(0.85);
     }
 
     .carousel-card.right {
-        transform: translateX(330px) scale(0.85);
+        transform: translateX(320px) scale(0.85);
     }
 
     .preview-stat {
@@ -331,7 +331,11 @@
 
 @media (max-width: 768px) {
     .app-showcase {
-        padding: 60px 0;
+        padding: 40px 0;
+    }
+
+    .app-showcase .section-header {
+        margin-bottom: 30px;
     }
 
     .app-showcase .section-header h2 {
@@ -344,11 +348,12 @@
     }
 
     .app-carousel-wrapper {
-        padding: 40px 10px;
+        padding: 30px 10px;
     }
 
     .app-carousel {
-        min-height: 580px;
+        min-height: 550px;
+        padding: 10px 0;
     }
 
     .carousel-card {
@@ -390,7 +395,11 @@
 
 @media (max-width: 480px) {
     .app-showcase {
-        padding: 40px 0;
+        padding: 30px 0;
+    }
+
+    .app-showcase .section-header {
+        margin-bottom: 20px;
     }
 
     .app-showcase .section-header h2 {
@@ -401,8 +410,13 @@
         font-size: 0.9375rem;
     }
 
+    .app-carousel-wrapper {
+        padding: 20px 10px;
+    }
+
     .app-carousel {
-        min-height: 540px;
+        min-height: 520px;
+        padding: 10px 0;
     }
 
     .carousel-card {
