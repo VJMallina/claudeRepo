@@ -1,3 +1,28 @@
+/* App Showcase Section */
+.app-showcase {
+    padding: 80px 0;
+    background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
+}
+
+.app-showcase .section-header {
+    text-align: center;
+    margin-bottom: 60px;
+}
+
+.app-showcase .section-header h2 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #1e293b;
+    margin-bottom: 16px;
+}
+
+.app-showcase .section-header p {
+    font-size: 1.125rem;
+    color: #64748b;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
 /* Modern App Carousel Styles */
 .app-carousel-wrapper {
     width: 100%;
@@ -300,6 +325,19 @@
 }
 
 @media (max-width: 768px) {
+    .app-showcase {
+        padding: 60px 0;
+    }
+
+    .app-showcase .section-header h2 {
+        font-size: 2rem;
+    }
+
+    .app-showcase .section-header p {
+        font-size: 1rem;
+        padding: 0 20px;
+    }
+
     .app-carousel-wrapper {
         padding: 40px 10px;
     }
@@ -342,6 +380,18 @@
 }
 
 @media (max-width: 480px) {
+    .app-showcase {
+        padding: 40px 0;
+    }
+
+    .app-showcase .section-header h2 {
+        font-size: 1.75rem;
+    }
+
+    .app-showcase .section-header p {
+        font-size: 0.9375rem;
+    }
+
     .carousel-card {
         width: 240px;
     }
