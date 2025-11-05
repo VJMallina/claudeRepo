@@ -1,5 +1,50 @@
+// Theme Toggle Functionality
+function initTheme() {
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeIcon = document.querySelector('.theme-icon');
+
+    // Check for saved theme preference or default to light mode
+    const currentTheme = localStorage.getItem('theme') || 'light';
+
+    if (currentTheme === 'dark') {
+        document.body.classList.add('dark-theme');
+        themeIcon.textContent = '☀️';
+    }
+
+    themeToggle.addEventListener('click', function() {
+        document.body.classList.toggle('dark-theme');
+
+        // Update icon
+        if (document.body.classList.contains('dark-theme')) {
+            themeIcon.textContent = '☀️';
+            localStorage.setItem('theme', 'dark');
+        } else {
+            themeIcon.textContent = '🌙';
+            localStorage.setItem('theme', 'light');
+        }
+    });
+}
+
+// Toggle API Category
+function toggleCategory(button) {
+    const categoryHeader = button.parentElement;
+    const categoryContent = categoryHeader.nextElementSibling;
+
+    // Toggle content visibility
+    categoryContent.classList.toggle('active');
+
+    // Rotate button
+    if (categoryContent.classList.contains('active')) {
+        button.style.transform = 'rotate(180deg)';
+    } else {
+        button.style.transform = 'rotate(0deg)';
+    }
+}
+
 // Mobile Menu Toggle
 document.addEventListener('DOMContentLoaded', function() {
+    // Initialize theme
+    initTheme();
     const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
     const navMenu = document.querySelector('.nav-menu');
 
