@@ -40,6 +40,7 @@
     padding: 40px 0;
     position: relative;
     perspective: 1000px;
+    min-height: 700px;
 }
 
 /* Carousel Card */
@@ -303,6 +304,10 @@
 
 /* Responsive Design */
 @media (max-width: 1024px) {
+    .app-carousel {
+        min-height: 620px;
+    }
+
     .carousel-card {
         width: 280px;
     }
@@ -340,6 +345,10 @@
 
     .app-carousel-wrapper {
         padding: 40px 10px;
+    }
+
+    .app-carousel {
+        min-height: 580px;
     }
 
     .carousel-card {
@@ -390,6 +399,10 @@
 
     .app-showcase .section-header p {
         font-size: 0.9375rem;
+    }
+
+    .app-carousel {
+        min-height: 540px;
     }
 
     .carousel-card {
