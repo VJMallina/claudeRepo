@@ -197,6 +197,8 @@ body {
 .stat {
     display: flex;
     flex-direction: column;
+    align-items: center;
+    text-align: center;
 }
 
 .stat-value {
