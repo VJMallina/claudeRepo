@@ -12,6 +12,7 @@ import { AnalyticsModule } from './analytics/analytics.module';
 import { NotificationsModule } from './notifications/notifications.module';
 import { BankAccountsModule } from './bank-accounts/bank-accounts.module';
 import { OnboardingModule } from './onboarding/onboarding.module';
+import { PdfModule } from './pdf/pdf.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
@@ -41,6 +42,7 @@ import { AppService } from './app.service';
     NotificationsModule,
     BankAccountsModule,
     OnboardingModule,
+    PdfModule,
   ],
   controllers: [AppController],
   providers: [AppService],

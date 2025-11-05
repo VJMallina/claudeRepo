@@ -28,10 +28,14 @@ import {
   NavHistoryResponseDto,
 } from './dto/investment-response.dto';
 import { InvestmentStatus, TransactionType } from '@prisma/client';
+import { InvestmentReceiptService } from '../pdf/investment-receipt.service';
 
 @Injectable()
 export class InvestmentsService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private investmentReceiptService: InvestmentReceiptService,
+  ) {}
 
   // ============================================
   // PRODUCT CATALOG MANAGEMENT
@@ -315,6 +319,14 @@ export class InvestmentsService {
 
       return { investment, wallet: updatedWallet, transaction };
     });
+
+    // Generate and send investment receipt (async, don't wait)
+    this.investmentReceiptService
+      .generateAndSendReceipt(result.investment.id)
+      .catch((error) => {
+        console.error('Failed to send investment receipt:', error);
+        // Log but don't fail the investment
+      });
 
     return {
       success: true,
