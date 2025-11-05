@@ -15,10 +15,37 @@
     <nav class="navbar">
         <div class="container">
             <div class="nav-wrapper">
-                <div class="logo">
-                    <span class="logo-icon">🐷</span>
+                <a href="#" class="logo">
+                    <div class="logo-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="40" height="40">
+                            <defs>
+                                <linearGradient id="navCoinGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" style="stop-color:#6366f1;stop-opacity:1" />
+                                    <stop offset="100%" style="stop-color:#4f46e5;stop-opacity:1" />
+                                </linearGradient>
+                                <linearGradient id="navArrowGradient" x1="0%" y1="100%" x2="100%" y2="0%">
+                                    <stop offset="0%" style="stop-color:#10b981;stop-opacity:1" />
+                                    <stop offset="100%" style="stop-color:#059669;stop-opacity:1" />
+                                </linearGradient>
+                            </defs>
+                            <circle cx="100" cy="100" r="75" fill="url(#navCoinGradient)" opacity="0.95"/>
+                            <circle cx="100" cy="100" r="70" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="2"/>
+                            <g transform="translate(100, 100)">
+                                <path d="M -25 -30 L 15 -30" stroke="#ffffff" stroke-width="5" stroke-linecap="round"/>
+                                <path d="M -25 -15 L 15 -15" stroke="#ffffff" stroke-width="5" stroke-linecap="round"/>
+                                <path d="M -20 -30 Q 10 -30 10 -5 Q 10 10 -5 15 L 20 35"
+                                      stroke="#ffffff" stroke-width="5" stroke-linecap="round" fill="none"/>
+                            </g>
+                            <g transform="translate(150, 50)">
+                                <path d="M -10 20 L 10 0 L 30 -20"
+                                      stroke="url(#navArrowGradient)" stroke-width="6" stroke-linecap="round"
+                                      stroke-linejoin="round" fill="none"/>
+                                <polygon points="30,-20 25,-10 20,-20 30,-20" fill="url(#navArrowGradient)"/>
+                            </g>
+                        </svg>
+                    </div>
                     <span class="logo-text">PiggySave</span>
-                </div>
+                </a>
                 <ul class="nav-menu">
                     <li><a href="#features">Features</a></li>
                     <li><a href="#how-it-works">How It Works</a></li>
@@ -64,12 +91,192 @@
                 <div class="hero-image">
                     <div class="phone-mockup">
                         <div class="phone-screen">
-                            <div class="mockup-content">
-                                <h3>Your Savings Dashboard</h3>
-                                <div class="balance-card">
-                                    <p>Total Savings</p>
-                                    <h2>₹1,24,560</h2>
-                                    <span class="growth">+15.2% this month</span>
+                            <div class="carousel-container">
+                                <!-- Carousel Slides -->
+                                <div class="carousel-track">
+                                    <!-- Slide 1: Home Dashboard -->
+                                    <div class="carousel-slide active">
+                                        <div class="screen-header">
+                                            <span class="screen-time">9:41</span>
+                                            <div class="status-icons">
+                                                <span>📶</span><span>📡</span><span>🔋</span>
+                                            </div>
+                                        </div>
+                                        <div class="screen-content">
+                                            <h4 class="screen-greeting">Hello, User!</h4>
+                                            <p class="screen-subtitle">Let's grow your wealth today</p>
+                                            <div class="kyc-badge">
+                                                <span class="badge-icon">✓</span>
+                                                <span>Level 2 - Complete</span>
+                                            </div>
+                                            <div class="stats-cards">
+                                                <div class="stat-card">
+                                                    <div class="stat-icon">💰</div>
+                                                    <p>Total Saved</p>
+                                                    <h3>₹1,24,560</h3>
+                                                    <span class="change positive">+15.2%</span>
+                                                </div>
+                                                <div class="stat-card">
+                                                    <div class="stat-icon">📈</div>
+                                                    <p>Total Invested</p>
+                                                    <h3>₹2,45,880</h3>
+                                                    <span class="change positive">+22.4%</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="screen-label">Home Dashboard</div>
+                                    </div>
+
+                                    <!-- Slide 2: Savings Wallet -->
+                                    <div class="carousel-slide">
+                                        <div class="screen-header">
+                                            <span class="screen-time">9:41</span>
+                                            <div class="status-icons">
+                                                <span>📶</span><span>📡</span><span>🔋</span>
+                                            </div>
+                                        </div>
+                                        <div class="screen-content">
+                                            <h4 class="screen-greeting">Savings Wallet</h4>
+                                            <div class="wallet-balance-card">
+                                                <p>Available Balance</p>
+                                                <h2>₹1,24,560</h2>
+                                                <div class="wallet-actions">
+                                                    <button class="action-btn">➕ Add</button>
+                                                    <button class="action-btn">💸 Withdraw</button>
+                                                </div>
+                                            </div>
+                                            <div class="quick-stats">
+                                                <div class="quick-stat">
+                                                    <span>This Month</span>
+                                                    <strong>₹12,450</strong>
+                                                </div>
+                                                <div class="quick-stat">
+                                                    <span>Auto-Saved</span>
+                                                    <strong>₹8,230</strong>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="screen-label">Savings Wallet</div>
+                                    </div>
+
+                                    <!-- Slide 3: Investment Portfolio -->
+                                    <div class="carousel-slide">
+                                        <div class="screen-header">
+                                            <span class="screen-time">9:41</span>
+                                            <div class="status-icons">
+                                                <span>📶</span><span>📡</span><span>🔋</span>
+                                            </div>
+                                        </div>
+                                        <div class="screen-content">
+                                            <h4 class="screen-greeting">Investment Portfolio</h4>
+                                            <div class="portfolio-card">
+                                                <p>Total Portfolio Value</p>
+                                                <h2>₹2,45,880</h2>
+                                                <div class="returns-badge positive">
+                                                    <span>↗</span> +₹45,880 (22.4%)
+                                                </div>
+                                            </div>
+                                            <div class="investment-list">
+                                                <div class="investment-item">
+                                                    <span class="fund-name">Equity Fund A</span>
+                                                    <span class="fund-value">₹1,24,560</span>
+                                                </div>
+                                                <div class="investment-item">
+                                                    <span class="fund-name">Debt Fund B</span>
+                                                    <span class="fund-value">₹78,320</span>
+                                                </div>
+                                                <div class="investment-item">
+                                                    <span class="fund-name">Hybrid Fund C</span>
+                                                    <span class="fund-value">₹43,000</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="screen-label">Portfolio</div>
+                                    </div>
+
+                                    <!-- Slide 4: UPI Payment -->
+                                    <div class="carousel-slide">
+                                        <div class="screen-header">
+                                            <span class="screen-time">9:41</span>
+                                            <div class="status-icons">
+                                                <span>📶</span><span>📡</span><span>🔋</span>
+                                            </div>
+                                        </div>
+                                        <div class="screen-content">
+                                            <h4 class="screen-greeting">UPI Payment</h4>
+                                            <div class="payment-card">
+                                                <div class="qr-placeholder">📷</div>
+                                                <p>Scan QR Code</p>
+                                            </div>
+                                            <div class="payment-options">
+                                                <button class="payment-option-btn">
+                                                    <span>💳</span> Pay via UPI ID
+                                                </button>
+                                                <button class="payment-option-btn">
+                                                    <span>📱</span> Pay Contact
+                                                </button>
+                                            </div>
+                                            <div class="auto-save-indicator">
+                                                <span>⚡</span> Auto-save 10% on payment
+                                            </div>
+                                        </div>
+                                        <div class="screen-label">UPI Payment</div>
+                                    </div>
+
+                                    <!-- Slide 5: Savings Goals -->
+                                    <div class="carousel-slide">
+                                        <div class="screen-header">
+                                            <span class="screen-time">9:41</span>
+                                            <div class="status-icons">
+                                                <span>📶</span><span>📡</span><span>🔋</span>
+                                            </div>
+                                        </div>
+                                        <div class="screen-content">
+                                            <h4 class="screen-greeting">Savings Goals</h4>
+                                            <div class="goal-card">
+                                                <div class="goal-header">
+                                                    <span>🏠 Dream Home</span>
+                                                    <span class="goal-amount">₹50,00,000</span>
+                                                </div>
+                                                <div class="progress-container">
+                                                    <div class="progress-bar">
+                                                        <div class="progress-fill" style="width: 45%"></div>
+                                                    </div>
+                                                    <span class="progress-text">45% Complete</span>
+                                                </div>
+                                                <div class="goal-stats">
+                                                    <div><span>Saved:</span> <strong>₹22,50,000</strong></div>
+                                                    <div><span>Remaining:</span> <strong>₹27,50,000</strong></div>
+                                                </div>
+                                            </div>
+                                            <div class="other-goals">
+                                                <div class="mini-goal">
+                                                    <span>🚗 Car</span>
+                                                    <span>65%</span>
+                                                </div>
+                                                <div class="mini-goal">
+                                                    <span>✈️ Vacation</span>
+                                                    <span>80%</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="screen-label">Savings Goals</div>
+                                    </div>
+                                </div>
+
+                                <!-- Carousel Navigation -->
+                                <div class="carousel-nav">
+                                    <button class="carousel-btn prev" onclick="moveCarousel(-1)">‹</button>
+                                    <button class="carousel-btn next" onclick="moveCarousel(1)">›</button>
+                                </div>
+
+                                <!-- Carousel Indicators -->
+                                <div class="carousel-indicators">
+                                    <span class="indicator active" onclick="goToSlide(0)"></span>
+                                    <span class="indicator" onclick="goToSlide(1)"></span>
+                                    <span class="indicator" onclick="goToSlide(2)"></span>
+                                    <span class="indicator" onclick="goToSlide(3)"></span>
+                                    <span class="indicator" onclick="goToSlide(4)"></span>
                                 </div>
                             </div>
                         </div>
@@ -809,7 +1016,34 @@
             <div class="footer-content">
                 <div class="footer-section">
                     <div class="logo">
-                        <span class="logo-icon">🐷</span>
+                        <div class="logo-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="40" height="40">
+                                <defs>
+                                    <linearGradient id="footerCoinGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                        <stop offset="0%" style="stop-color:#6366f1;stop-opacity:1" />
+                                        <stop offset="100%" style="stop-color:#4f46e5;stop-opacity:1" />
+                                    </linearGradient>
+                                    <linearGradient id="footerArrowGradient" x1="0%" y1="100%" x2="100%" y2="0%">
+                                        <stop offset="0%" style="stop-color:#10b981;stop-opacity:1" />
+                                        <stop offset="100%" style="stop-color:#059669;stop-opacity:1" />
+                                    </linearGradient>
+                                </defs>
+                                <circle cx="100" cy="100" r="75" fill="url(#footerCoinGradient)" opacity="0.95"/>
+                                <circle cx="100" cy="100" r="70" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="2"/>
+                                <g transform="translate(100, 100)">
+                                    <path d="M -25 -30 L 15 -30" stroke="#ffffff" stroke-width="5" stroke-linecap="round"/>
+                                    <path d="M -25 -15 L 15 -15" stroke="#ffffff" stroke-width="5" stroke-linecap="round"/>
+                                    <path d="M -20 -30 Q 10 -30 10 -5 Q 10 10 -5 15 L 20 35"
+                                          stroke="#ffffff" stroke-width="5" stroke-linecap="round" fill="none"/>
+                                </g>
+                                <g transform="translate(150, 50)">
+                                    <path d="M -10 20 L 10 0 L 30 -20"
+                                          stroke="url(#footerArrowGradient)" stroke-width="6" stroke-linecap="round"
+                                          stroke-linejoin="round" fill="none"/>
+                                    <polygon points="30,-20 25,-10 20,-20 30,-20" fill="url(#footerArrowGradient)"/>
+                                </g>
+                            </svg>
+                        </div>
                         <span class="logo-text">PiggySave</span>
                     </div>
                     <p>India's smartest savings and investment platform. Save automatically, invest intelligently.</p>

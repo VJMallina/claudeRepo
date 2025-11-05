@@ -1,0 +1,48 @@
+<!-- PiggySave Logo SVG -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="100%" height="100%">
+  <!-- Gradient Definitions -->
+  <defs>
+    <linearGradient id="coinGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#6366f1;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#4f46e5;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="arrowGradient" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#10b981;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#059669;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="sparkGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#fbbf24;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#f59e0b;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <!-- Main Coin Circle -->
+  <circle cx="100" cy="100" r="75" fill="url(#coinGradient)" opacity="0.95"/>
+
+  <!-- Inner Circle Border -->
+  <circle cx="100" cy="100" r="70" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="2"/>
+
+  <!-- Rupee Symbol -->
+  <g transform="translate(100, 100)">
+    <!-- Rupee sign stylized -->
+    <path d="M -25 -30 L 15 -30" stroke="#ffffff" stroke-width="5" stroke-linecap="round"/>
+    <path d="M -25 -15 L 15 -15" stroke="#ffffff" stroke-width="5" stroke-linecap="round"/>
+    <path d="M -20 -30 Q 10 -30 10 -5 Q 10 10 -5 15 L 20 35"
+          stroke="#ffffff" stroke-width="5" stroke-linecap="round" fill="none"/>
+  </g>
+
+  <!-- Growth Arrow -->
+  <g transform="translate(150, 50)">
+    <path d="M -10 20 L 10 0 L 30 -20"
+          stroke="url(#arrowGradient)" stroke-width="6" stroke-linecap="round"
+          stroke-linejoin="round" fill="none"/>
+    <polygon points="30,-20 25,-10 20,-20 30,-20" fill="url(#arrowGradient)"/>
+  </g>
+
+  <!-- Sparkle Elements -->
+  <g opacity="0.8">
+    <circle cx="40" cy="40" r="4" fill="url(#sparkGradient)"/>
+    <circle cx="160" cy="160" r="4" fill="url(#sparkGradient)"/>
+    <circle cx="50" cy="150" r="3" fill="url(#sparkGradient)"/>
+  </g>
+</svg>
