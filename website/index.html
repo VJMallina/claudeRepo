@@ -96,6 +96,77 @@
         </div>
     </section>
 
+    <!-- Carousel Section -->
+    <section class="carousel-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Key Features at a Glance</h2>
+                <p>Discover what makes PiggySave special</p>
+            </div>
+
+            <div class="carousel-wrapper">
+                <button class="carousel-control prev" onclick="moveSlide(-1)" aria-label="Previous slide">‹</button>
+
+                <div class="carousel-container">
+                    <div class="carousel-track" id="carouselTrack">
+                        <!-- Slide 1: Auto-Save -->
+                        <div class="carousel-card">
+                            <div class="card-icon">💰</div>
+                            <div class="card-category">Savings</div>
+                            <h3>Automatic Savings</h3>
+                            <p>Save effortlessly with every UPI transaction. Set your percentage and watch your wealth grow automatically.</p>
+                        </div>
+
+                        <!-- Slide 2: Smart Investments -->
+                        <div class="carousel-card featured">
+                            <div class="card-badge">Popular</div>
+                            <div class="card-icon">📈</div>
+                            <div class="card-category">Investments</div>
+                            <h3>Smart Investment Portfolio</h3>
+                            <p>Invest in carefully curated mutual funds with just one tap. Real-time NAV tracking and auto-rebalancing.</p>
+                        </div>
+
+                        <!-- Slide 3: Auto-Invest SIP -->
+                        <div class="carousel-card">
+                            <div class="card-icon">🔄</div>
+                            <div class="card-category">Auto-Invest</div>
+                            <h3>Systematic Investment Plans</h3>
+                            <p>Set up intelligent SIP rules with threshold-based or scheduled triggers. Let your money work for you.</p>
+                        </div>
+
+                        <!-- Slide 4: UPI Payments -->
+                        <div class="carousel-card">
+                            <div class="card-icon">📱</div>
+                            <div class="card-category">Payments</div>
+                            <h3>Seamless UPI Integration</h3>
+                            <p>Make payments and save simultaneously. QR scanning, UPI ID payments, and instant confirmations.</p>
+                        </div>
+
+                        <!-- Slide 5: KYC -->
+                        <div class="carousel-card">
+                            <div class="card-icon">✅</div>
+                            <div class="card-category">Verification</div>
+                            <h3>Progressive KYC System</h3>
+                            <p>Three-tier KYC that unlocks features as you verify. 100% digital with Aadhaar, PAN, and liveness check.</p>
+                        </div>
+
+                        <!-- Slide 6: Analytics -->
+                        <div class="carousel-card">
+                            <div class="card-icon">📊</div>
+                            <div class="card-category">Insights</div>
+                            <h3>Detailed Analytics</h3>
+                            <p>Comprehensive insights into savings behavior and investment performance with XIRR calculations.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="carousel-control next" onclick="moveSlide(1)" aria-label="Next slide">›</button>
+            </div>
+
+            <div class="carousel-dots" id="carouselDots"></div>
+        </div>
+    </section>
+
     <!-- Features Section -->
     <section id="features" class="features">
         <div class="container">
@@ -827,7 +898,7 @@
                 <div class="api-category">
                     <div class="category-header">
                         <h3>🔐 Authentication (11 endpoints)</h3>
-                        <button class="toggle-btn" onclick="toggleCategory(this)">▼</button>
+                        <button class="toggle-btn">▼</button>
                     </div>
                     <div class="category-content">
                         <div class="api-endpoint">
@@ -948,7 +1019,7 @@
                 <div class="api-category">
                     <div class="category-header">
                         <h3>✅ KYC Verification (9 endpoints)</h3>
-                        <button class="toggle-btn" onclick="toggleCategory(this)">▼</button>
+                        <button class="toggle-btn">▼</button>
                     </div>
                     <div class="category-content">
                         <div class="api-endpoint">
@@ -1052,7 +1123,7 @@
                 <div class="api-category">
                     <div class="category-header">
                         <h3>💰 Savings & Auto-Save (14 endpoints)</h3>
-                        <button class="toggle-btn" onclick="toggleCategory(this)">▼</button>
+                        <button class="toggle-btn">▼</button>
                     </div>
                     <div class="category-content">
                         <div class="api-endpoint">
@@ -1201,7 +1272,7 @@
                 <div class="api-category">
                     <div class="category-header">
                         <h3>📈 Investments (13 endpoints)</h3>
-                        <button class="toggle-btn" onclick="toggleCategory(this)">▼</button>
+                        <button class="toggle-btn">▼</button>
                     </div>
                     <div class="category-content">
                         <div class="api-endpoint">
@@ -1332,7 +1403,7 @@
                 <div class="api-category">
                     <div class="category-header">
                         <h3>💳 Payments & UPI (5 endpoints)</h3>
-                        <button class="toggle-btn" onclick="toggleCategory(this)">▼</button>
+                        <button class="toggle-btn">▼</button>
                     </div>
                     <div class="category-content">
                         <div class="api-endpoint">
@@ -1392,7 +1463,7 @@
                 <div class="api-category">
                     <div class="category-header">
                         <h3>📊 Analytics (6 endpoints)</h3>
-                        <button class="toggle-btn" onclick="toggleCategory(this)">▼</button>
+                        <button class="toggle-btn">▼</button>
                     </div>
                     <div class="category-content">
                         <div class="api-endpoint">
@@ -1458,7 +1529,7 @@
                 <div class="api-category">
                     <div class="category-header">
                         <h3>👤 Users (4 endpoints)</h3>
-                        <button class="toggle-btn" onclick="toggleCategory(this)">▼</button>
+                        <button class="toggle-btn">▼</button>
                     </div>
                     <div class="category-content">
                         <div class="api-endpoint">
@@ -1495,7 +1566,7 @@
                 <div class="api-category">
                     <div class="category-header">
                         <h3>🏦 Bank Accounts (9 endpoints)</h3>
-                        <button class="toggle-btn" onclick="toggleCategory(this)">▼</button>
+                        <button class="toggle-btn">▼</button>
                     </div>
                     <div class="category-content">
                         <div class="api-endpoint">
@@ -1567,7 +1638,7 @@
                 <div class="api-category">
                     <div class="category-header">
                         <h3>🔔 Notifications (6 endpoints)</h3>
-                        <button class="toggle-btn" onclick="toggleCategory(this)">▼</button>
+                        <button class="toggle-btn">▼</button>
                     </div>
                     <div class="category-content">
                         <div class="api-endpoint">
@@ -1618,7 +1689,7 @@
                 <div class="api-category">
                     <div class="category-header">
                         <h3>📄 Statements & PDF (5 endpoints)</h3>
-                        <button class="toggle-btn" onclick="toggleCategory(this)">▼</button>
+                        <button class="toggle-btn">▼</button>
                     </div>
                     <div class="category-content">
                         <div class="api-endpoint">
@@ -1666,7 +1737,7 @@
                 <div class="api-category">
                     <div class="category-header">
                         <h3>🔗 Webhooks (1 endpoint)</h3>
-                        <button class="toggle-btn" onclick="toggleCategory(this)">▼</button>
+                        <button class="toggle-btn">▼</button>
                     </div>
                     <div class="category-content">
                         <div class="api-endpoint">
@@ -1686,7 +1757,7 @@
                 <div class="api-category">
                     <div class="category-header">
                         <h3>🎯 Onboarding (2 endpoints)</h3>
-                        <button class="toggle-btn" onclick="toggleCategory(this)">▼</button>
+                        <button class="toggle-btn">▼</button>
                     </div>
                     <div class="category-content">
                         <div class="api-endpoint">

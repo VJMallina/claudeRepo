@@ -25,19 +25,108 @@ function initTheme() {
     });
 }
 
-// Toggle API Category
+// Carousel Functionality
+let currentSlideIndex = 0;
+let autoPlayTimer;
+const slides = document.querySelectorAll('.carousel-card');
+const totalSlides = slides.length;
+
+function initCarousel() {
+    // Create dots
+    const dotsContainer = document.getElementById('carouselDots');
+    for (let i = 0; i < totalSlides; i++) {
+        const dot = document.createElement('button');
+        dot.classList.add('carousel-dot');
+        if (i === 0) dot.classList.add('active');
+        dot.onclick = () => goToSlide(i);
+        dot.setAttribute('aria-label', `Go to slide ${i + 1}`);
+        dotsContainer.appendChild(dot);
+    }
+
+    // Start autoplay
+    startAutoPlay();
+}
+
+function moveSlide(direction) {
+    currentSlideIndex += direction;
+
+    // Loop around
+    if (currentSlideIndex < 0) {
+        currentSlideIndex = totalSlides - 1;
+    } else if (currentSlideIndex >= totalSlides) {
+        currentSlideIndex = 0;
+    }
+
+    updateCarousel();
+    resetAutoPlay();
+}
+
+function goToSlide(index) {
+    currentSlideIndex = index;
+    updateCarousel();
+    resetAutoPlay();
+}
+
+function updateCarousel() {
+    const track = document.getElementById('carouselTrack');
+    const dots = document.querySelectorAll('.carousel-dot');
+
+    // Move the track
+    track.style.transform = `translateX(-${currentSlideIndex * 100}%)`;
+
+    // Update dots
+    dots.forEach((dot, index) => {
+        if (index === currentSlideIndex) {
+            dot.classList.add('active');
+        } else {
+            dot.classList.remove('active');
+        }
+    });
+}
+
+function startAutoPlay() {
+    autoPlayTimer = setInterval(() => {
+        moveSlide(1);
+    }, 4000); // Change slide every 4 seconds
+}
+
+function resetAutoPlay() {
+    clearInterval(autoPlayTimer);
+    startAutoPlay();
+}
+
+// Pause autoplay on hover
+function setupCarouselHover() {
+    const carouselWrapper = document.querySelector('.carousel-wrapper');
+    if (carouselWrapper) {
+        carouselWrapper.addEventListener('mouseenter', () => {
+            clearInterval(autoPlayTimer);
+        });
+
+        carouselWrapper.addEventListener('mouseleave', () => {
+            startAutoPlay();
+        });
+    }
+}
+
+// Toggle API Category - Make entire header clickable
 function toggleCategory(button) {
-    const categoryHeader = button.parentElement;
+    // Get the category header (could be the button or the header itself)
+    const categoryHeader = button.classList.contains('category-header')
+        ? button
+        : button.parentElement;
+
     const categoryContent = categoryHeader.nextElementSibling;
+    const toggleBtn = categoryHeader.querySelector('.toggle-btn');
 
     // Toggle content visibility
     categoryContent.classList.toggle('active');
 
     // Rotate button
     if (categoryContent.classList.contains('active')) {
-        button.style.transform = 'rotate(180deg)';
+        toggleBtn.style.transform = 'rotate(180deg)';
     } else {
-        button.style.transform = 'rotate(0deg)';
+        toggleBtn.style.transform = 'rotate(0deg)';
     }
 }
 
@@ -45,6 +134,23 @@ function toggleCategory(button) {
 document.addEventListener('DOMContentLoaded', function() {
     // Initialize theme
     initTheme();
+
+    // Initialize carousel
+    if (document.querySelector('.carousel-card')) {
+        initCarousel();
+        setupCarouselHover();
+    }
+
+    // Make category headers clickable
+    document.querySelectorAll('.category-header').forEach(header => {
+        header.style.cursor = 'pointer';
+        header.addEventListener('click', function(e) {
+            // Don't trigger if clicking the toggle button itself
+            if (!e.target.classList.contains('toggle-btn')) {
+                toggleCategory(this);
+            }
+        });
+    });
     const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
     const navMenu = document.querySelector('.nav-menu');
 
