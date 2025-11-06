@@ -5,19 +5,48 @@ import { useNavigation } from '@react-navigation/native';
 import { useAuthStore } from '@/store/authStore';
 import { useOnboardingStore } from '@/store/onboardingStore';
 import { spacing, typography } from '@/theme/theme';
+import savingsService from '@/services/savings.service';
+import investmentService from '@/services/investment.service';
 
 export default function HomeScreen() {
   const navigation = useNavigation<any>();
   const { user, loadUser } = useAuthStore();
   const { kycLevel, permissions, fetchStatus } = useOnboardingStore();
   const [refreshing, setRefreshing] = React.useState(false);
+  const [savingsBalance, setSavingsBalance] = React.useState<number>(0);
+  const [investmentValue, setInvestmentValue] = React.useState<number>(0);
 
   useEffect(() => {
     loadData();
   }, []);
 
   const loadData = async () => {
-    await Promise.all([loadUser(), fetchStatus()]);
+    await Promise.all([
+      loadUser(),
+      fetchStatus(),
+      loadSavingsBalance(),
+      loadInvestmentValue(),
+    ]);
+  };
+
+  const loadSavingsBalance = async () => {
+    try {
+      const wallet = await savingsService.getWallet();
+      setSavingsBalance(wallet.balance || 0);
+    } catch (error) {
+      console.error('Failed to load savings balance:', error);
+      setSavingsBalance(0);
+    }
+  };
+
+  const loadInvestmentValue = async () => {
+    try {
+      const analytics = await investmentService.getAnalytics();
+      setInvestmentValue(analytics.totalInvested || 0);
+    } catch (error) {
+      console.error('Failed to load investment value:', error);
+      setInvestmentValue(0);
+    }
   };
 
   const onRefresh = async () => {
@@ -65,7 +94,11 @@ export default function HomeScreen() {
           <ProgressBar progress={kycInfo.progress} color={kycInfo.color} style={styles.progressBar} />
 
           {kycLevel < 2 && (
-            <Button mode="text" onPress={() => {}} style={styles.upgradeButton}>
+            <Button
+              mode="text"
+              onPress={() => navigation.navigate('KYCVerification')}
+              style={styles.upgradeButton}
+            >
               Upgrade KYC Level →
             </Button>
           )}
@@ -74,8 +107,16 @@ export default function HomeScreen() {
 
       {/* Quick Stats */}
       <View style={styles.statsContainer}>
-        <StatCard title="Total Saved" value="₹0" icon="💰" />
-        <StatCard title="Total Invested" value="₹0" icon="📈" />
+        <StatCard
+          title="Total Saved"
+          value={`₹${savingsBalance.toLocaleString('en-IN')}`}
+          icon="💰"
+        />
+        <StatCard
+          title="Total Invested"
+          value={`₹${investmentValue.toLocaleString('en-IN')}`}
+          icon="📈"
+        />
       </View>
 
       {/* Features Access */}
@@ -128,7 +169,7 @@ export default function HomeScreen() {
           icon="🏦"
           title="Withdraw"
           disabled={!permissions.canWithdraw}
-          onPress={() => {}}
+          onPress={() => navigation.navigate('Withdrawal')}
         />
       </View>
     </ScrollView>

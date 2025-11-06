@@ -3,6 +3,7 @@ import { View, StyleSheet, Alert } from 'react-native';
 import { Text, Button, ActivityIndicator } from 'react-native-paper';
 import { Camera, CameraView, BarcodeScanningResult } from 'expo-camera';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import CameraService from '@/services/camera.service';
 import { spacing, typography } from '@/theme/theme';
 
 type QRScannerScreenProps = {
@@ -18,8 +19,8 @@ export default function QRScannerScreen({ navigation }: QRScannerScreenProps) {
   }, []);
 
   const requestCameraPermission = async () => {
-    const { status } = await Camera.requestCameraPermissionsAsync();
-    setHasPermission(status === 'granted');
+    const result = await CameraService.requestPermissions();
+    setHasPermission(result.granted);
   };
 
   const handleBarCodeScanned = ({ type, data }: BarcodeScanningResult) => {
@@ -27,54 +28,33 @@ export default function QRScannerScreen({ navigation }: QRScannerScreenProps) {
 
     setScanned(true);
 
-    // Parse UPI QR code
-    const upiData = parseUpiQrCode(data);
+    // Validate and parse UPI QR code using Camera Service
+    const isValid = CameraService.isValidUpiQrCode(data);
 
-    if (upiData) {
-      // Navigate to payment confirmation screen
-      navigation.navigate('PaymentConfirmation', {
-        merchantUpiId: upiData.pa,
-        merchantName: upiData.pn || 'Merchant',
-        amount: upiData.am || null,
-      });
-    } else {
+    if (!isValid) {
       Alert.alert(
         'Invalid QR Code',
         'This is not a valid UPI QR code. Please scan a merchant QR code.',
         [{ text: 'OK', onPress: () => setScanned(false) }]
       );
+      return;
     }
-  };
 
-  const parseUpiQrCode = (data: string) => {
-    try {
-      // UPI QR codes typically follow this format:
-      // upi://pay?pa=merchant@upi&pn=MerchantName&am=100&cu=INR
+    const upiData = CameraService.parseUpiQrCode(data);
 
-      if (!data.startsWith('upi://pay')) {
-        return null;
-      }
-
-      const url = new URL(data);
-      const params = new URLSearchParams(url.search);
-
-      const pa = params.get('pa'); // Payee address (merchant UPI ID)
-      const pn = params.get('pn'); // Payee name
-      const am = params.get('am'); // Amount
-      const cu = params.get('cu'); // Currency
-
-      if (!pa) {
-        return null;
-      }
-
-      return {
-        pa,
-        pn,
-        am: am ? parseFloat(am) : null,
-        cu: cu || 'INR',
-      };
-    } catch (error) {
-      return null;
+    if (upiData && upiData.pa) {
+      // Navigate to payment confirmation screen
+      navigation.navigate('PaymentConfirmation', {
+        merchantUpiId: upiData.pa,
+        merchantName: upiData.pn || 'Merchant',
+        amount: upiData.am ? parseFloat(upiData.am) : null,
+      });
+    } else {
+      Alert.alert(
+        'Invalid QR Code',
+        'Could not extract payment details from QR code.',
+        [{ text: 'OK', onPress: () => setScanned(false) }]
+      );
     }
   };
 
