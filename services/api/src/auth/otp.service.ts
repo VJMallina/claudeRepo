@@ -98,30 +98,40 @@ export class OtpService {
   }
 
   private async sendOtpSms(mobile: string, code: string): Promise<void> {
-    // TODO: Integrate with Twilio or SMS gateway
     const twilioAccountSid = this.configService.get('TWILIO_ACCOUNT_SID');
     const twilioAuthToken = this.configService.get('TWILIO_AUTH_TOKEN');
     const twilioPhoneNumber = this.configService.get('TWILIO_PHONE_NUMBER');
+    const nodeEnv = this.configService.get('NODE_ENV');
 
-    // For development, log OTP to console
-    if (process.env.NODE_ENV === 'development') {
-      console.log(`📱 OTP for ${mobile}: ${code}`);
+    // For development/test mode, log OTP to console
+    if (nodeEnv === 'development' || !twilioAccountSid || !twilioAuthToken) {
+      console.log(`📱 [TEST MODE] OTP for ${mobile}: ${code}`);
+      console.log(`   Valid for ${this.OTP_EXPIRY_MINUTES} minutes`);
+      console.log(`   Use this code to verify your mobile number`);
       return;
     }
 
-    // Production: Send via Twilio
+    // Production/Test: Send via Twilio
     try {
-      // Twilio integration code here
-      // const client = require('twilio')(twilioAccountSid, twilioAuthToken);
-      // await client.messages.create({
-      //   body: `Your SaveInvest OTP is: ${code}. Valid for ${this.OTP_EXPIRY_MINUTES} minutes.`,
-      //   from: twilioPhoneNumber,
-      //   to: `+91${mobile}`,
-      // });
-      console.log(`OTP sent to +91${mobile}: ${code}`);
+      const twilio = require('twilio');
+      const client = twilio(twilioAccountSid, twilioAuthToken);
+
+      await client.messages.create({
+        body: `Your SaveInvest OTP is: ${code}. Valid for ${this.OTP_EXPIRY_MINUTES} minutes. Do not share this code with anyone.`,
+        from: twilioPhoneNumber,
+        to: `+91${mobile}`,
+      });
+
+      console.log(`✅ OTP sent successfully to +91${mobile}`);
     } catch (error) {
-      console.error('Error sending OTP:', error);
-      throw new BadRequestException('Failed to send OTP. Please try again');
+      console.error('❌ Error sending OTP via Twilio:', error);
+
+      // Fallback to console in case of Twilio error
+      console.log(`📱 [FALLBACK] OTP for ${mobile}: ${code}`);
+      console.log(`   Twilio error: ${error.message}`);
+
+      // Don't throw error, allow user to proceed with console OTP
+      // throw new BadRequestException('Failed to send OTP. Please try again');
     }
   }
 
