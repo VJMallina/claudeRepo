@@ -1,0 +1,1100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="PiggySave API Documentation - Comprehensive REST API documentation for developers">
+    <title>API Documentation - PiggySave</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-wrapper">
+                <a href="index.html" class="logo">
+                    <div class="logo-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="40" height="40">
+                            <defs>
+                                <linearGradient id="navCoinGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" style="stop-color:#70B2B9;stop-opacity:1" />
+                                    <stop offset="100%" style="stop-color:#016B61;stop-opacity:1" />
+                                </linearGradient>
+                                <linearGradient id="navArrowGradient" x1="0%" y1="100%" x2="100%" y2="0%">
+                                    <stop offset="0%" style="stop-color:#9ECFD4;stop-opacity:1" />
+                                    <stop offset="100%" style="stop-color:#70B2B9;stop-opacity:1" />
+                                </linearGradient>
+                            </defs>
+                            <circle cx="100" cy="100" r="75" fill="url(#navCoinGradient)" opacity="0.95"/>
+                            <circle cx="100" cy="100" r="70" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="2"/>
+                            <g transform="translate(100, 100)">
+                                <path d="M -25 -30 L 15 -30" stroke="#ffffff" stroke-width="5" stroke-linecap="round"/>
+                                <path d="M -25 -15 L 15 -15" stroke="#ffffff" stroke-width="5" stroke-linecap="round"/>
+                                <path d="M -20 -30 Q 10 -30 10 -5 Q 10 10 -5 15 L 20 35"
+                                      stroke="#ffffff" stroke-width="5" stroke-linecap="round" fill="none"/>
+                            </g>
+                            <g transform="translate(150, 50)">
+                                <path d="M -10 20 L 10 0 L 30 -20"
+                                      stroke="url(#navArrowGradient)" stroke-width="6" stroke-linecap="round"
+                                      stroke-linejoin="round" fill="none"/>
+                                <polygon points="30,-20 25,-10 20,-20 30,-20" fill="url(#navArrowGradient)"/>
+                            </g>
+                        </svg>
+                    </div>
+                    <span class="logo-text">PiggySave</span>
+                </a>
+                <ul class="nav-menu">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="index.html#features">Features</a></li>
+                    <li><a href="index.html#how-it-works">How It Works</a></li>
+                    <li><a href="index.html#integrations">Integrations</a></li>
+                    <li><a href="developers.html" class="active">API Docs</a></li>
+                    <li><a href="index.html#download" class="btn-primary">Download App</a></li>
+                    <li><button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">
+                        <span class="theme-icon">🌙</span>
+                    </button></li>
+                </ul>
+                <div class="mobile-menu-toggle">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section for Developers -->
+    <section class="hero developers-hero">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <h1 class="hero-title">🚀 <span class="gradient-text">API Documentation</span></h1>
+                    <p class="hero-subtitle">Comprehensive REST API documentation for integrating with PiggySave. Build powerful financial applications with our secure and scalable APIs.</p>
+                    <div class="hero-stats">
+                        <div class="stat">
+                            <span class="stat-value">98+</span>
+                            <span class="stat-label">API Endpoints</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-value">12</span>
+                            <span class="stat-label">API Modules</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-value">JWT</span>
+                            <span class="stat-label">Authentication</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- For Developers Section -->
+    <section id="developers" class="developers">
+        <div class="container">
+            <div class="api-overview">
+                <div class="api-stats">
+                    <div class="api-stat">
+                        <strong>98+</strong>
+                        <span>API Endpoints</span>
+                    </div>
+                    <div class="api-stat">
+                        <strong>12</strong>
+                        <span>Modules</span>
+                    </div>
+                    <div class="api-stat">
+                        <strong>RESTful</strong>
+                        <span>Architecture</span>
+                    </div>
+                    <div class="api-stat">
+                        <strong>JWT</strong>
+                        <span>Authentication</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="api-categories">
+                <!-- Authentication APIs -->
+                <div class="api-category">
+                    <div class="category-header">
+                        <h3>🔐 Authentication (11 endpoints)</h3>
+                        <button class="toggle-btn">▼</button>
+                    </div>
+                    <div class="category-content">
+                        <div class="api-endpoint">
+                            <div class="endpoint-header">
+                                <span class="method post">POST</span>
+                                <code>/auth/register</code>
+                            </div>
+                            <p>Register a new user with mobile number</p>
+                            <div class="endpoint-details">
+                                <strong>Request:</strong> <code>{ mobileNumber: string }</code><br>
+                                <strong>Response:</strong> <code>{ userId: string, otpSent: boolean }</code>
+                            </div>
+                        </div>
+
+                        <div class="api-endpoint">
+                            <div class="endpoint-header">
+                                <span class="method post">POST</span>
+                                <code>/auth/verify-otp</code>
+                            </div>
+                            <p>Verify OTP for registration or login</p>
+                            <div class="endpoint-details">
+                                <strong>Request:</strong> <code>{ userId: string, otp: string }</code><br>
+                                <strong>Response:</strong> <code>{ accessToken: string, refreshToken: string }</code>
+                            </div>
+                        </div>
+
+                        <div class="api-endpoint">
+                            <div class="endpoint-header">
+                                <span class="method post">POST</span>
+                                <code>/auth/login/pin</code>
+                            </div>
+                            <p>Login with PIN code</p>
+                            <div class="endpoint-details">
+                                <strong>Request:</strong> <code>{ mobileNumber: string, pin: string }</code><br>
+                                <strong>Response:</strong> <code>{ accessToken: string, refreshToken: string }</code>
+                            </div>
+                        </div>
+
+                        <div class="api-endpoint">
+                            <div class="endpoint-header">
+                                <span class="method post">POST</span>
+                                <code>/auth/login/otp</code>
+                            </div>
+                            <p>Request OTP for login</p>
+                            <div class="endpoint-details">
+                                <strong>Request:</strong> <code>{ mobileNumber: string }</code><br>
+                                <strong>Response:</strong> <code>{ otpSent: boolean }</code>
+                            </div>
+                        </div>
+
+                        <div class="api-endpoint">
+                            <div class="endpoint-header">
+                                <span class="method post">POST</span>
+                                <code>/auth/refresh-token</code>
+                            </div>
+                            <p>Refresh access token using refresh token</p>
+                            <div class="endpoint-details">
+                                <strong>Auth:</strong> Bearer Token<br>
+                                <strong>Response:</strong> <code>{ accessToken: string }</code>
+                            </div>
+                        </div>
+
+                        <div class="api-endpoint">
+                            <div class="endpoint-header">
+                                <span class="method get">GET</span>
+                                <code>/auth/me</code>
+                            </div>
+                            <p>Get current authenticated user details</p>
+                            <div class="endpoint-details">
+                                <strong>Auth:</strong> Bearer Token<br>
+                                <strong>Response:</strong> User object with profile and KYC status
+                            </div>
+                        </div>
+
+                        <div class="api-endpoint">
+                            <div class="endpoint-header">
+                                <span class="method post">POST</span>
+                                <code>/auth/setup-pin</code>
+                            </div>
+                            <p>Setup or update PIN for quick login</p>
+                        </div>
+
+                        <div class="api-endpoint">
+                            <div class="endpoint-header">
+                                <span class="method post">POST</span>
+                                <code>/auth/enable-biometric</code>
+                            </div>
+                            <p>Enable biometric authentication</p>
+                        </div>
+
+                        <div class="api-endpoint">
+                            <div class="endpoint-header">
+                                <span class="method post">POST</span>
+                                <code>/auth/logout</code>
+                            </div>
+                            <p>Logout and invalidate tokens</p>
+                        </div>
+
+                        <div class="api-endpoint">
+                            <div class="endpoint-header">
+                                <span class="method post">POST</span>
+                                <code>/auth/forgot-pin</code>
+                            </div>
+                            <p>Reset PIN via OTP verification</p>
+                        </div>
+
+                        <div class="api-endpoint">
+                            <div class="endpoint-header">
+                                <span class="method post">POST</span>
+                                <code>/auth/change-mobile</code>
+                            </div>
+                            <p>Change registered mobile number</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- KYC APIs -->
+                <div class="api-category">
+                    <div class="category-header">
+                        <h3>✅ KYC Verification (9 endpoints)</h3>
+                        <button class="toggle-btn">▼</button>
+                    </div>
+                    <div class="category-content">
+                        <div class="api-endpoint">
+                            <div class="endpoint-header">
+                                <span class="method get">GET</span>
+                                <code>/kyc/status</code>
+                            </div>
+                            <p>Get current KYC level and completion status</p>
+                            <div class="endpoint-details">
+                                <strong>Auth:</strong> Bearer Token<br>
+                                <strong>Response:</strong> <code>{ level: 0|1|2, status: string, completedSteps: [] }</code>
+                            </div>
+                        </div>
+
+                        <div class="api-endpoint">
+                            <div class="endpoint-header">
+                                <span class="method post">POST</span>
+                                <code>/kyc/verify-pan</code>
+                            </div>
+                            <p>Verify PAN card with Income Tax Department</p>
+                            <div class="endpoint-details">
+                                <strong>Request:</strong> <code>{ panNumber: string, name: string, dob: string }</code><br>
+                                <strong>Response:</strong> Verification result and KYC level update
+                            </div>
+                        </div>
+
+                        <div class="api-endpoint">
+                            <div class="endpoint-header">
+                                <span class="method post">POST</span>
+                                <code>/kyc/verify-aadhaar/initiate</code>
+                            </div>
+                            <p>Initiate Aadhaar verification (sends OTP)</p>
+                            <div class="endpoint-details">
+                                <strong>Request:</strong> <code>{ aadhaarNumber: string }</code><br>
+                                <strong>Response:</strong> <code>{ requestId: string, otpSent: boolean }</code>
+                            </div>
+                        </div>
+
+                        <div class="api-endpoint">
+                            <div class="endpoint-header">
+                                <span class="method post">POST</span>
+                                <code>/kyc/verify-aadhaar/complete</code>
+                            </div>
+                            <p>Complete Aadhaar verification with OTP</p>
+                            <div class="endpoint-details">
+                                <strong>Request:</strong> <code>{ requestId: string, otp: string }</code><br>
+                                <strong>Response:</strong> Verified Aadhaar details and address
+                            </div>
+                        </div>
+
+                        <div class="api-endpoint">
+                            <div class="endpoint-header">
+                                <span class="method post">POST</span>
+                                <code>/kyc/verify-bank</code>
+                            </div>
+                            <p>Verify bank account with penny drop test</p>
+                            <div class="endpoint-details">
+                                <strong>Request:</strong> <code>{ accountNumber: string, ifsc: string, name: string }</code>
+                            </div>
+                        </div>
+
+                        <div class="api-endpoint">
+                            <div class="endpoint-header">
+                                <span class="method post">POST</span>
+                                <code>/kyc/verify-liveness</code>
+                            </div>
+                            <p>Face liveness detection for Level 2 KYC</p>
+                            <div class="endpoint-details">
+                                <strong>Request:</strong> Image/video file for face verification<br>
+                                <strong>Response:</strong> Liveness check result and face match score
+                            </div>
+                        </div>
+
+                        <div class="api-endpoint">
+                            <div class="endpoint-header">
+                                <span class="method post">POST</span>
+                                <code>/kyc/upload-document</code>
+                            </div>
+                            <p>Upload KYC supporting documents</p>
+                        </div>
+
+                        <div class="api-endpoint">
+                            <div class="endpoint-header">
+                                <span class="method get">GET</span>
+                                <code>/kyc/documents</code>
+                            </div>
+                            <p>Get list of uploaded KYC documents</p>
+                        </div>
+
+                        <div class="api-endpoint">
+                            <div class="endpoint-header">
+                                <span class="method get">GET</span>
+                                <code>/kyc/limits</code>
+                            </div>
+                            <p>Get transaction limits based on KYC level</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Savings APIs -->
+                <div class="api-category">
+                    <div class="category-header">
+                        <h3>💰 Savings & Auto-Save (14 endpoints)</h3>
+                        <button class="toggle-btn">▼</button>
+                    </div>
+                    <div class="category-content">
+                        <div class="api-endpoint">
+                            <div class="endpoint-header">
+                                <span class="method get">GET</span>
+                                <code>/savings/wallet</code>
+                            </div>
+                            <p>Get savings wallet balance and details</p>
+                            <div class="endpoint-details">
+                                <strong>Auth:</strong> Bearer Token<br>
+                                <strong>Response:</strong> <code>{ balance: number, totalSaved: number, interest: number }</code>
+                            </div>
+                        </div>
+
+                        <div class="api-endpoint">
+                            <div class="endpoint-header">
+                                <span class="method get">GET</span>
+                                <code>/savings/config</code>
+                            </div>
+                            <p>Get auto-save configuration</p>
+                            <div class="endpoint-details">
+                                <strong>Response:</strong> <code>{ percentage: number, roundUp: boolean, minThreshold: number }</code>
+                            </div>
+                        </div>
+
+                        <div class="api-endpoint">
+                            <div class="endpoint-header">
+                                <span class="method put">PUT</span>
+                                <code>/savings/config</code>
+                            </div>
+                            <p>Update auto-save settings</p>
+                            <div class="endpoint-details">
+                                <strong>Request:</strong> <code>{ percentage: 1-100, roundUp: boolean, enabled: boolean }</code>
+                            </div>
+                        </div>
+
+                        <div class="api-endpoint">
+                            <div class="endpoint-header">
+                                <span class="method post">POST</span>
+                                <code>/savings/deposit</code>
+                            </div>
+                            <p>Manual deposit to savings wallet</p>
+                            <div class="endpoint-details">
+                                <strong>Request:</strong> <code>{ amount: number, paymentMethod: string }</code>
+                            </div>
+                        </div>
+
+                        <div class="api-endpoint">
+                            <div class="endpoint-header">
+                                <span class="method post">POST</span>
+                                <code>/savings/withdraw</code>
+                            </div>
+                            <p>Withdraw from savings to bank account</p>
+                            <div class="endpoint-details">
+                                <strong>Request:</strong> <code>{ amount: number, bankAccountId: string }</code>
+                            </div>
+                        </div>
+
+                        <div class="api-endpoint">
+                            <div class="endpoint-header">
+                                <span class="method get">GET</span>
+                                <code>/savings/transactions</code>
+                            </div>
+                            <p>Get savings transaction history with filters</p>
+                            <div class="endpoint-details">
+                                <strong>Query:</strong> <code>?type=deposit|withdraw&amp;from=date&amp;to=date</code>
+                            </div>
+                        </div>
+
+                        <div class="api-endpoint">
+                            <div class="endpoint-header">
+                                <span class="method get">GET</span>
+                                <code>/savings/goals</code>
+                            </div>
+                            <p>List all savings goals</p>
+                        </div>
+
+                        <div class="api-endpoint">
+                            <div class="endpoint-header">
+                                <span class="method post">POST</span>
+                                <code>/savings/goals</code>
+                            </div>
+                            <p>Create new savings goal</p>
+                            <div class="endpoint-details">
+                                <strong>Request:</strong> <code>{ name: string, targetAmount: number, deadline: date }</code>
+                            </div>
+                        </div>
+
+                        <div class="api-endpoint">
+                            <div class="endpoint-header">
+                                <span class="method put">PUT</span>
+                                <code>/savings/goals/:id</code>
+                            </div>
+                            <p>Update savings goal</p>
+                        </div>
+
+                        <div class="api-endpoint">
+                            <div class="endpoint-header">
+                                <span class="method delete">DELETE</span>
+                                <code>/savings/goals/:id</code>
+                            </div>
+                            <p>Delete savings goal</p>
+                        </div>
+
+                        <div class="api-endpoint">
+                            <div class="endpoint-header">
+                                <span class="method get">GET</span>
+                                <code>/savings/auto-invest/rules</code>
+                            </div>
+                            <p>Get all SIP auto-invest rules</p>
+                            <div class="endpoint-details">
+                                <strong>Response:</strong> List of active and paused SIP rules
+                            </div>
+                        </div>
+
+                        <div class="api-endpoint">
+                            <div class="endpoint-header">
+                                <span class="method post">POST</span>
+                                <code>/savings/auto-invest/rules</code>
+                            </div>
+                            <p>Create new SIP rule</p>
+                            <div class="endpoint-details">
+                                <strong>Request:</strong> <code>{ productId: string, trigger: "threshold"|"scheduled", amount: number }</code>
+                            </div>
+                        </div>
+
+                        <div class="api-endpoint">
+                            <div class="endpoint-header">
+                                <span class="method put">PUT</span>
+                                <code>/savings/auto-invest/rules/:id</code>
+                            </div>
+                            <p>Update or pause/resume SIP rule</p>
+                        </div>
+
+                        <div class="api-endpoint">
+                            <div class="endpoint-header">
+                                <span class="method delete">DELETE</span>
+                                <code>/savings/auto-invest/rules/:id</code>
+                            </div>
+                            <p>Delete SIP rule</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Investments APIs -->
+                <div class="api-category">
+                    <div class="category-header">
+                        <h3>📈 Investments (13 endpoints)</h3>
+                        <button class="toggle-btn">▼</button>
+                    </div>
+                    <div class="category-content">
+                        <div class="api-endpoint">
+                            <div class="endpoint-header">
+                                <span class="method get">GET</span>
+                                <code>/investments/products</code>
+                            </div>
+                            <p>List all available investment products</p>
+                            <div class="endpoint-details">
+                                <strong>Query:</strong> <code>?category=equity|debt|hybrid&amp;risk=low|medium|high</code><br>
+                                <strong>Response:</strong> Array of investment products with NAV and returns
+                            </div>
+                        </div>
+
+                        <div class="api-endpoint">
+                            <div class="endpoint-header">
+                                <span class="method get">GET</span>
+                                <code>/investments/products/:id</code>
+                            </div>
+                            <p>Get detailed information about specific product</p>
+                        </div>
+
+                        <div class="api-endpoint">
+                            <div class="endpoint-header">
+                                <span class="method post">POST</span>
+                                <code>/investments/purchase</code>
+                            </div>
+                            <p>Purchase investment from savings wallet</p>
+                            <div class="endpoint-details">
+                                <strong>Request:</strong> <code>{ productId: string, amount: number, goalId?: string }</code><br>
+                                <strong>Response:</strong> Purchase confirmation with units allocated
+                            </div>
+                        </div>
+
+                        <div class="api-endpoint">
+                            <div class="endpoint-header">
+                                <span class="method post">POST</span>
+                                <code>/investments/redeem</code>
+                            </div>
+                            <p>Redeem/sell investment back to savings wallet</p>
+                            <div class="endpoint-details">
+                                <strong>Request:</strong> <code>{ investmentId: string, units?: number, amount?: number }</code>
+                            </div>
+                        </div>
+
+                        <div class="api-endpoint">
+                            <div class="endpoint-header">
+                                <span class="method get">GET</span>
+                                <code>/investments/portfolio</code>
+                            </div>
+                            <p>Get complete investment portfolio overview</p>
+                            <div class="endpoint-details">
+                                <strong>Response:</strong> <code>{ totalValue: number, invested: number, returns: number, xirr: number }</code>
+                            </div>
+                        </div>
+
+                        <div class="api-endpoint">
+                            <div class="endpoint-header">
+                                <span class="method get">GET</span>
+                                <code>/investments/holdings</code>
+                            </div>
+                            <p>Get list of all holdings with current values</p>
+                        </div>
+
+                        <div class="api-endpoint">
+                            <div class="endpoint-header">
+                                <span class="method get">GET</span>
+                                <code>/investments/:id/transactions</code>
+                            </div>
+                            <p>Get transaction history for specific investment</p>
+                        </div>
+
+                        <div class="api-endpoint">
+                            <div class="endpoint-header">
+                                <span class="method get">GET</span>
+                                <code>/investments/:id/performance</code>
+                            </div>
+                            <p>Get performance metrics and historical NAV</p>
+                        </div>
+
+                        <div class="api-endpoint">
+                            <div class="endpoint-header">
+                                <span class="method post">POST</span>
+                                <code>/investments/nav/update</code>
+                            </div>
+                            <p>Update NAV for products (Admin only)</p>
+                            <div class="endpoint-details">
+                                <strong>Auth:</strong> Admin Bearer Token<br>
+                                <strong>Request:</strong> <code>{ productId: string, nav: number, date: string }</code>
+                            </div>
+                        </div>
+
+                        <div class="api-endpoint">
+                            <div class="endpoint-header">
+                                <span class="method get">GET</span>
+                                <code>/investments/recommended</code>
+                            </div>
+                            <p>Get personalized investment recommendations</p>
+                        </div>
+
+                        <div class="api-endpoint">
+                            <div class="endpoint-header">
+                                <span class="method get">GET</span>
+                                <code>/investments/categories</code>
+                            </div>
+                            <p>Get investment product categories</p>
+                        </div>
+
+                        <div class="api-endpoint">
+                            <div class="endpoint-header">
+                                <span class="method post">POST</span>
+                                <code>/investments/switch</code>
+                            </div>
+                            <p>Switch from one investment to another</p>
+                        </div>
+
+                        <div class="api-endpoint">
+                            <div class="endpoint-header">
+                                <span class="method get">GET</span>
+                                <code>/investments/tax-statement</code>
+                            </div>
+                            <p>Get investment gains for tax reporting</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Payments APIs -->
+                <div class="api-category">
+                    <div class="category-header">
+                        <h3>💳 Payments & UPI (5 endpoints)</h3>
+                        <button class="toggle-btn">▼</button>
+                    </div>
+                    <div class="category-content">
+                        <div class="api-endpoint">
+                            <div class="endpoint-header">
+                                <span class="method post">POST</span>
+                                <code>/payments/create-order</code>
+                            </div>
+                            <p>Create Razorpay order for payment</p>
+                            <div class="endpoint-details">
+                                <strong>Request:</strong> <code>{ amount: number, currency: "INR", purpose: string }</code><br>
+                                <strong>Response:</strong> <code>{ orderId: string, amount: number, currency: string }</code>
+                            </div>
+                        </div>
+
+                        <div class="api-endpoint">
+                            <div class="endpoint-header">
+                                <span class="method post">POST</span>
+                                <code>/payments/verify</code>
+                            </div>
+                            <p>Verify Razorpay payment signature</p>
+                            <div class="endpoint-details">
+                                <strong>Request:</strong> <code>{ orderId: string, paymentId: string, signature: string }</code><br>
+                                <strong>Note:</strong> Triggers auto-save if configured
+                            </div>
+                        </div>
+
+                        <div class="api-endpoint">
+                            <div class="endpoint-header">
+                                <span class="method get">GET</span>
+                                <code>/payments/transactions</code>
+                            </div>
+                            <p>Get payment transaction history</p>
+                            <div class="endpoint-details">
+                                <strong>Query:</strong> <code>?status=success|failed&amp;from=date&amp;to=date</code>
+                            </div>
+                        </div>
+
+                        <div class="api-endpoint">
+                            <div class="endpoint-header">
+                                <span class="method get">GET</span>
+                                <code>/payments/transactions/:id</code>
+                            </div>
+                            <p>Get specific payment transaction details</p>
+                        </div>
+
+                        <div class="api-endpoint">
+                            <div class="endpoint-header">
+                                <span class="method get">GET</span>
+                                <code>/payments/stats</code>
+                            </div>
+                            <p>Get payment statistics and analytics</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Analytics APIs -->
+                <div class="api-category">
+                    <div class="category-header">
+                        <h3>📊 Analytics (6 endpoints)</h3>
+                        <button class="toggle-btn">▼</button>
+                    </div>
+                    <div class="category-content">
+                        <div class="api-endpoint">
+                            <div class="endpoint-header">
+                                <span class="method get">GET</span>
+                                <code>/analytics/dashboard</code>
+                            </div>
+                            <p>Get comprehensive dashboard analytics</p>
+                            <div class="endpoint-details">
+                                <strong>Response:</strong> Savings trends, investment performance, goal progress
+                            </div>
+                        </div>
+
+                        <div class="api-endpoint">
+                            <div class="endpoint-header">
+                                <span class="method get">GET</span>
+                                <code>/analytics/savings-trends</code>
+                            </div>
+                            <p>Get savings pattern analysis</p>
+                            <div class="endpoint-details">
+                                <strong>Query:</strong> <code>?period=week|month|year</code>
+                            </div>
+                        </div>
+
+                        <div class="api-endpoint">
+                            <div class="endpoint-header">
+                                <span class="method get">GET</span>
+                                <code>/analytics/spending-analysis</code>
+                            </div>
+                            <p>Get category-wise spending breakdown</p>
+                        </div>
+
+                        <div class="api-endpoint">
+                            <div class="endpoint-header">
+                                <span class="method get">GET</span>
+                                <code>/analytics/investment-performance</code>
+                            </div>
+                            <p>Get detailed investment performance metrics</p>
+                            <div class="endpoint-details">
+                                <strong>Response:</strong> XIRR, absolute returns, benchmark comparison
+                            </div>
+                        </div>
+
+                        <div class="api-endpoint">
+                            <div class="endpoint-header">
+                                <span class="method get">GET</span>
+                                <code>/analytics/goal-progress</code>
+                            </div>
+                            <p>Track progress towards savings goals</p>
+                        </div>
+
+                        <div class="api-endpoint">
+                            <div class="endpoint-header">
+                                <span class="method get">GET</span>
+                                <code>/analytics/export</code>
+                            </div>
+                            <p>Export analytics data as CSV/Excel</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Other Categories (collapsed by default) -->
+                <div class="api-category">
+                    <div class="category-header">
+                        <h3>👤 Users (4 endpoints)</h3>
+                        <button class="toggle-btn">▼</button>
+                    </div>
+                    <div class="category-content">
+                        <div class="api-endpoint">
+                            <div class="endpoint-header">
+                                <span class="method get">GET</span>
+                                <code>/users/profile</code>
+                            </div>
+                            <p>Get user profile information</p>
+                        </div>
+                        <div class="api-endpoint">
+                            <div class="endpoint-header">
+                                <span class="method put">PUT</span>
+                                <code>/users/profile</code>
+                            </div>
+                            <p>Update user profile</p>
+                        </div>
+                        <div class="api-endpoint">
+                            <div class="endpoint-header">
+                                <span class="method put">PUT</span>
+                                <code>/users/settings</code>
+                            </div>
+                            <p>Update app settings and preferences</p>
+                        </div>
+                        <div class="api-endpoint">
+                            <div class="endpoint-header">
+                                <span class="method delete">DELETE</span>
+                                <code>/users/account</code>
+                            </div>
+                            <p>Delete user account (with verification)</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="api-category">
+                    <div class="category-header">
+                        <h3>🏦 Bank Accounts (9 endpoints)</h3>
+                        <button class="toggle-btn">▼</button>
+                    </div>
+                    <div class="category-content">
+                        <div class="api-endpoint">
+                            <div class="endpoint-header">
+                                <span class="method get">GET</span>
+                                <code>/bank-accounts</code>
+                            </div>
+                            <p>List all linked bank accounts</p>
+                        </div>
+                        <div class="api-endpoint">
+                            <div class="endpoint-header">
+                                <span class="method post">POST</span>
+                                <code>/bank-accounts</code>
+                            </div>
+                            <p>Link new bank account</p>
+                        </div>
+                        <div class="api-endpoint">
+                            <div class="endpoint-header">
+                                <span class="method put">PUT</span>
+                                <code>/bank-accounts/:id/primary</code>
+                            </div>
+                            <p>Set as primary bank account</p>
+                        </div>
+                        <div class="api-endpoint">
+                            <div class="endpoint-header">
+                                <span class="method delete">DELETE</span>
+                                <code>/bank-accounts/:id</code>
+                            </div>
+                            <p>Remove bank account</p>
+                        </div>
+                        <div class="api-endpoint">
+                            <div class="endpoint-header">
+                                <span class="method post">POST</span>
+                                <code>/bank-accounts/:id/verify</code>
+                            </div>
+                            <p>Verify bank account with penny drop</p>
+                        </div>
+                        <div class="api-endpoint">
+                            <div class="endpoint-header">
+                                <span class="method get">GET</span>
+                                <code>/bank-accounts/:id/transactions</code>
+                            </div>
+                            <p>Get transaction history for account</p>
+                        </div>
+                        <div class="api-endpoint">
+                            <div class="endpoint-header">
+                                <span class="method get">GET</span>
+                                <code>/bank-accounts/ifsc/:code</code>
+                            </div>
+                            <p>Get bank details from IFSC code</p>
+                        </div>
+                        <div class="api-endpoint">
+                            <div class="endpoint-header">
+                                <span class="method post">POST</span>
+                                <code>/bank-accounts/mandate</code>
+                            </div>
+                            <p>Setup e-mandate for auto-debit</p>
+                        </div>
+                        <div class="api-endpoint">
+                            <div class="endpoint-header">
+                                <span class="method get">GET</span>
+                                <code>/bank-accounts/balance</code>
+                            </div>
+                            <p>Fetch bank balance (if linked via API)</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="api-category">
+                    <div class="category-header">
+                        <h3>🔔 Notifications (6 endpoints)</h3>
+                        <button class="toggle-btn">▼</button>
+                    </div>
+                    <div class="category-content">
+                        <div class="api-endpoint">
+                            <div class="endpoint-header">
+                                <span class="method get">GET</span>
+                                <code>/notifications</code>
+                            </div>
+                            <p>Get all notifications</p>
+                        </div>
+                        <div class="api-endpoint">
+                            <div class="endpoint-header">
+                                <span class="method get">GET</span>
+                                <code>/notifications/unread</code>
+                            </div>
+                            <p>Get unread notifications count</p>
+                        </div>
+                        <div class="api-endpoint">
+                            <div class="endpoint-header">
+                                <span class="method put">PUT</span>
+                                <code>/notifications/:id/read</code>
+                            </div>
+                            <p>Mark notification as read</p>
+                        </div>
+                        <div class="api-endpoint">
+                            <div class="endpoint-header">
+                                <span class="method put">PUT</span>
+                                <code>/notifications/read-all</code>
+                            </div>
+                            <p>Mark all notifications as read</p>
+                        </div>
+                        <div class="api-endpoint">
+                            <div class="endpoint-header">
+                                <span class="method delete">DELETE</span>
+                                <code>/notifications/:id</code>
+                            </div>
+                            <p>Delete notification</p>
+                        </div>
+                        <div class="api-endpoint">
+                            <div class="endpoint-header">
+                                <span class="method put">PUT</span>
+                                <code>/notifications/settings</code>
+                            </div>
+                            <p>Update notification preferences</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="api-category">
+                    <div class="category-header">
+                        <h3>📄 Statements & PDF (5 endpoints)</h3>
+                        <button class="toggle-btn">▼</button>
+                    </div>
+                    <div class="category-content">
+                        <div class="api-endpoint">
+                            <div class="endpoint-header">
+                                <span class="method get">GET</span>
+                                <code>/pdf/account-statement</code>
+                            </div>
+                            <p>Generate account statement PDF</p>
+                            <div class="endpoint-details">
+                                <strong>Query:</strong> <code>?from=date&amp;to=date&amp;type=daily|monthly</code><br>
+                                <strong>Response:</strong> PDF file download
+                            </div>
+                        </div>
+                        <div class="api-endpoint">
+                            <div class="endpoint-header">
+                                <span class="method get">GET</span>
+                                <code>/pdf/investment-receipt/:id</code>
+                            </div>
+                            <p>Generate investment purchase receipt</p>
+                        </div>
+                        <div class="api-endpoint">
+                            <div class="endpoint-header">
+                                <span class="method get">GET</span>
+                                <code>/pdf/tax-statement</code>
+                            </div>
+                            <p>Generate tax statement with gains/losses</p>
+                        </div>
+                        <div class="api-endpoint">
+                            <div class="endpoint-header">
+                                <span class="method get">GET</span>
+                                <code>/pdf/statements/history</code>
+                            </div>
+                            <p>Get list of previously generated statements</p>
+                        </div>
+                        <div class="api-endpoint">
+                            <div class="endpoint-header">
+                                <span class="method post">POST</span>
+                                <code>/pdf/email-statement</code>
+                            </div>
+                            <p>Email statement to registered email</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="api-category">
+                    <div class="category-header">
+                        <h3>🔗 Webhooks (1 endpoint)</h3>
+                        <button class="toggle-btn">▼</button>
+                    </div>
+                    <div class="category-content">
+                        <div class="api-endpoint">
+                            <div class="endpoint-header">
+                                <span class="method post">POST</span>
+                                <code>/webhooks/razorpay</code>
+                            </div>
+                            <p>Razorpay webhook for payment events</p>
+                            <div class="endpoint-details">
+                                <strong>Auth:</strong> Webhook signature verification<br>
+                                <strong>Events:</strong> payment.captured, payment.failed, order.paid
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="api-category">
+                    <div class="category-header">
+                        <h3>🎯 Onboarding (2 endpoints)</h3>
+                        <button class="toggle-btn">▼</button>
+                    </div>
+                    <div class="category-content">
+                        <div class="api-endpoint">
+                            <div class="endpoint-header">
+                                <span class="method get">GET</span>
+                                <code>/onboarding/status</code>
+                            </div>
+                            <p>Get onboarding completion status</p>
+                        </div>
+                        <div class="api-endpoint">
+                            <div class="endpoint-header">
+                                <span class="method post">POST</span>
+                                <code>/onboarding/complete</code>
+                            </div>
+                            <p>Mark onboarding as complete</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="logo">
+                        <div class="logo-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="40" height="40">
+                                <defs>
+                                    <linearGradient id="footerCoinGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                        <stop offset="0%" style="stop-color:#70B2B9;stop-opacity:1" />
+                                        <stop offset="100%" style="stop-color:#016B61;stop-opacity:1" />
+                                    </linearGradient>
+                                    <linearGradient id="footerArrowGradient" x1="0%" y1="100%" x2="100%" y2="0%">
+                                        <stop offset="0%" style="stop-color:#9ECFD4;stop-opacity:1" />
+                                        <stop offset="100%" style="stop-color:#70B2B9;stop-opacity:1" />
+                                    </linearGradient>
+                                </defs>
+                                <circle cx="100" cy="100" r="75" fill="url(#footerCoinGradient)" opacity="0.95"/>
+                                <circle cx="100" cy="100" r="70" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="2"/>
+                                <g transform="translate(100, 100)">
+                                    <path d="M -25 -30 L 15 -30" stroke="#ffffff" stroke-width="5" stroke-linecap="round"/>
+                                    <path d="M -25 -15 L 15 -15" stroke="#ffffff" stroke-width="5" stroke-linecap="round"/>
+                                    <path d="M -20 -30 Q 10 -30 10 -5 Q 10 10 -5 15 L 20 35"
+                                          stroke="#ffffff" stroke-width="5" stroke-linecap="round" fill="none"/>
+                                </g>
+                                <g transform="translate(150, 50)">
+                                    <path d="M -10 20 L 10 0 L 30 -20"
+                                          stroke="url(#footerArrowGradient)" stroke-width="6" stroke-linecap="round"
+                                          stroke-linejoin="round" fill="none"/>
+                                    <polygon points="30,-20 25,-10 20,-20 30,-20" fill="url(#footerArrowGradient)"/>
+                                </g>
+                            </svg>
+                        </div>
+                        <span class="logo-text">PiggySave</span>
+                    </div>
+                    <p>India's smartest savings and investment platform. Save automatically, invest intelligently.</p>
+                    <div class="social-links">
+                        <a href="#">Twitter</a>
+                        <a href="#">LinkedIn</a>
+                        <a href="#">Instagram</a>
+                    </div>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Product</h4>
+                    <ul>
+                        <li><a href="index.html#features">Features</a></li>
+                        <li><a href="index.html#how-it-works">How It Works</a></li>
+                        <li><a href="index.html#integrations">Integrations</a></li>
+                        <li><a href="index.html#screens">App Preview</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Developers</h4>
+                    <ul>
+                        <li><a href="developers.html">API Documentation</a></li>
+                        <li><a href="developers.html">Authentication</a></li>
+                        <li><a href="developers.html">SDKs & Libraries</a></li>
+                        <li><a href="developers.html">Webhooks</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Company</h4>
+                    <ul>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Careers</a></li>
+                        <li><a href="#">Press Kit</a></li>
+                        <li><a href="#">Blog</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Legal</h4>
+                    <ul>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Security</a></li>
+                        <li><a href="#">Compliance</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2025 PiggySave. All rights reserved.</p>
+                <p>🇮🇳 Proudly Made in India | Regulated by RBI & SEBI</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/script.js"></script>
+</body>
+</html>
