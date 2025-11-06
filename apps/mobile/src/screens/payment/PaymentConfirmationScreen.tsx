@@ -5,11 +5,13 @@ import {
   ScrollView,
   KeyboardAvoidingView,
   Platform,
+  Alert,
 } from 'react-native';
 import { Text, TextInput, Button, Card, Slider } from 'react-native-paper';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RouteProp } from '@react-navigation/native';
-import apiService from '@/services/api.service';
+import RazorpayService from '@/services/razorpay.service';
+import { useAuthStore } from '@/store/authStore';
 import { useOnboardingStore } from '@/store/onboardingStore';
 import { spacing, typography } from '@/theme/theme';
 
@@ -32,6 +34,7 @@ export default function PaymentConfirmationScreen({
   route,
 }: PaymentConfirmationScreenProps) {
   const { merchantUpiId, merchantName, amount: scannedAmount } = route.params;
+  const { user } = useAuthStore();
   const { permissions } = useOnboardingStore();
 
   const [amount, setAmount] = useState(scannedAmount?.toString() || '');
@@ -64,21 +67,54 @@ export default function PaymentConfirmationScreen({
       setIsLoading(true);
       setError('');
 
-      const response = await apiService.post('/payments', {
-        merchantUpiId,
+      // Check payment limits
+      const limitsCheck = await RazorpayService.checkPaymentLimits(paymentAmount * 100); // Convert to paise
+      if (!limitsCheck.allowed) {
+        setError(limitsCheck.message || 'Payment limit exceeded');
+        setIsLoading(false);
+        return;
+      }
+
+      // Process payment via Razorpay
+      const result = await RazorpayService.processPayment({
         amount: paymentAmount,
-        savingsPercentage,
+        merchantName,
+        merchantUpiId,
+        description: `Payment to ${merchantName}`,
+        userInfo: {
+          name: user?.name,
+          email: user?.email,
+          contact: user?.mobile,
+        },
       });
 
-      // Navigate to success screen or back to payments list
-      navigation.navigate('PaymentSuccess', {
-        payment: response,
-        savingsAmount: calculateSavings(),
-      });
+      if (result.verified && result.status === 'SUCCESS') {
+        // Navigate to success screen
+        navigation.navigate('PaymentSuccess', {
+          payment: {
+            id: result.paymentId,
+            orderId: result.orderId,
+            amount: paymentAmount,
+            status: 'SUCCESS',
+          },
+          savingsAmount: calculateSavings(),
+        });
+      } else {
+        setError(result.message || 'Payment verification failed');
+      }
     } catch (err: any) {
-      const errorMessage =
-        err.response?.data?.message || 'Payment failed. Please try again.';
-      setError(errorMessage);
+      console.error('Payment error:', err);
+
+      // Handle specific Razorpay errors
+      if (err.code === 2) {
+        Alert.alert('Payment Cancelled', 'You cancelled the payment');
+      } else if (err.code === 0) {
+        Alert.alert('Payment Failed', err.description || 'Payment failed. Please try again.');
+      } else {
+        const errorMessage =
+          err.response?.data?.message || err.message || 'Payment failed. Please try again.';
+        setError(errorMessage);
+      }
     } finally {
       setIsLoading(false);
     }

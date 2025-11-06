@@ -1,19 +1,100 @@
-import React, { useState } from 'react';
-import { View, StyleSheet, ScrollView } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, StyleSheet, ScrollView, Alert } from 'react-native';
 import { Text, Card, Button, Switch, List, Icon } from 'react-native-paper';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import SecurityService from '@/services/security.service';
 import { spacing, typography } from '../../theme/theme';
 
 type RootStackParamList = {
   SecuritySettings: undefined;
   ChangePin: undefined;
+  Setup2FA: undefined;
+  SessionManagement: undefined;
+  SecurityAlerts: undefined;
 };
 
 type SecuritySettingsScreenProps = NativeStackScreenProps<RootStackParamList, 'SecuritySettings'>;
 
 export default function SecuritySettingsScreen({ navigation }: SecuritySettingsScreenProps) {
-  const [biometricEnabled, setBiometricEnabled] = useState(false);
+  const [biometricAvailable, setBiometricAvailable] = useState(false);
+  const [biometricType, setBiometricType] = useState<string>('');
   const [twoFactorEnabled, setTwoFactorEnabled] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    loadSecurityStatus();
+  }, []);
+
+  const loadSecurityStatus = async () => {
+    try {
+      // Check 2FA status
+      const twoFAStatus = await SecurityService.get2FAStatus();
+      setTwoFactorEnabled(twoFAStatus.enabled);
+
+      // Check biometric availability
+      const biometricStatus = await SecurityService.isBiometricAvailable();
+      setBiometricAvailable(biometricStatus.available);
+      setBiometricType(biometricStatus.biometricType);
+    } catch (error) {
+      console.error('Failed to load security status:', error);
+    }
+  };
+
+  const handleToggleBiometric = async (value: boolean) => {
+    if (value) {
+      const result = await SecurityService.authenticateWithBiometric('Enable biometric authentication');
+      if (result.success) {
+        Alert.alert('Success', 'Biometric authentication enabled');
+      } else {
+        Alert.alert('Failed', result.error || 'Biometric authentication failed');
+      }
+    }
+  };
+
+  const handleToggle2FA = async (value: boolean) => {
+    if (value) {
+      navigation.navigate('Setup2FA');
+    } else {
+      Alert.prompt(
+        'Disable 2FA',
+        'Enter your 2FA code to disable',
+        async (code) => {
+          try {
+            setIsLoading(true);
+            await SecurityService.disable2FA(code);
+            setTwoFactorEnabled(false);
+            Alert.alert('Success', '2FA disabled');
+          } catch (error: any) {
+            Alert.alert('Error', error.message || 'Failed to disable 2FA');
+          } finally {
+            setIsLoading(false);
+          }
+        }
+      );
+    }
+  };
+
+  const handleLogoutAllDevices = async () => {
+    Alert.alert(
+      'Logout All Devices',
+      'Are you sure you want to logout from all other devices?',
+      [
+        { text: 'Cancel', style: 'cancel' },
+        {
+          text: 'Logout',
+          style: 'destructive',
+          onPress: async () => {
+            try {
+              await SecurityService.terminateAllOtherSessions();
+              Alert.alert('Success', 'All other sessions have been terminated');
+            } catch (error: any) {
+              Alert.alert('Error', error.message || 'Failed to logout devices');
+            }
+          },
+        },
+      ]
+    );
+  };
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
@@ -52,7 +133,7 @@ export default function SecuritySettingsScreen({ navigation }: SecuritySettingsS
                 </Text>
               </View>
             </View>
-            <Switch value={biometricEnabled} onValueChange={setBiometricEnabled} />
+            <Switch value={biometricAvailable} onValueChange={handleToggleBiometric} disabled={!biometricAvailable || isLoading} />
           </View>
         </Card.Content>
       </Card>
@@ -70,7 +151,7 @@ export default function SecuritySettingsScreen({ navigation }: SecuritySettingsS
                 </Text>
               </View>
             </View>
-            <Switch value={twoFactorEnabled} onValueChange={setTwoFactorEnabled} />
+            <Switch value={twoFactorEnabled} onValueChange={handleToggle2FA} disabled={isLoading} />
           </View>
         </Card.Content>
       </Card>
@@ -85,13 +166,15 @@ export default function SecuritySettingsScreen({ navigation }: SecuritySettingsS
             description="Manage logged-in devices"
             left={props => <List.Icon {...props} icon="devices" color="#6200EE" />}
             right={props => <List.Icon {...props} icon="chevron-right" />}
+            onPress={() => navigation.navigate('SessionManagement')}
             style={styles.listItem}
           />
 
           <Button
             mode="outlined"
             icon="logout"
-            onPress={() => {/* Logout all devices */}}
+            onPress={handleLogoutAllDevices}
+            disabled={isLoading}
             style={styles.logoutButton}
           >
             Logout All Devices
