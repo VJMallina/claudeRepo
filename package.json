@@ -15,8 +15,8 @@
     "build:mobile": "npm run build --workspace=apps/mobile",
     "test": "npm run test --workspaces",
     "lint": "npm run lint --workspaces",
-    "docker:up": "docker-compose up -d",
-    "docker:down": "docker-compose down",
+    "docker:up": "docker compose up -d",
+    "docker:down": "docker compose down",
     "db:migrate": "npm run migrate --workspace=services/api",
     "db:seed": "npm run seed --workspace=services/api"
   },
