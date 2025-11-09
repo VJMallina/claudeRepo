@@ -93,7 +93,14 @@ export class OtpService {
   }
 
   private generateRandomOtp(): string {
-    // Generate 6-digit OTP
+    const nodeEnv = this.configService.get('NODE_ENV');
+
+    // Use fixed OTP in development for easy testing
+    if (nodeEnv === 'development') {
+      return '222222';
+    }
+
+    // Generate random 6-digit OTP in production
     return Math.floor(100000 + Math.random() * 900000).toString();
   }
 

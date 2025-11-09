@@ -6,6 +6,7 @@ import {
   Matches,
   Length,
   IsUrl,
+  IsBoolean,
 } from 'class-validator';
 
 export class VerifyPanDto {
@@ -19,7 +20,11 @@ export class VerifyPanDto {
 
   @ApiProperty({ example: 'RAHUL KUMAR', description: 'Name as per PAN' })
   @IsString()
-  panName: string;
+  name: string;
+
+  @ApiProperty({ example: '1995-01-15', description: 'Date of birth as per PAN' })
+  @IsString()
+  dateOfBirth: string;
 }
 
 export class VerifyAadhaarDto {
@@ -30,6 +35,10 @@ export class VerifyAadhaarDto {
     message: 'Invalid Aadhaar number. Must be 12 digits',
   })
   aadhaarNumber: string;
+
+  @ApiProperty({ example: true, description: 'User consent for Aadhaar verification' })
+  @IsBoolean()
+  consent: boolean;
 }
 
 export class VerifyAadhaarOtpDto {
@@ -49,7 +58,15 @@ export class VerifyLivenessDto {
     description: 'URL of the selfie image for liveness detection'
   })
   @IsUrl()
-  selfieUrl: string;
+  selfieImage: string;
+
+  @ApiProperty({ example: '123456789012', description: '12-digit Aadhaar number for face matching' })
+  @IsString()
+  @Length(12, 12)
+  @Matches(/^[0-9]{12}$/, {
+    message: 'Invalid Aadhaar number. Must be 12 digits',
+  })
+  aadhaarNumber: string;
 
   @ApiPropertyOptional({
     description: 'Optional: Video URL for advanced liveness detection',

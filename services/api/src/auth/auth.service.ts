@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException, BadRequestException, ConflictException } from '@nestjs/common';
+import { Injectable, UnauthorizedException, BadRequestException, ConflictException, NotFoundException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
@@ -75,7 +75,7 @@ export class AuthService {
     }
 
     // Calculate age
-    const age = this.calculateAge(new Date(dto.dob));
+    const age = this.calculateAge(new Date(dto.dateOfBirth));
     if (age < 18) {
       throw new BadRequestException('You must be at least 18 years old');
     }
@@ -86,7 +86,7 @@ export class AuthService {
         mobile,
         email: dto.email,
         name: dto.name,
-        dob: new Date(dto.dob),
+        dob: new Date(dto.dateOfBirth),
         profilePhoto: dto.profilePhoto,
         pin: '', // Will be set in next step
         kycStatus: 'PENDING',
@@ -337,5 +337,28 @@ export class AuthService {
     }
 
     return false;
+  }
+
+  // Decode JWT token without validation (for temp tokens)
+  decodeToken(token: string): any {
+    try {
+      return this.jwtService.decode(token);
+    } catch (error) {
+      throw new UnauthorizedException('Invalid token');
+    }
+  }
+
+  // Get user ID by mobile number
+  async getUserIdByMobile(mobile: string): Promise<string> {
+    const user = await this.prisma.user.findUnique({
+      where: { mobile },
+      select: { id: true },
+    });
+
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    return user.id;
   }
 }

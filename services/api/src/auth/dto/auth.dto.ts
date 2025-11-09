@@ -34,12 +34,33 @@ export class CreateProfileDto {
 
   @ApiProperty({ example: '1995-01-15' })
   @IsDateString()
-  dob: string;
+  dateOfBirth: string;
 
   @ApiProperty({ example: 'https://example.com/photo.jpg', required: false })
   @IsOptional()
   @IsString()
   profilePhoto?: string;
+
+  @ApiProperty({ example: '123 Main Street, Apartment 4B', required: false })
+  @IsOptional()
+  @IsString()
+  address?: string;
+
+  @ApiProperty({ example: '400001', required: false })
+  @IsOptional()
+  @IsString()
+  @Length(6, 6)
+  pincode?: string;
+
+  @ApiProperty({ example: 'Mumbai', required: false })
+  @IsOptional()
+  @IsString()
+  city?: string;
+
+  @ApiProperty({ example: 'Maharashtra', required: false })
+  @IsOptional()
+  @IsString()
+  state?: string;
 }
 
 export class SetPinDto {

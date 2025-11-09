@@ -173,7 +173,7 @@ export class PaymentsService {
           status: 'SUCCESS',
           razorpayPaymentId: verifyPaymentDto.razorpayPaymentId,
           razorpaySignature: verifyPaymentDto.razorpaySignature,
-          paymentMethod: paymentDetails.method?.toUpperCase(),
+          paymentMethod: paymentDetails.method?.toUpperCase() as any,
           vpa: paymentDetails.vpa,
           upiTransactionId: paymentDetails.acquirer_data?.upi_transaction_id,
           utr: paymentDetails.acquirer_data?.rrn,

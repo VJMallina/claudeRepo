@@ -18,7 +18,7 @@ export class ProductResponseDto {
   expectedReturn: number;
 
   @ApiProperty({ example: 100 })
-  minInvestment: number;
+  minimumInvestment: number;
 
   @ApiProperty({ example: 0.5 })
   exitLoad: number;
@@ -76,13 +76,13 @@ export class InvestmentResponseDto {
   productId: string;
 
   @ApiProperty({ example: 5000 })
-  amountInvested: number;
+  investedAmount: number;
 
   @ApiProperty({ example: 44.44, description: 'Number of units' })
   units: number;
 
   @ApiProperty({ example: 1125.50, description: 'NAV at purchase' })
-  nav: number;
+  purchaseNav: number;
 
   @ApiProperty({ example: 5500, description: 'Current market value' })
   currentValue: number;
@@ -103,7 +103,7 @@ export class InvestmentResponseDto {
   redemptionDate?: Date;
 
   @ApiPropertyOptional({ type: ProductResponseDto })
-  product?: ProductResponseDto;
+  fund?: ProductResponseDto;
 
   @ApiProperty({ example: '2025-01-01T00:00:00Z' })
   createdAt: Date;

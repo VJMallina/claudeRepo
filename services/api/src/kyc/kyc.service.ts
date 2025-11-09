@@ -40,7 +40,8 @@ export class KycService {
   // ============================================
 
   async verifyPan(userId: string, verifyDto: VerifyPanDto): Promise<PanVerificationResponseDto> {
-    const { panNumber, panName } = verifyDto;
+    const { panNumber, name } = verifyDto;
+    const panName = name;
 
     // Check if PAN already exists for another user
     const existingKyc = await this.prisma.kycDocument.findFirst({
@@ -245,16 +246,39 @@ export class KycService {
     // Encrypt bank account number
     const encryptedAccountNumber = this.encryptBankAccount(accountNumber);
 
-    // Update KYC document
-    await this.prisma.kycDocument.update({
-      where: { userId },
-      data: {
-        bankAccountNumber: encryptedAccountNumber,
-        bankIfsc: ifscCode,
-        bankAccountName: accountHolderName,
-        bankVerified: true,
+    // Check if bank account already exists
+    const existingAccount = await this.prisma.bankAccount.findFirst({
+      where: {
+        userId,
+        accountNumber: encryptedAccountNumber,
       },
     });
+
+    if (existingAccount) {
+      // Update existing account
+      await this.prisma.bankAccount.update({
+        where: { id: existingAccount.id },
+        data: {
+          isVerified: true,
+          verificationMethod: 'PENNY_DROP',
+          verifiedAt: new Date(),
+        },
+      });
+    } else {
+      // Create new bank account
+      await this.prisma.bankAccount.create({
+        data: {
+          userId,
+          accountNumber: encryptedAccountNumber,
+          ifscCode,
+          accountHolderName,
+          isVerified: true,
+          isPrimary: true,
+          verificationMethod: 'PENNY_DROP',
+          verifiedAt: new Date(),
+        },
+      });
+    }
 
     // Update user KYC status
     await this.updateUserKycStatus(userId);
@@ -279,7 +303,8 @@ export class KycService {
     userId: string,
     verifyDto: VerifyLivenessDto,
   ): Promise<LivenessVerificationResponseDto> {
-    const { selfieUrl, videoUrl } = verifyDto;
+    const { selfieImage, videoUrl } = verifyDto;
+    const selfieUrl = selfieImage;
 
     // Get user details
     const user = await this.prisma.user.findUnique({
@@ -410,7 +435,10 @@ export class KycService {
   async getKycStatus(userId: string): Promise<KycStatusResponseDto> {
     const user = await this.prisma.user.findUnique({
       where: { id: userId },
-      include: { kycDocuments: true },
+      include: {
+        kycDocuments: true,
+        bankAccounts: true,
+      },
     });
 
     if (!user) {
@@ -418,11 +446,12 @@ export class KycService {
     }
 
     const kycDoc = user.kycDocuments[0];
+    const hasVerifiedBank = user.bankAccounts?.some(account => account.isVerified) || false;
 
     const verificationStatus = {
       panVerified: kycDoc?.panVerified || false,
       aadhaarVerified: kycDoc?.aadhaarVerified || false,
-      bankVerified: kycDoc?.bankVerified || false,
+      bankVerified: hasVerifiedBank,
       selfieVerified: kycDoc?.faceMatched || false,
     };
 

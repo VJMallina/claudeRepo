@@ -29,7 +29,7 @@ export class BankAccountResponseDto {
   isPrimary: boolean;
 
   @ApiProperty({ example: false })
-  isVerified: boolean;
+  verified: boolean;
 
   @ApiPropertyOptional({ example: 'PENNY_DROP' })
   verificationMethod?: string;

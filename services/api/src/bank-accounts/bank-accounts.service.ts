@@ -299,7 +299,7 @@ export class BankAccountsService {
       branchName: bankAccount.branchName,
       accountType: bankAccount.accountType,
       isPrimary: bankAccount.isPrimary,
-      isVerified: bankAccount.isVerified,
+      verified: bankAccount.isVerified,
       verificationMethod: bankAccount.verificationMethod,
       verifiedAt: bankAccount.verifiedAt,
       createdAt: bankAccount.createdAt,

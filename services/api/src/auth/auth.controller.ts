@@ -7,6 +7,7 @@ import {
   UseGuards,
   Request,
   Get,
+  UnauthorizedException,
 } from '@nestjs/common';
 import {
   ApiTags,
@@ -61,10 +62,16 @@ export class AuthController {
   @ApiResponse({ status: 201, description: 'Profile created successfully' })
   @ApiResponse({ status: 409, description: 'Email already exists' })
   async createProfile(@Request() req, @Body() dto: CreateProfileDto) {
-    // Extract mobile from temp token (decode JWT)
-    // For now, accepting mobile in body for simplicity
-    // In production, extract from JWT temp token
-    const mobile = req.body.mobile || '9876543210'; // TODO: Get from temp token
+    // Extract mobile from temp token
+    const token = req.headers.authorization?.replace('Bearer ', '');
+    if (!token) {
+      throw new UnauthorizedException('No token provided');
+    }
+    const decoded = this.authService.decodeToken(token);
+    if (!decoded || !decoded.mobile) {
+      throw new UnauthorizedException('Invalid token');
+    }
+    const mobile = decoded.mobile;
     return this.authService.createProfile(mobile, dto);
   }
 
@@ -73,8 +80,16 @@ export class AuthController {
   @ApiOperation({ summary: 'Set PIN for user account' })
   @ApiResponse({ status: 200, description: 'PIN set successfully', type: AuthResponseDto })
   async setPin(@Request() req, @Body() dto: SetPinDto): Promise<AuthResponseDto> {
-    // TODO: Get userId from temp token
-    const userId = req.body.userId; // Temporary
+    // Extract mobile from temp token and find user
+    const token = req.headers.authorization?.replace('Bearer ', '');
+    if (!token) {
+      throw new UnauthorizedException('No token provided');
+    }
+    const decoded = this.authService.decodeToken(token);
+    if (!decoded || !decoded.mobile) {
+      throw new UnauthorizedException('Invalid token');
+    }
+    const userId = await this.authService.getUserIdByMobile(decoded.mobile);
     return this.authService.setPin(userId, dto);
   }
 

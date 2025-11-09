@@ -18,7 +18,7 @@ export class NotificationResponseDto {
   message: string;
 
   @ApiProperty({ example: false })
-  isRead: boolean;
+  read: boolean;
 
   @ApiPropertyOptional({
     example: { transactionId: 'txn-123', amount: 1000 },

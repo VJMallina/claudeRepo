@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SaveInvest - Mobile Banking</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 400px;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .header {
+            background: #6200EE;
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 14px;
+        }
+
+        .content {
+            padding: 30px 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #6200EE;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            background: #6200EE;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background: #5300d6;
+        }
+
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .message {
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        .message.error {
+            background: #ffebee;
+            color: #c62828;
+            border: 1px solid #ef9a9a;
+        }
+
+        .message.success {
+            background: #e8f5e9;
+            color: #2e7d32;
+            border: 1px solid #a5d6a7;
+        }
+
+        .message.info {
+            background: #e3f2fd;
+            color: #1565c0;
+            border: 1px solid #90caf9;
+        }
+
+        .tabs {
+            display: flex;
+            border-bottom: 2px solid #e0e0e0;
+            margin-bottom: 20px;
+        }
+
+        .tab {
+            flex: 1;
+            padding: 12px;
+            text-align: center;
+            cursor: pointer;
+            background: none;
+            border: none;
+            border-bottom: 3px solid transparent;
+            color: #666;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .tab.active {
+            color: #6200EE;
+            border-bottom-color: #6200EE;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .link-button {
+            background: none;
+            color: #6200EE;
+            text-decoration: underline;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+
+        .response-box {
+            background: #f5f5f5;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 20px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .response-box pre {
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>SaveInvest</h1>
+            <p>Your Digital Banking Partner</p>
+        </div>
+
+        <div class="content">
+            <div class="tabs">
+                <button class="tab active" onclick="switchTab('register')">Register</button>
+                <button class="tab" onclick="switchTab('login')">Login</button>
+                <button class="tab" onclick="switchTab('profile')">Profile</button>
+            </div>
+
+            <div id="message"></div>
+
+            <!-- Register Tab -->
+            <div id="register" class="tab-content active">
+                <form onsubmit="register(event)">
+                    <div class="form-group">
+                        <label for="reg-phone">Phone Number</label>
+                        <input type="tel" id="reg-phone" placeholder="9876543210 or +919876543210" required>
+                    </div>
+                    <button type="submit">Send OTP</button>
+                </form>
+
+                <div id="otp-section" style="display:none; margin-top: 20px;">
+                    <div class="form-group">
+                        <label for="otp">Enter OTP</label>
+                        <input type="text" id="otp" placeholder="123456" maxlength="6">
+                    </div>
+                    <button onclick="verifyOTP()">Verify OTP</button>
+                </div>
+
+                <div id="profile-section" style="display:none; margin-top: 20px;">
+                    <div class="form-group">
+                        <label for="name">Full Name</label>
+                        <input type="text" id="name" placeholder="John Doe" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" placeholder="john@example.com" required>
+                    </div>
+                    <button onclick="createProfile()">Create Profile</button>
+                </div>
+
+                <div id="pin-section" style="display:none; margin-top: 20px;">
+                    <div class="form-group">
+                        <label for="pin">Set 4-digit PIN</label>
+                        <input type="password" id="pin" placeholder="1234" maxlength="4" required>
+                    </div>
+                    <button onclick="setPin()">Set PIN</button>
+                </div>
+            </div>
+
+            <!-- Login Tab -->
+            <div id="login" class="tab-content">
+                <form onsubmit="loginUser(event)">
+                    <div class="form-group">
+                        <label for="login-phone">Phone Number</label>
+                        <input type="tel" id="login-phone" placeholder="9876543210 or +919876543210" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="login-pin">PIN</label>
+                        <input type="password" id="login-pin" placeholder="1234" maxlength="6" required>
+                    </div>
+                    <button type="submit">Login</button>
+                </form>
+            </div>
+
+            <!-- Profile Tab -->
+            <div id="profile" class="tab-content">
+                <div class="message info">
+                    Please login to view your profile
+                </div>
+                <div id="profile-data"></div>
+                <button onclick="logout()" style="margin-top: 20px;">Logout</button>
+            </div>
+
+            <div id="response" class="response-box" style="display:none;">
+                <pre id="response-text"></pre>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:3000/api/v1';
+        let currentToken = '';
+        let currentUserId = '';
+
+        function switchTab(tabName) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+
+            // Show selected tab
+            document.getElementById(tabName).classList.add('active');
+            event.target.classList.add('active');
+
+            // Clear message
+            document.getElementById('message').innerHTML = '';
+        }
+
+        function showMessage(message, type = 'info') {
+            const msgDiv = document.getElementById('message');
+            msgDiv.className = `message ${type}`;
+            msgDiv.innerHTML = message;
+        }
+
+        function showResponse(data) {
+            const responseDiv = document.getElementById('response');
+            const responseText = document.getElementById('response-text');
+            responseDiv.style.display = 'block';
+            responseText.textContent = JSON.stringify(data, null, 2);
+        }
+
+        async function register(event) {
+            event.preventDefault();
+            let phone = document.getElementById('reg-phone').value;
+
+            // Remove country code and non-digits
+            phone = phone.replace(/\D/g, ''); // Remove all non-digits
+            if (phone.startsWith('91') && phone.length === 12) {
+                phone = phone.substring(2); // Remove +91 prefix
+            }
+
+            if (phone.length !== 10) {
+                showMessage('Please enter a valid 10-digit mobile number', 'error');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_URL}/auth/register`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ mobile: phone })
+                });
+
+                const data = await response.json();
+                showResponse(data);
+
+                if (response.ok) {
+                    showMessage('OTP sent successfully! Check the console/logs for the OTP.', 'success');
+                    document.getElementById('otp-section').style.display = 'block';
+                    currentUserId = data.userId;
+                } else {
+                    showMessage(data.message || 'Registration failed', 'error');
+                }
+            } catch (error) {
+                showMessage('Error: ' + error.message, 'error');
+            }
+        }
+
+        async function verifyOTP() {
+            const otp = document.getElementById('otp').value;
+            let mobile = document.getElementById('reg-phone').value;
+
+            // Remove country code and non-digits
+            mobile = mobile.replace(/\D/g, '');
+            if (mobile.startsWith('91') && mobile.length === 12) {
+                mobile = mobile.substring(2);
+            }
+
+            try {
+                const response = await fetch(`${API_URL}/auth/verify-otp`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        mobile: mobile,
+                        code: otp
+                    })
+                });
+
+                const data = await response.json();
+                showResponse(data);
+
+                if (response.ok) {
+                    showMessage('OTP verified! Now create your profile.', 'success');
+                    document.getElementById('otp-section').style.display = 'none';
+                    document.getElementById('profile-section').style.display = 'block';
+                    currentToken = data.accessToken;
+                } else {
+                    showMessage(data.message || 'OTP verification failed', 'error');
+                }
+            } catch (error) {
+                showMessage('Error: ' + error.message, 'error');
+            }
+        }
+
+        async function createProfile() {
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+
+            try {
+                const response = await fetch(`${API_URL}/auth/create-profile`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${currentToken}`
+                    },
+                    body: JSON.stringify({ name, email, dob: '2000-01-01' })
+                });
+
+                const data = await response.json();
+                showResponse(data);
+
+                if (response.ok) {
+                    showMessage('Profile created! Now set your PIN.', 'success');
+                    document.getElementById('profile-section').style.display = 'none';
+                    document.getElementById('pin-section').style.display = 'block';
+                } else {
+                    showMessage(data.message || 'Profile creation failed', 'error');
+                }
+            } catch (error) {
+                showMessage('Error: ' + error.message, 'error');
+            }
+        }
+
+        async function setPin() {
+            const pin = document.getElementById('pin').value;
+
+            if (pin.length !== 4) {
+                showMessage('PIN must be 4 digits', 'error');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_URL}/auth/set-pin`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${currentToken}`
+                    },
+                    body: JSON.stringify({ pin })
+                });
+
+                const data = await response.json();
+                showResponse(data);
+
+                if (response.ok) {
+                    showMessage('Registration complete! You can now login.', 'success');
+                    document.getElementById('pin-section').style.display = 'none';
+                    setTimeout(() => switchTab('login'), 2000);
+                } else {
+                    showMessage(data.message || 'Setting PIN failed', 'error');
+                }
+            } catch (error) {
+                showMessage('Error: ' + error.message, 'error');
+            }
+        }
+
+        async function loginUser(event) {
+            event.preventDefault();
+            let mobile = document.getElementById('login-phone').value;
+            const pin = document.getElementById('login-pin').value;
+
+            // Remove country code and non-digits
+            mobile = mobile.replace(/\D/g, '');
+            if (mobile.startsWith('91') && mobile.length === 12) {
+                mobile = mobile.substring(2);
+            }
+
+            if (mobile.length !== 10) {
+                showMessage('Please enter a valid 10-digit mobile number', 'error');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_URL}/auth/login/pin`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ mobile, pin })
+                });
+
+                const data = await response.json();
+                showResponse(data);
+
+                if (response.ok) {
+                    currentToken = data.accessToken;
+                    showMessage('Login successful!', 'success');
+                    setTimeout(() => {
+                        switchTab('profile');
+                        loadProfile();
+                    }, 1000);
+                } else {
+                    showMessage(data.message || 'Login failed', 'error');
+                }
+            } catch (error) {
+                showMessage('Error: ' + error.message, 'error');
+            }
+        }
+
+        async function loadProfile() {
+            if (!currentToken) {
+                showMessage('Please login first', 'error');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_URL}/auth/profile`, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${currentToken}`
+                    }
+                });
+
+                const data = await response.json();
+                showResponse(data);
+
+                if (response.ok) {
+                    const profileDiv = document.getElementById('profile-data');
+                    profileDiv.innerHTML = `
+                        <div style="background: #f5f5f5; padding: 15px; border-radius: 8px;">
+                            <h3 style="margin-bottom: 15px;">Profile Information</h3>
+                            <p><strong>Name:</strong> ${data.name || 'N/A'}</p>
+                            <p><strong>Email:</strong> ${data.email || 'N/A'}</p>
+                            <p><strong>Phone:</strong> ${data.phoneNumber || 'N/A'}</p>
+                            <p><strong>KYC Level:</strong> ${data.kycLevel || '0'}</p>
+                        </div>
+                    `;
+                } else {
+                    showMessage(data.message || 'Failed to load profile', 'error');
+                }
+            } catch (error) {
+                showMessage('Error: ' + error.message, 'error');
+            }
+        }
+
+        function logout() {
+            currentToken = '';
+            currentUserId = '';
+            document.getElementById('profile-data').innerHTML = '';
+            showMessage('Logged out successfully', 'success');
+            setTimeout(() => switchTab('register'), 1500);
+        }
+    </script>
+</body>
+</html>

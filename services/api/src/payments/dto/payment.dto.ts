@@ -5,6 +5,7 @@ import {
   IsString,
   IsOptional,
   Min,
+  Max,
   IsEnum,
   IsBoolean,
 } from 'class-validator';
@@ -24,6 +25,13 @@ export class CreatePaymentDto {
   @Min(1)
   @IsNotEmpty()
   amount: number;
+
+  @ApiProperty({ example: 10, description: 'Savings percentage (0-100)' })
+  @IsNumber()
+  @Min(0)
+  @Max(100)
+  @IsNotEmpty()
+  savingsPercentage: number;
 
   @ApiPropertyOptional({ example: 'merchant@upi', description: 'Merchant UPI ID' })
   @IsString()

@@ -186,7 +186,8 @@ export class InvestmentsService {
     userId: string,
     purchaseDto: PurchaseInvestmentDto,
   ): Promise<PurchaseResponseDto> {
-    const { productId, amount, description } = purchaseDto;
+    const { fundId, amount, description } = purchaseDto;
+    const productId = fundId;
 
     // Check KYC level - Investments require Level 2 (Full KYC)
     const user = await this.prisma.user.findUnique({

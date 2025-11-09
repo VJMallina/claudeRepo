@@ -11,9 +11,9 @@ import {
 import { InvestmentStatus } from '@prisma/client';
 
 export class PurchaseInvestmentDto {
-  @ApiProperty({ example: 'product-uuid-123', description: 'Investment product ID' })
+  @ApiProperty({ example: 'product-uuid-123', description: 'Investment fund ID' })
   @IsUUID()
-  productId: string;
+  fundId: string;
 
   @ApiProperty({ example: 5000, description: 'Amount to invest in rupees' })
   @IsNumber()

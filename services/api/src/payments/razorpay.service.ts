@@ -1,7 +1,7 @@
 import { Injectable, Logger, BadRequestException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import * as crypto from 'crypto';
-import * as Razorpay from 'razorpay';
+import Razorpay from 'razorpay';
 
 export interface RazorpayOrderOptions {
   amount: number; // in paise
@@ -38,6 +38,10 @@ export interface RazorpayPayment {
   vpa?: string;
   notes: Record<string, any>;
   created_at: number;
+  acquirer_data?: {
+    upi_transaction_id?: string;
+    rrn?: string;
+  };
 }
 
 @Injectable()

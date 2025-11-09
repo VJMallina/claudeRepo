@@ -53,7 +53,7 @@ enum KycStatus {
 // KYC Documents
 model KycDocument {
   id                String   @id @default(uuid())
-  userId            String
+  userId            String   @unique
   panNumber         String?
   panName           String?
   panVerified       Boolean  @default(false)

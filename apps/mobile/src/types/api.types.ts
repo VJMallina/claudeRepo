@@ -12,7 +12,7 @@ export interface RegisterResponse {
 
 export interface VerifyOtpRequest {
   mobile: string;
-  otp: string;
+  code: string;
 }
 
 export interface AuthResponse {

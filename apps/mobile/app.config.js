@@ -36,7 +36,6 @@ export default {
       bundler: 'metro',
     },
     plugins: [
-      'expo-router',
       'expo-secure-store',
       'expo-local-authentication',
       [
@@ -46,11 +45,8 @@ export default {
         },
       ],
     ],
-    experiments: {
-      typedRoutes: true,
-    },
     extra: {
-      apiUrl: process.env.API_URL || 'http://localhost:3000/api/v1',
+      apiUrl: process.env.API_URL || 'https://small-experts-hug.loca.lt/api/v1',
     },
   },
 };

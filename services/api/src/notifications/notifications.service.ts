@@ -270,7 +270,7 @@ export class NotificationsService {
       type: notification.type,
       title: notification.title,
       message: notification.message,
-      isRead: notification.isRead,
+      read: notification.isRead,
       data: notification.data,
       createdAt: notification.createdAt,
     };

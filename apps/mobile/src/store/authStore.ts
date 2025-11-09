@@ -12,7 +12,7 @@ interface AuthState {
   setUser: (user: User | null) => void;
   setLoading: (loading: boolean) => void;
   setError: (error: string | null) => void;
-  login: (mobile: string, otp: string) => Promise<void>;
+  login: (mobile: string, code: string) => Promise<void>;
   logout: () => Promise<void>;
   loadUser: () => Promise<void>;
   clearError: () => void;
@@ -32,11 +32,11 @@ export const useAuthStore = create<AuthState>((set, get) => ({
 
   clearError: () => set({ error: null }),
 
-  login: async (mobile: string, otp: string) => {
+  login: async (mobile: string, code: string) => {
     try {
       set({ isLoading: true, error: null });
 
-      const response = await authService.verifyOtp({ mobile, otp });
+      const response = await authService.verifyOtp({ mobile, code });
 
       set({
         user: response.user,

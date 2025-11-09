@@ -13,8 +13,8 @@ export class PaymentOrderResponseDto {
   @ApiProperty({ example: '123e4567-e89b-12d3-a456-426614174000', description: 'Transaction ID' })
   transactionId: string;
 
-  @ApiProperty({ example: 100, description: 'Auto-save amount in paise' })
-  autoSaveAmount: number;
+  @ApiProperty({ example: 100, description: 'Savings amount in paise' })
+  savingsAmount: number;
 
   @ApiProperty({ example: 10, description: 'Auto-save percentage' })
   autoSavePercentage: number;
@@ -45,8 +45,8 @@ export class PaymentVerificationResponseDto {
   @ApiProperty({ example: 'UPI', description: 'Payment method used' })
   paymentMethod: string;
 
-  @ApiPropertyOptional({ example: 'ABC1234567890', description: 'UTR number' })
-  utr?: string;
+  @ApiPropertyOptional({ example: 'ABC1234567890', description: 'UPI Transaction ID' })
+  upiTransactionId?: string;
 }
 
 export class TransactionResponseDto {
@@ -69,10 +69,10 @@ export class TransactionResponseDto {
   merchantUpiId?: string;
 
   @ApiPropertyOptional({ example: 'ABC1234567890' })
-  utr?: string;
+  upiTransactionId?: string;
 
   @ApiProperty({ example: 100 })
-  autoSaveAmount: number;
+  savingsAmount: number;
 
   @ApiProperty({ example: true })
   autoSaveApplied: boolean;
