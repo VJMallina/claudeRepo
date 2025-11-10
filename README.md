@@ -289,20 +289,31 @@ AI recommendations, Tax optimization, Bill payments, Cashback rewards
 
 ## Troubleshooting
 
-### Claude CLI I/O Error in WSL
+### WSL I/O Errors
 
-If you encounter `Error: EIO: i/o error` when running Claude CLI from WSL, see our [Claude CLI Troubleshooting Guide](./docs/CLAUDE_CLI_TROUBLESHOOTING.md).
+If you encounter `Input/output error` on **basic commands** (cp, ls, etc.) or Claude CLI in WSL:
 
-**Quick Fix:**
+**🚨 CRITICAL - Basic commands failing?**
+```powershell
+# From Windows PowerShell (as Administrator)
+wsl --shutdown
+# Wait 10 seconds, restart WSL and test again
+```
+
+**Claude CLI specific issues?**
 ```bash
 # Run the automated fix script
 ./scripts/fix-claude-cli-io-error.sh
 
-# Or manually clean up
+# Or manually clean up corrupted Claude data
 rm -rf ~/.claude/projects/-mnt-*
 ```
 
-This issue occurs when running Claude CLI from Windows mount paths (`/mnt/c/...`) in WSL. The guide provides multiple solutions and best practices.
+See our comprehensive [Troubleshooting Guide](./docs/CLAUDE_CLI_TROUBLESHOOTING.md) for:
+- WSL filesystem corruption recovery
+- Claude CLI path handling fixes
+- Diagnostic steps and decision tree
+- Prevention best practices
 
 ## Contributing
 

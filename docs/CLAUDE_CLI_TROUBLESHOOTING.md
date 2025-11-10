@@ -1,5 +1,94 @@
 # Claude CLI Troubleshooting Guide
 
+## 🚨 CRITICAL: WSL Filesystem Corruption
+
+### Problem Description
+
+If you're getting I/O errors on **basic commands** like `cp`, `ls`, or other system binaries:
+
+```
+-bash: /usr/bin/cp: Input/output error
+-bash: /usr/local/bin/claude: Input/output error
+```
+
+This indicates **WSL-wide filesystem corruption**, not just Claude CLI issues. This requires immediate WSL recovery.
+
+### Immediate Recovery Steps
+
+#### Step 1: Restart WSL (Try This First)
+
+From **Windows PowerShell (Run as Administrator)**:
+
+```powershell
+# Shutdown WSL completely
+wsl --shutdown
+
+# Wait 10 seconds, then restart WSL
+wsl
+```
+
+Test if basic commands work:
+```bash
+ls -la
+cp --version
+```
+
+#### Step 2: If Still Broken - Check WSL Disk
+
+```powershell
+# Check WSL disk integrity
+wsl --manage <distro-name> --set-sparse true
+
+# List your distros
+wsl --list --verbose
+
+# Example: For Ubuntu
+wsl --manage Ubuntu --set-sparse true
+```
+
+#### Step 3: Nuclear Option - Reinstall WSL Distribution
+
+**⚠️ WARNING: This will DELETE all data in WSL. Backup important files first!**
+
+From Windows PowerShell:
+
+```powershell
+# 1. Export your WSL distro (backup)
+wsl --export Ubuntu C:\backup\ubuntu-backup.tar
+
+# 2. Unregister the corrupted distro
+wsl --unregister Ubuntu
+
+# 3. Reinstall Ubuntu from Microsoft Store
+# Or import from backup:
+wsl --import Ubuntu C:\WSL\Ubuntu C:\backup\ubuntu-backup.tar
+```
+
+#### Step 4: Reinstall Node.js and Claude CLI
+
+Once WSL is working again:
+
+```bash
+# Reinstall Node.js (if needed)
+curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash -
+sudo apt-get install -y nodejs
+
+# Reinstall Claude CLI
+sudo npm install -g @anthropic-ai/claude-code
+
+# Verify installation
+claude --version
+```
+
+### Prevention
+
+1. **Never forcefully kill WSL processes** - always use `wsl --shutdown`
+2. **Avoid working directly on Windows drives** (`/mnt/c/...`) - copy to Linux filesystem first
+3. **Regular backups**: Use `wsl --export` to backup your distribution
+4. **Keep WSL updated**: Run `wsl --update` regularly
+
+---
+
 ## I/O Error: Path Handling in WSL
 
 ### Problem Description
@@ -151,14 +240,59 @@ The error mentions "promise rejected with reason" - this is a Claude CLI bug tha
 
 ---
 
+## Diagnostic Guide
+
+### How to Identify Your Issue
+
+Run these tests to determine the severity:
+
+```bash
+# Test 1: Basic commands
+ls -la
+echo "test"
+cp --version
+
+# Test 2: File operations
+touch /tmp/test.txt
+rm /tmp/test.txt
+
+# Test 3: Claude CLI
+claude --version
+```
+
+**Decision Tree:**
+
+1. **If basic commands fail** (`ls`, `cp`, `echo`) → You have **WSL filesystem corruption** → Follow "CRITICAL: WSL Filesystem Corruption" section above
+2. **If only Claude CLI fails** → You have **Claude CLI specific issue** → Follow "I/O Error: Path Handling in WSL" section
+3. **If file operations fail on `/mnt/c/`** → Windows drive mount issue → See "Additional WSL Issues" section
+
+---
+
 ## Quick Reference
 
 ### Emergency Reset
 
+**For Claude CLI Issues:**
 ```bash
-# Nuclear option - removes all Claude project history
+# Remove Claude project history
 rm -rf ~/.claude/projects/*
 rm -rf ~/.claude/sessions/*
+```
+
+**For WSL Issues:**
+```powershell
+# From Windows PowerShell (as Administrator)
+wsl --shutdown
+# Wait 10 seconds, then restart
+wsl
+```
+
+**For Complete WSL Corruption:**
+```powershell
+# Backup first!
+wsl --export Ubuntu C:\backup\ubuntu-backup.tar
+# Then reinstall (see full steps in "CRITICAL" section above)
+wsl --unregister Ubuntu
 ```
 
 ### Healthy Project Structure
