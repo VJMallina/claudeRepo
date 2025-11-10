@@ -287,6 +287,23 @@ Savings goals, Auto-invest, More investment products, Referral program
 ### Phase 3 (Months 8-12)
 AI recommendations, Tax optimization, Bill payments, Cashback rewards
 
+## Troubleshooting
+
+### Claude CLI I/O Error in WSL
+
+If you encounter `Error: EIO: i/o error` when running Claude CLI from WSL, see our [Claude CLI Troubleshooting Guide](./docs/CLAUDE_CLI_TROUBLESHOOTING.md).
+
+**Quick Fix:**
+```bash
+# Run the automated fix script
+./scripts/fix-claude-cli-io-error.sh
+
+# Or manually clean up
+rm -rf ~/.claude/projects/-mnt-*
+```
+
+This issue occurs when running Claude CLI from Windows mount paths (`/mnt/c/...`) in WSL. The guide provides multiple solutions and best practices.
+
 ## Contributing
 
 (To be added as project progresses)
